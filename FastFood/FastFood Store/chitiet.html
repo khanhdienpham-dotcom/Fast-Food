@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FastFood Store - Chi Tiết Sản Phẩm</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/chitiet.css" />
+</head>
+<body>
+
+  <!-- ====== HEADER ====== -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <img src="images/logo.png" alt="Logo" />
+        <span class="logo-text">🍔 FastFood</span>
+      </div>
+      <nav id="main-nav">
+        <ul>
+          <li><a href="index.html">Trang Chủ</a></li>
+          <li><a href="sanpham.html">Thực Đơn</a></li>
+          <li><a href="chitiet.html" class="active">Chi Tiết</a></li>
+          <li><a href="giohang.html">Giỏ Hàng</a></li>
+          <li><a href="datmon.html">Đặt Món</a></li>
+        </ul>
+      </nav>
+      <div class="header-icons">
+        <div class="search-bar">
+          <input type="text" placeholder="Tìm món ăn..." />
+          <button><i class="fa fa-search"></i></button>
+        </div>
+        <a href="giohang.html"><i class="fa fa-shopping-cart"></i><span class="cart-badge">0</span></a>
+        <a href="#"><i class="fa fa-user-circle"></i></a>
+        <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====== MAIN ====== -->
+  <main>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+      <div class="container">
+        <a href="index.html">Trang Chủ</a> /
+        <a href="sanpham.html">Thực Đơn</a> /
+        <span>Double Beef Burger</span>
+      </div>
+    </div>
+
+    <!-- ── CHI TIẾT SẢN PHẨM ── -->
+    <section class="product-detail">
+      <div class="container">
+        <div class="detail-layout">
+
+          <!-- CỘT TRÁI: Ảnh sản phẩm -->
+          <div class="detail-gallery">
+            <!-- Ảnh chính -->
+            <div class="gallery-main">
+              <img src="images/burger1.jpg" alt="Double Beef Burger" id="main-img" />
+              <div class="gallery-badge">🔥 Bán chạy</div>
+            </div>
+            <!-- Thumbnails -->
+            <div class="gallery-thumbs">
+              <img src="images/burger1.jpg" alt="" class="thumb active" onclick="changeImg(this)" />
+              <img src="images/burger1-angle2.jpg" alt="" class="thumb" onclick="changeImg(this)" />
+              <img src="images/burger1-detail.jpg" alt="" class="thumb" onclick="changeImg(this)" />
+              <img src="images/burger1-ingredients.jpg" alt="" class="thumb" onclick="changeImg(this)" />
+            </div>
+          </div>
+
+          <!-- CỘT PHẢI: Thông tin sản phẩm -->
+          <div class="detail-info">
+
+            <!-- Tên & Đánh giá -->
+            <h1 class="product-name">Double Beef Burger</h1>
+            <div class="product-rating">
+              <span class="stars">⭐⭐⭐⭐⭐</span>
+              <span class="rating-count">4.9 (128 đánh giá)</span>
+              <span class="sold-count">| Đã bán: 2.3k</span>
+            </div>
+
+            <!-- Giá -->
+            <div class="product-price">
+              <span class="price-current">59.000đ</span>
+              <span class="price-old">79.000đ</span>
+              <span class="price-discount">-25%</span>
+            </div>
+
+            <!-- Mô tả ngắn -->
+            <p class="product-short-desc">
+              Burger đặc biệt với hai lớp thịt bò Úc nguyên chất, phô mai cheddar tan chảy,
+              rau tươi giòn ngon và sốt đặc biệt của riêng FastFood. Ăn một lần là nhớ mãi!
+            </p>
+
+            <!-- Tag -->
+            <div class="product-tags">
+              <span class="tag">🍔 Burger</span>
+              <span class="tag">🌶️ Cay nhẹ</span>
+              <span class="tag">🔥 Bán chạy</span>
+            </div>
+
+            <!-- Chọn tùy chọn -->
+            <div class="product-options">
+
+              <div class="option-group">
+                <label>Size:</label>
+                <div class="option-buttons">
+                  <button class="opt-btn">Nhỏ</button>
+                  <button class="opt-btn active">Vừa</button>
+                  <button class="opt-btn">Lớn (+10.000đ)</button>
+                </div>
+              </div>
+
+              <div class="option-group">
+                <label>Mức độ cay:</label>
+                <div class="option-buttons">
+                  <button class="opt-btn active">Không cay</button>
+                  <button class="opt-btn">Cay nhẹ 🌶️</button>
+                  <button class="opt-btn">Cay vừa 🌶️🌶️</button>
+                  <button class="opt-btn">Cay mạnh 🌶️🌶️🌶️</button>
+                </div>
+              </div>
+
+              <div class="option-group">
+                <label>Thêm topping:</label>
+                <div class="topping-list">
+                  <label><input type="checkbox" /> Thêm phô mai (+5.000đ)</label>
+                  <label><input type="checkbox" /> Thêm trứng (+8.000đ)</label>
+                  <label><input type="checkbox" /> Thêm bacon (+12.000đ)</label>
+                  <label><input type="checkbox" /> Thêm jalapeño (+5.000đ)</label>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Ghi chú -->
+            <div class="note-group">
+              <label>Ghi chú:</label>
+              <textarea placeholder="Ví dụ: Không hành, ít muối..." rows="2"></textarea>
+            </div>
+
+            <!-- Số lượng & Nút -->
+            <div class="product-actions">
+              <div class="qty-control">
+                <button onclick="changeQty(-1)">−</button>
+                <span id="qty-display">1</span>
+                <button onclick="changeQty(1)">+</button>
+              </div>
+              <button class="btn btn-primary" onclick="addToCart()">
+                <i class="fa fa-cart-plus"></i> Thêm vào giỏ
+              </button>
+              <button class="btn btn-outline">
+                <i class="fa fa-bolt"></i> Mua ngay
+              </button>
+              <button class="btn-icon btn-wishlist" title="Yêu thích">
+                <i class="fa fa-heart"></i>
+              </button>
+            </div>
+
+            <!-- Thông tin giao hàng -->
+            <div class="delivery-info">
+              <div class="delivery-item">
+                <i class="fa fa-truck"></i>
+                <span>Giao hàng trong <strong>30 phút</strong> — Miễn phí đơn từ 80.000đ</span>
+              </div>
+              <div class="delivery-item">
+                <i class="fa fa-shield-alt"></i>
+                <span>Đảm bảo tươi ngon hoặc <strong>hoàn tiền 100%</strong></span>
+              </div>
+              <div class="delivery-item">
+                <i class="fa fa-fire"></i>
+                <span>Giao nóng — Giữ nhiệt đặc biệt</span>
+              </div>
+            </div>
+
+          </div><!-- /detail-info -->
+
+        </div><!-- /detail-layout -->
+      </div><!-- /container -->
+    </section>
+
+    <!-- ── TABS: Mô tả | Thành phần | Dinh dưỡng | Đánh giá ── -->
+    <section class="product-tabs-section">
+      <div class="container">
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="tab-desc">Mô Tả Chi Tiết</button>
+          <button class="tab-btn" data-tab="tab-ingredients">Nguyên Liệu</button>
+          <button class="tab-btn" data-tab="tab-nutrition">Dinh Dưỡng</button>
+          <button class="tab-btn" data-tab="tab-reviews">Đánh Giá (128)</button>
+        </div>
+
+        <!-- Tab 1: Mô tả -->
+        <div class="tab-content active" id="tab-desc">
+          <h3>Câu Chuyện Về Double Beef Burger</h3>
+          <p>Double Beef Burger là sản phẩm chủ lực của FastFood Store, được tạo ra từ công thức độc quyền sau nhiều năm nghiên cứu và cải tiến. Hai miếng thịt bò Úc (100g mỗi miếng) được xay thô và nặn tay mỗi ngày, đảm bảo độ tươi và kết cấu hoàn hảo khi nướng.</p>
+          <ul>
+            <li>🥩 Thịt bò Úc 100% tươi, xay nguyên chất</li>
+            <li>🧀 Phô mai cheddar nhập khẩu, tan chảy hoàn hảo</li>
+            <li>🥬 Rau cải, cà chua, dưa leo tươi hàng ngày</li>
+            <li>🍞 Bánh mì brioche mềm nướng giòn</li>
+            <li>🫙 Sốt đặc biệt — bí quyết riêng của FastFood</li>
+          </ul>
+        </div>
+
+        <!-- Tab 2: Nguyên liệu -->
+        <div class="tab-content" id="tab-ingredients">
+          <div class="ingredients-grid">
+            <div class="ingredient-item">
+              <img src="images/beef.jpg" alt="Thịt bò" />
+              <p>Thịt bò Úc</p>
+            </div>
+            <div class="ingredient-item">
+              <img src="images/cheese.jpg" alt="Phô mai" />
+              <p>Phô mai Cheddar</p>
+            </div>
+            <div class="ingredient-item">
+              <img src="images/bun.jpg" alt="Bánh mì" />
+              <p>Bánh Brioche</p>
+            </div>
+            <div class="ingredient-item">
+              <img src="images/sauce.jpg" alt="Sốt" />
+              <p>Sốt Đặc Biệt</p>
+            </div>
+            <div class="ingredient-item">
+              <img src="images/lettuce.jpg" alt="Rau" />
+              <p>Rau Tươi</p>
+            </div>
+          </div>
+          <div class="allergen-box">
+            <strong>⚠️ Cảnh báo dị ứng:</strong> Chứa gluten (lúa mì), sữa, trứng. Không phù hợp cho người ăn chay.
+          </div>
+        </div>
+
+        <!-- Tab 3: Dinh dưỡng -->
+        <div class="tab-content" id="tab-nutrition">
+          <div class="nutrition-table">
+            <table>
+              <thead>
+                <tr><th>Thành phần</th><th>Mỗi khẩu phần (1 burger)</th><th>% DV</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Năng lượng</td><td>580 kcal</td><td>29%</td></tr>
+                <tr><td>Chất béo tổng</td><td>28g</td><td>36%</td></tr>
+                <tr><td>Chất béo bão hòa</td><td>11g</td><td>55%</td></tr>
+                <tr><td>Cholesterol</td><td>95mg</td><td>32%</td></tr>
+                <tr><td>Natri</td><td>890mg</td><td>39%</td></tr>
+                <tr><td>Carbohydrate</td><td>42g</td><td>15%</td></tr>
+                <tr><td>Đường</td><td>8g</td><td>—</td></tr>
+                <tr><td>Protein</td><td>38g</td><td>76%</td></tr>
+                <tr><td>Chất xơ</td><td>3g</td><td>11%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab 4: Đánh giá -->
+        <div class="tab-content" id="tab-reviews">
+          <!-- Tổng quan đánh giá -->
+          <div class="review-summary">
+            <div class="review-avg">
+              <span class="avg-score">4.9</span>
+              <div class="avg-stars">⭐⭐⭐⭐⭐</div>
+              <p>128 đánh giá</p>
+            </div>
+            <div class="review-bars">
+              <div class="bar-row"><span>5⭐</span><div class="bar"><div class="bar-fill" style="width:80%"></div></div><span>80%</span></div>
+              <div class="bar-row"><span>4⭐</span><div class="bar"><div class="bar-fill" style="width:15%"></div></div><span>15%</span></div>
+              <div class="bar-row"><span>3⭐</span><div class="bar"><div class="bar-fill" style="width:4%"></div></div><span>4%</span></div>
+              <div class="bar-row"><span>2⭐</span><div class="bar"><div class="bar-fill" style="width:1%"></div></div><span>1%</span></div>
+              <div class="bar-row"><span>1⭐</span><div class="bar"><div class="bar-fill" style="width:0%"></div></div><span>0%</span></div>
+            </div>
+          </div>
+
+          <!-- Danh sách reviews -->
+          <div class="review-list">
+            <div class="review-item">
+              <div class="review-author">
+                <img src="images/user1.jpg" alt="User" />
+                <div>
+                  <strong>Nguyễn Minh</strong>
+                  <span>⭐⭐⭐⭐⭐</span>
+                  <small>01/10/2026</small>
+                </div>
+              </div>
+              <p>"Burger cực ngon! Thịt bò tươi, phô mai tan chảy hoàn hảo. Lần sau chắc chắn đặt lại!"</p>
+              <div class="review-helpful">
+                <button><i class="fa fa-thumbs-up"></i> Hữu ích (12)</button>
+              </div>
+            </div>
+            <div class="review-item">
+              <div class="review-author">
+                <img src="images/user2.jpg" alt="User" />
+                <div>
+                  <strong>Trần Thu Hà</strong>
+                  <span>⭐⭐⭐⭐⭐</span>
+                  <small>28/09/2026</small>
+                </div>
+              </div>
+              <p>"Giao hàng nhanh, đồ ăn còn nóng hổi. Sốt đặc biệt mới ăn lần đầu mà đã ghiền!"</p>
+              <div class="review-helpful">
+                <button><i class="fa fa-thumbs-up"></i> Hữu ích (8)</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form viết đánh giá -->
+          <div class="write-review">
+            <h4>Viết Đánh Giá Của Bạn</h4>
+            <div class="star-select">
+              <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+            </div>
+            <textarea placeholder="Chia sẻ cảm nhận của bạn..." rows="3"></textarea>
+            <button class="btn btn-primary">Gửi Đánh Giá</button>
+          </div>
+        </div>
+
+      </div><!-- /container -->
+    </section>
+
+    <!-- ── SẢN PHẨM LIÊN QUAN ── -->
+    <section class="related-section">
+      <div class="container">
+        <div class="section-title">
+          <h2>Món Liên Quan</h2>
+          <div class="divider"></div>
+        </div>
+        <div class="products-grid">
+          <div class="card">
+            <img src="images/burger2.jpg" alt="" class="card-img"/>
+            <div class="card-body">
+              <h3 class="card-title">Mushroom Burger</h3>
+              <span class="card-price">55.000đ</span>
+            </div>
+            <div class="card-footer">
+              <span>⭐ 4.6</span>
+              <a href="chitiet.html" class="btn btn-primary btn-sm">+ Thêm</a>
+            </div>
+          </div>
+          <div class="card">
+            <img src="images/chicken1.jpg" alt="" class="card-img"/>
+            <div class="card-body">
+              <h3 class="card-title">Gà Rán Giòn</h3>
+              <span class="card-price">45.000đ</span>
+            </div>
+            <div class="card-footer">
+              <span>⭐ 4.7</span>
+              <a href="chitiet.html" class="btn btn-primary btn-sm">+ Thêm</a>
+            </div>
+          </div>
+          <div class="card">
+            <img src="images/fries1.jpg" alt="" class="card-img"/>
+            <div class="card-body">
+              <h3 class="card-title">Khoai Tây Chiên</h3>
+              <span class="card-price">29.000đ</span>
+            </div>
+            <div class="card-footer">
+              <span>⭐ 4.5</span>
+              <a href="chitiet.html" class="btn btn-primary btn-sm">+ Thêm</a>
+            </div>
+          </div>
+          <div class="card">
+            <img src="images/combo1.jpg" alt="" class="card-img"/>
+            <div class="card-body">
+              <h3 class="card-title">Combo Burger Đôi</h3>
+              <span class="card-price">120.000đ</span>
+            </div>
+            <div class="card-footer">
+              <span>⭐ 5.0</span>
+              <a href="chitiet.html" class="btn btn-primary btn-sm">+ Thêm</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <div class="logo-text">🍔 FastFood</div>
+        <p>Chuỗi cửa hàng fast food số 1 Việt Nam.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Thực Đơn</h4>
+        <ul><li><a href="#">Burger</a></li><li><a href="#">Gà Rán</a></li><li><a href="#">Pizza</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Hỗ Trợ</h4>
+        <ul><li><a href="#">Giao hàng</a></li><li><a href="#">FAQ</a></li><li><a href="#">Liên hệ</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Liên Hệ</h4>
+        <ul><li>📍 123 Nguyễn Trãi, Q.1</li><li>📞 1900 1234</li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 FastFood Store. All rights reserved.</p></div>
+  </footer>
+
+  <script>
+    function toggleNav() {
+      document.getElementById('main-nav').classList.toggle('open');
+    }
+    // Tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById(this.dataset.tab).classList.add('active');
+      });
+    });
+    // Quantity
+    let qty = 1;
+    function changeQty(delta) {
+      qty = Math.max(1, qty + delta);
+      document.getElementById('qty-display').textContent = qty;
+    }
+    // Gallery
+    function changeImg(el) {
+      document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('main-img').src = el.src;
+    }
+    // Options
+    document.querySelectorAll('.opt-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.closest('.option-buttons').querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,449 @@
+/* ===========================
+   DATMON.CSS - TRANG ĐẶT MÓN
+   =========================== */
+
+/* Breadcrumb */
+.breadcrumb {
+  padding: 12px 0;
+  font-size: 0.88rem;
+  border-bottom: 1px solid #eee;
+  /* TODO: background: ; */
+  /* TODO: color: ; */
+}
+.breadcrumb a { /* TODO: color: ; */ }
+
+/* Reuse checkout-steps from giohang */
+.checkout-steps {
+  padding: 24px 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 36px;
+  /* TODO: background: ; */
+}
+
+.steps { display: flex; align-items: center; justify-content: center; }
+
+.step { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+
+.step-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; border: 2px solid;
+  /* TODO: border-color, background, color: ; */
+}
+
+.step.active .step-icon { /* TODO: background, color, border-color: ; */ }
+.step.done .step-icon   { /* TODO: background, color, border-color: ; */ }
+
+.step span { font-size: 0.78rem; font-weight: 600; /* TODO: color: ; */ }
+.step.active span { /* TODO: color: ; */ font-weight: 700; }
+
+.step-line { flex: 1; height: 2px; min-width: 60px; max-width: 120px; margin-bottom: 22px; /* TODO: background: ; */ }
+.step-line.done { /* TODO: background: ; */ }
+
+/* ── ORDER LAYOUT ── */
+.order-section { padding-bottom: 60px; }
+
+.order-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ── FORM BLOCKS ── */
+.form-block {
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  /* TODO: background: ; */
+  /* TODO: border: 1px solid ; */
+  /* TODO: box-shadow: ; */
+}
+
+.form-block h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* TODO: color: ; */
+}
+
+.form-block h3 i {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+  /* TODO: background: ; */
+  /* TODO: color: ; */
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+
+.form-group.full-width { grid-column: 1 / -1; }
+
+.form-group label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  /* TODO: color: ; */
+}
+
+.required { /* TODO: color: ; */ }
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 10px 14px;
+  border: 1px solid;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+  /* TODO: border-color: ; */
+  /* TODO: background: ; */
+  /* TODO: color: ; */
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  /* TODO: border-color: ; */
+  /* TODO: box-shadow: 0 0 0 3px rgba( , , , 0.1); */
+}
+
+/* ── DELIVERY TYPE TABS ── */
+.delivery-type-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.dtype-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 2px solid;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  background: transparent;
+  /* TODO: border-color: ; */
+  /* TODO: color: ; */
+}
+
+.dtype-btn.active {
+  /* TODO: background: ; */
+  /* TODO: color: ; */
+  /* TODO: border-color: ; */
+}
+
+/* Map Placeholder */
+.map-placeholder {
+  width: 100%;
+  height: 200px;
+  border-radius: 10px;
+  border: 2px dashed #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  /* TODO: background: ; */
+  /* TODO: color: ; */
+}
+
+.map-placeholder i { font-size: 2rem; /* TODO: color: ; */ }
+.map-placeholder p { font-size: 0.9rem; font-weight: 600; }
+.map-placeholder small { font-size: 0.8rem; /* TODO: color: ; */ }
+
+/* Store list */
+.store-list { display: flex; flex-direction: column; gap: 12px; }
+
+.store-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 2px solid;
+  cursor: pointer;
+  transition: all 0.2s;
+  /* TODO: border-color: ; */
+  /* TODO: background: ; */
+}
+
+.store-option:has(input:checked) {
+  /* TODO: border-color: ; */
+  /* TODO: background: ; */
+}
+
+.store-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.store-info strong { font-size: 0.95rem; /* TODO: color: ; */ }
+.store-info p { font-size: 0.83rem; /* TODO: color: ; */ }
+
+.store-open {
+  font-size: 0.8rem;
+  font-weight: 600;
+  /* TODO: color: ; */
+}
+
+.store-dist {
+  font-size: 0.8rem;
+  /* TODO: color: ; */
+}
+
+/* ── TIME OPTIONS ── */
+.time-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.time-opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 2px solid;
+  cursor: pointer;
+  /* TODO: border-color: ; */
+  /* TODO: background: ; */
+}
+
+.time-opt:has(input:checked) {
+  /* TODO: border-color: ; */
+  /* TODO: background: ; */
+}
+
+.time-opt strong { font-size: 0.9rem; font-weight: 700; /* TODO: color: ; */ }
+.time-opt p { font-size: 0.82rem; /* TODO: color: ; */ margin-top: 3px; }
+
+.schedule-picker { animation: fadeIn 0.3s; }
+
+/* ── ORDER SUMMARY ── */
+.order-summary-col { position: sticky; top: 80px; }
+
+.order-summary-box {
+  border-radius: 14px;
+  padding: 24px;
+  /* TODO: background: ; */
+  /* TODO: border: 1px solid ; */
+  /* TODO: box-shadow: ; */
+}
+
+.order-summary-box h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  /* TODO: color: ; */
+}
+
+/* Order items */
+.order-items { margin-bottom: 16px; }
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 0.88rem;
+}
+
+.order-item img {
+  width: 46px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.order-item div { flex: 1; }
+.order-item div strong { font-size: 0.88rem; font-weight: 700; /* TODO: color: ; */ display: block; }
+.order-item div small { font-size: 0.78rem; /* TODO: color: ; */ }
+.order-item span { white-space: nowrap; font-weight: 600; }
+
+.edit-cart-link {
+  display: inline-block;
+  font-size: 0.82rem;
+  margin: 10px 0 18px;
+  /* TODO: color: ; */
+}
+
+/* Summary rows */
+.summary-rows { margin-bottom: 18px; }
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  /* TODO: color: ; */
+}
+
+.summary-row.total {
+  font-size: 1.1rem;
+  font-weight: 800;
+  border-bottom: none;
+  margin-top: 8px;
+  padding-top: 12px;
+  /* TODO: color: ; */
+}
+
+.free { /* TODO: color: ; */ font-weight: 600; }
+.discount { /* TODO: color: ; */ font-weight: 600; }
+
+/* Payment summary */
+.payment-summary {
+  margin-bottom: 18px;
+  padding: 14px;
+  border-radius: 10px;
+  /* TODO: background: ; */
+}
+
+.payment-summary h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 10px; }
+
+.payment-chosen {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+.payment-chosen i { font-size: 1.1rem; /* TODO: color: ; */ }
+.payment-chosen a { margin-left: auto; font-size: 0.82rem; /* TODO: color: ; */ }
+
+/* Place order button */
+.place-order-btn {
+  width: 100%;
+  padding: 16px;
+  font-size: 1rem;
+  border-radius: 10px;
+  text-align: center;
+  /* TODO: (use btn-primary overrides if needed) */
+}
+
+.terms-note {
+  text-align: center;
+  font-size: 0.78rem;
+  margin-top: 12px;
+  /* TODO: color: ; */
+  line-height: 1.6;
+}
+
+.terms-note a { /* TODO: color: ; */ }
+
+.security-badges {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  font-size: 0.78rem;
+  /* TODO: color: ; */
+}
+
+/* ── SUCCESS MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  /* TODO: background: rgba(0,0,0,0.6); */
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-box {
+  max-width: 480px;
+  width: 100%;
+  border-radius: 20px;
+  padding: 36px;
+  text-align: center;
+  /* TODO: background: ; */
+  /* TODO: box-shadow: ; */
+}
+
+.modal-icon { font-size: 4rem; margin-bottom: 12px; }
+
+.modal-box h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  /* TODO: color: ; */
+}
+
+.modal-box p {
+  font-size: 0.95rem;
+  /* TODO: color: ; */
+  margin-bottom: 8px;
+  line-height: 1.7;
+}
+
+/* Order tracking */
+.order-status-track {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.track-step {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  /* TODO: background: ; */
+  /* TODO: color: ; */
+  opacity: 0.5;
+}
+
+.track-step.done { opacity: 1; /* TODO: background: ; color: ; */ }
+.track-step.active { opacity: 1; /* TODO: background: ; color: ; */ animation: pulse 1.5s infinite; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .order-layout { grid-template-columns: 1fr; }
+  .order-summary-col { position: static; }
+}
+
+@media (max-width: 640px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .time-options { grid-template-columns: 1fr; }
+  .delivery-type-tabs { flex-direction: column; }
+}

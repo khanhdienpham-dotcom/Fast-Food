@@ -1,0 +1,89 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\FastFood\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5A7D827C-26FB-4AF5-A9BF-B441609AAB36}|FastFood\\FastFood.csproj|c:\\fastfood\\fastfood\\fastfood store\\css\\sanpham.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{5A7D827C-26FB-4AF5-A9BF-B441609AAB36}|FastFood\\FastFood.csproj|solutionrelative:fastfood\\fastfood store\\css\\sanpham.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A7D827C-26FB-4AF5-A9BF-B441609AAB36}|FastFood\\FastFood.csproj|c:\\fastfood\\fastfood\\fastfood store\\css\\chitiet.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{5A7D827C-26FB-4AF5-A9BF-B441609AAB36}|FastFood\\FastFood.csproj|solutionrelative:fastfood\\fastfood store\\css\\chitiet.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A7D827C-26FB-4AF5-A9BF-B441609AAB36}|FastFood\\FastFood.csproj|c:\\fastfood\\fastfood\\fastfood store\\css\\datmon.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{5A7D827C-26FB-4AF5-A9BF-B441609AAB36}|FastFood\\FastFood.csproj|solutionrelative:fastfood\\fastfood store\\css\\datmon.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A7D827C-26FB-4AF5-A9BF-B441609AAB36}|FastFood\\FastFood.csproj|c:\\fastfood\\fastfood\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A7D827C-26FB-4AF5-A9BF-B441609AAB36}|FastFood\\FastFood.csproj|solutionrelative:fastfood\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\FastFood\\FastFood\\Program.cs",
+              "RelativeDocumentMoniker": "FastFood\\Program.cs",
+              "ToolTip": "C:\\FastFood\\FastFood\\Program.cs",
+              "RelativeToolTip": "FastFood\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-05T10:22:36.524Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "sanpham.css",
+              "DocumentMoniker": "C:\\FastFood\\FastFood\\FastFood Store\\css\\sanpham.css",
+              "RelativeDocumentMoniker": "FastFood\\FastFood Store\\css\\sanpham.css",
+              "ToolTip": "C:\\FastFood\\FastFood\\FastFood Store\\css\\sanpham.css",
+              "RelativeToolTip": "FastFood\\FastFood Store\\css\\sanpham.css",
+              "ViewState": "AgIAAI0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-10-05T10:51:54.751Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "datmon.css",
+              "DocumentMoniker": "C:\\FastFood\\FastFood\\FastFood Store\\css\\datmon.css",
+              "RelativeDocumentMoniker": "FastFood\\FastFood Store\\css\\datmon.css",
+              "ToolTip": "C:\\FastFood\\FastFood\\FastFood Store\\css\\datmon.css",
+              "RelativeToolTip": "FastFood\\FastFood Store\\css\\datmon.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-10-05T10:51:28.019Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "chitiet.css",
+              "DocumentMoniker": "C:\\FastFood\\FastFood\\FastFood Store\\css\\chitiet.css",
+              "RelativeDocumentMoniker": "FastFood\\FastFood Store\\css\\chitiet.css",
+              "ToolTip": "C:\\FastFood\\FastFood\\FastFood Store\\css\\chitiet.css",
+              "RelativeToolTip": "FastFood\\FastFood Store\\css\\chitiet.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-10-05T10:51:52.601Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

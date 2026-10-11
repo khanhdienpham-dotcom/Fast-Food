@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FastFood Store - Thực Đơn</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/sanpham.css" />
+</head>
+<body>
+
+  <!-- ====== HEADER (dùng chung) ====== -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <img src="images/logo.png" alt="Logo" />
+        <span class="logo-text">🍔 FastFood</span>
+      </div>
+      <nav id="main-nav">
+        <ul>
+          <li><a href="index.html">Trang Chủ</a></li>
+          <li><a href="sanpham.html" class="active">Thực Đơn</a></li>
+          <li><a href="chitiet.html">Chi Tiết</a></li>
+          <li><a href="giohang.html">Giỏ Hàng</a></li>
+          <li><a href="datmon.html">Đặt Món</a></li>
+        </ul>
+      </nav>
+      <div class="header-icons">
+        <div class="search-bar">
+          <input type="text" placeholder="Tìm món ăn..." />
+          <button><i class="fa fa-search"></i></button>
+        </div>
+        <a href="giohang.html"><i class="fa fa-shopping-cart"></i><span class="cart-badge">0</span></a>
+        <a href="#"><i class="fa fa-user-circle"></i></a>
+        <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====== MAIN ====== -->
+  <main>
+
+    <!-- ── BREADCRUMB ── -->
+    <div class="breadcrumb">
+      <div class="container">
+        <a href="index.html">Trang Chủ</a>
+        <span> / </span>
+        <span>Thực Đơn</span>
+      </div>
+    </div>
+
+    <!-- ── TRANG THỰC ĐƠN ── -->
+    <section class="menu-section">
+      <div class="container">
+
+        <!-- THANH CÔNG CỤ: Filter + Sort + Search -->
+        <div class="menu-toolbar">
+          <!-- Bộ lọc danh mục -->
+          <div class="filter-tabs">
+            <button class="filter-btn active" data-cat="all">Tất Cả</button>
+            <button class="filter-btn" data-cat="burger">🍔 Burger</button>
+            <button class="filter-btn" data-cat="chicken">🍗 Gà Rán</button>
+            <button class="filter-btn" data-cat="pizza">🍕 Pizza</button>
+            <button class="filter-btn" data-cat="fries">🍟 Khoai Tây</button>
+            <button class="filter-btn" data-cat="drink">🥤 Đồ Uống</button>
+            <button class="filter-btn" data-cat="combo">🎁 Combo</button>
+          </div>
+          <!-- Sắp xếp -->
+          <div class="menu-sort">
+            <label>Sắp xếp:</label>
+            <select id="sort-select">
+              <option value="default">Mặc định</option>
+              <option value="price-asc">Giá tăng dần</option>
+              <option value="price-desc">Giá giảm dần</option>
+              <option value="rating">Đánh giá cao</option>
+              <option value="new">Mới nhất</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- LAYOUT: Sidebar + Grid sản phẩm -->
+        <div class="menu-layout">
+
+          <!-- SIDEBAR LỌC -->
+          <aside class="menu-sidebar">
+            <div class="sidebar-block">
+              <h4>Khoảng Giá</h4>
+              <div class="price-range">
+                <input type="range" min="0" max="300000" step="5000" id="price-range" />
+                <div class="price-labels">
+                  <span>0đ</span>
+                  <span id="price-val">300.000đ</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>Đánh Giá</h4>
+              <label><input type="radio" name="rating" value="5" /> ⭐⭐⭐⭐⭐ (5 sao)</label>
+              <label><input type="radio" name="rating" value="4" /> ⭐⭐⭐⭐ (4 sao trở lên)</label>
+              <label><input type="radio" name="rating" value="3" /> ⭐⭐⭐ (3 sao trở lên)</label>
+              <label><input type="radio" name="rating" value="all" checked /> Tất cả</label>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>Chế Độ Ăn</h4>
+              <label><input type="checkbox" /> Cay 🌶️</label>
+              <label><input type="checkbox" /> Chay 🌿</label>
+              <label><input type="checkbox" /> Không gluten</label>
+              <label><input type="checkbox" /> Ít calo</label>
+            </div>
+
+            <div class="sidebar-block">
+              <h4>Thương Hiệu</h4>
+              <label><input type="checkbox" checked /> Tất cả</label>
+              <label><input type="checkbox" /> McBurger</label>
+              <label><input type="checkbox" /> CrispyChicken</label>
+              <label><input type="checkbox" /> PizzaHot</label>
+            </div>
+
+            <button class="btn btn-primary" style="width:100%;">Áp dụng</button>
+            <button class="btn btn-outline" style="width:100%; margin-top:8px;">Xóa bộ lọc</button>
+          </aside>
+
+          <!-- GRID SẢN PHẨM -->
+          <div class="menu-content">
+
+            <!-- Kết quả & View Toggle -->
+            <div class="menu-result-bar">
+              <span>Hiển thị <strong>12</strong> / 48 sản phẩm</span>
+              <div class="view-toggle">
+                <button id="grid-view" class="active"><i class="fa fa-th"></i></button>
+                <button id="list-view"><i class="fa fa-list"></i></button>
+              </div>
+            </div>
+
+            <!-- Lưới sản phẩm -->
+            <div class="products-grid" id="products-grid">
+
+              <!-- Lặp lại 8 card sản phẩm -->
+              <!-- Card 1 -->
+              <div class="card" data-cat="burger">
+                <div class="card-badge-new">Mới</div>
+                <img src="images/burger1.jpg" alt="Burger" class="card-img" />
+                <div class="card-body">
+                  <h3 class="card-title">Double Beef Burger</h3>
+                  <p class="card-desc">Hai lớp thịt bò Úc, phô mai cheddar & sốt đặc biệt</p>
+                  <span class="card-price">59.000đ</span>
+                </div>
+                <div class="card-footer">
+                  <div class="rating">⭐ 4.9</div>
+                  <div class="card-actions">
+                    <button class="btn-icon" title="Yêu thích"><i class="fa fa-heart"></i></button>
+                    <a href="chitiet.html" class="btn btn-primary btn-sm">+ Thêm</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 2 -->
+              <div class="card" data-cat="chicken">
+                <img src="images/chicken1.jpg" alt="Gà Rán" class="card-img" />
+                <div class="card-body">
+                  <h3 class="card-title">Gà Rán Giòn Cay</h3>
+                  <p class="card-desc">Gà tươi ướp gia vị, chiên vàng giòn rụm thơm lừng</p>
+                  <span class="card-price">45.000đ</span>
+                </div>
+                <div class="card-footer">
+                  <div class="rating">⭐ 4.7</div>
+                  <div class="card-actions">
+                    <button class="btn-icon"><i class="fa fa-heart"></i></button>
+                    <a href="chitiet.html" class="btn btn-primary btn-sm">+ Thêm</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 3 -->
+              <div class="card" data-cat="pizza">
+                <div class="card-badge-hot">Hot</div>
+                <img src="images/pizza1.jpg" alt="Pizza" class="card-img" />
+                <div class="card-body">
+                  <h3 class="card-title">Pizza 4 Phô Mai</h3>
+                  <p class="card-desc">Phô mai kéo sợi, đế giòn, sốt cà chua tươi</p>
+                  <span class="card-price">89.000đ</span>
+                </div>
+                <div class="card-footer">
+                  <div class="rating">⭐ 4.8</div>
+                  <div class="card-actions">
+                    <button class="btn-icon"><i class="fa fa-heart"></i></button>
+                    <a href="chitiet.html" class="btn btn-primary btn-sm">+ Thêm</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 4 -->
+              <div class="card" data-cat="fries">
+                <img src="images/fries1.jpg" alt="Khoai Tây" class="card-img" />
+                <div class="card-body">
+                  <h3 class="card-title">Khoai Tây Chiên Bơ</h3>
+                  <p class="card-desc">Giòn rụm, phủ bơ thơm, ăn kèm tương cà</p>
+                  <span class="card-price">29.000đ</span>
+                </div>
+                <div class="card-footer">
+                  <div class="rating">⭐ 4.5</div>
+                  <div class="card-actions">
+                    <button class="btn-icon"><i class="fa fa-heart"></i></button>
+                    <a href="chitiet.html" class="btn btn-primary btn-sm">+ Thêm</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 5 -->
+              <div class="card" data-cat="drink">
+                <img src="images/drink1.jpg" alt="Coca" class="card-img" />
+                <div class="card-body">
+                  <h3 class="card-title">Coca Cola Size L</h3>
+                  <p class="card-desc">Nước ngọt có ga lạnh sảng khoái, size lớn 500ml</p>
+                  <span class="card-price">20.000đ</span>
+                </div>
+                <div class="card-footer">
+                  <div class="rating">⭐ 4.3</div>
+                  <div class="card-actions">
+                    <button class="btn-icon"><i class="fa fa-heart"></i></button>
+                    <a href="chitiet.html" class="btn btn-primary btn-sm">+ Thêm</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 6 -->
+              <div class="card" data-cat="combo">
+                <div class="card-badge-sale">-20%</div>
+                <img src="images/combo1.jpg" alt="Combo" class="card-img" />
+                <div class="card-body">
+                  <h3 class="card-title">Combo Burger Đôi</h3>
+                  <p class="card-desc">2 Burger + 2 Khoai Tây + 2 Coca — Tiết kiệm 30.000đ</p>
+                  <span class="card-price">120.000đ</span>
+                </div>
+                <div class="card-footer">
+                  <div class="rating">⭐ 5.0</div>
+                  <div class="card-actions">
+                    <button class="btn-icon"><i class="fa fa-heart"></i></button>
+                    <a href="chitiet.html" class="btn btn-primary btn-sm">+ Thêm</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 7 -->
+              <div class="card" data-cat="burger">
+                <img src="images/burger2.jpg" alt="Burger Nấm" class="card-img" />
+                <div class="card-body">
+                  <h3 class="card-title">Mushroom Burger</h3>
+                  <p class="card-desc">Burger nấm đặc biệt, sốt mayo, rau cải tươi</p>
+                  <span class="card-price">55.000đ</span>
+                </div>
+                <div class="card-footer">
+                  <div class="rating">⭐ 4.6</div>
+                  <div class="card-actions">
+                    <button class="btn-icon"><i class="fa fa-heart"></i></button>
+                    <a href="chitiet.html" class="btn btn-primary btn-sm">+ Thêm</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 8 -->
+              <div class="card" data-cat="chicken">
+                <img src="images/chicken2.jpg" alt="Cánh Gà" class="card-img" />
+                <div class="card-body">
+                  <h3 class="card-title">Cánh Gà Sốt BBQ</h3>
+                  <p class="card-desc">6 cánh gà nướng sốt BBQ chua ngọt thơm lừng</p>
+                  <span class="card-price">65.000đ</span>
+                </div>
+                <div class="card-footer">
+                  <div class="rating">⭐ 4.8</div>
+                  <div class="card-actions">
+                    <button class="btn-icon"><i class="fa fa-heart"></i></button>
+                    <a href="chitiet.html" class="btn btn-primary btn-sm">+ Thêm</a>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /products-grid -->
+
+            <!-- PHÂN TRANG -->
+            <div class="pagination">
+              <button class="page-btn"><i class="fa fa-chevron-left"></i></button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn">2</button>
+              <button class="page-btn">3</button>
+              <span>...</span>
+              <button class="page-btn">6</button>
+              <button class="page-btn"><i class="fa fa-chevron-right"></i></button>
+            </div>
+
+          </div><!-- /menu-content -->
+
+        </div><!-- /menu-layout -->
+
+      </div><!-- /container -->
+    </section>
+
+  </main>
+
+  <!-- ====== FOOTER (dùng chung) ====== -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <div class="logo-text">🍔 FastFood</div>
+        <p>Chuỗi cửa hàng fast food số 1 Việt Nam. Giao hàng nhanh — Ngon thật sự — Giá bình dân.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-tiktok"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Thực Đơn</h4>
+        <ul>
+          <li><a href="#">Burger</a></li><li><a href="#">Gà Rán</a></li>
+          <li><a href="#">Pizza</a></li><li><a href="#">Khoai Tây</a></li>
+          <li><a href="#">Đồ Uống</a></li><li><a href="#">Combo</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Hỗ Trợ</h4>
+        <ul>
+          <li><a href="#">Chính sách giao hàng</a></li>
+          <li><a href="#">Hoàn trả & Đổi món</a></li>
+          <li><a href="#">Câu hỏi thường gặp</a></li>
+          <li><a href="#">Liên hệ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Liên Hệ</h4>
+        <ul>
+          <li><i class="fa fa-map-marker-alt"></i> 123 Nguyễn Trãi, Q.1, TP.HCM</li>
+          <li><i class="fa fa-phone"></i> 1900 1234</li>
+          <li><i class="fa fa-envelope"></i> hello@fastfood.vn</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 FastFood Store. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleNav() {
+      document.getElementById('main-nav').classList.toggle('open');
+    }
+    // Filter tabs
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const cat = this.dataset.cat;
+        document.querySelectorAll('.card').forEach(card => {
+          card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+        });
+      });
+    });
+    // View toggle
+    document.getElementById('grid-view').addEventListener('click', function() {
+      this.classList.add('active');
+      document.getElementById('list-view').classList.remove('active');
+      document.getElementById('products-grid').classList.remove('list-view');
+    });
+    document.getElementById('list-view').addEventListener('click', function() {
+      this.classList.add('active');
+      document.getElementById('grid-view').classList.remove('active');
+      document.getElementById('products-grid').classList.add('list-view');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FastFood Store - Trang Chủ</title>
+  <!-- Font Awesome (icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    /* ===== TODO: Thêm màu sắc theme vào đây ===== */
+    /*
+      Gợi ý palette fast food:
+      --primary:   #E63946  (đỏ)
+      --secondary: #F4A261  (cam)
+      --accent:    #2A9D8F  (xanh mint)
+      --dark:      #1D1D1D
+      --light:     #FFF8F0
+      --gray:      #6C757D
+    */
+  </style>
+</head>
+<body>
+
+  <!-- ======================================
+       HEADER
+  ======================================= -->
+  <header>
+    <div class="header-inner">
+
+      <!-- Logo -->
+      <div class="logo">
+        <img src="images/logo.png" alt="FastFood Logo" />
+        <span class="logo-text">🍔 FastFood</span>
+      </div>
+
+      <!-- Navigation -->
+      <nav id="main-nav">
+        <ul>
+          <li><a href="index.html" class="active">Trang Chủ</a></li>
+          <li><a href="sanpham.html">Thực Đơn</a></li>
+          <li><a href="chitiet.html">Chi Tiết</a></li>
+          <li><a href="giohang.html">Giỏ Hàng</a></li>
+          <li><a href="datmon.html">Đặt Món</a></li>
+        </ul>
+      </nav>
+
+      <!-- Header Right Icons -->
+      <div class="header-icons">
+        <!-- Search -->
+        <div class="search-bar">
+          <input type="text" placeholder="Tìm món ăn..." />
+          <button><i class="fa fa-search"></i></button>
+        </div>
+        <!-- Cart -->
+        <a href="giohang.html" title="Giỏ hàng">
+          <i class="fa fa-shopping-cart"></i>
+          <span class="cart-badge">0</span>
+        </a>
+        <!-- User -->
+        <a href="#" title="Tài khoản">
+          <i class="fa fa-user-circle"></i>
+        </a>
+        <!-- Hamburger -->
+        <div class="hamburger" id="hamburger" onclick="toggleNav()">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ======================================
+       MAIN CONTENT
+  ======================================= -->
+  <main>
+
+    <!-- ── SECTION 1: HERO BANNER ── -->
+    <section class="hero">
+      <div class="hero-inner container">
+        <div class="hero-text">
+          <!-- TODO: thêm màu cho h1, p -->
+          <h1>Đói Bụng? <br/><span>Gọi Ngay!</span></h1>
+          <p>Burger, Pizza, Gà Rán, Khoai Tây — Giao tận nơi trong 30 phút hoặc miễn phí!</p>
+          <div class="hero-buttons">
+            <a href="sanpham.html" class="btn btn-primary">Xem Thực Đơn</a>
+            <a href="datmon.html" class="btn btn-outline">Đặt Món Ngay</a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <!-- TODO: thay bằng ảnh hero thực tế -->
+          <img src="images/hero-burger.png" alt="Hero Burger" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 2: DANH MỤC (CATEGORY) ── -->
+    <section class="category-section">
+      <div class="container">
+        <div class="section-title">
+          <h2>Danh Mục Món Ăn</h2>
+          <p>Khám phá các loại đồ ăn nhanh ngon nhất</p>
+          <div class="divider"></div>
+        </div>
+        <div class="category-grid">
+          <!-- Danh mục 1 -->
+          <div class="category-card">
+            <div class="cat-icon">🍔</div>
+            <p>Burger</p>
+          </div>
+          <!-- Danh mục 2 -->
+          <div class="category-card">
+            <div class="cat-icon">🍟</div>
+            <p>Khoai Tây</p>
+          </div>
+          <!-- Danh mục 3 -->
+          <div class="category-card">
+            <div class="cat-icon">🍗</div>
+            <p>Gà Rán</p>
+          </div>
+          <!-- Danh mục 4 -->
+          <div class="category-card">
+            <div class="cat-icon">🍕</div>
+            <p>Pizza</p>
+          </div>
+          <!-- Danh mục 5 -->
+          <div class="category-card">
+            <div class="cat-icon">🥤</div>
+            <p>Đồ Uống</p>
+          </div>
+          <!-- Danh mục 6 -->
+          <div class="category-card">
+            <div class="cat-icon">🌮</div>
+            <p>Tacos</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 3: SẢN PHẨM NỔI BẬT ── -->
+    <section class="featured-section">
+      <div class="container">
+        <div class="section-title">
+          <h2>Món Nổi Bật</h2>
+          <p>Được khách hàng yêu thích nhất tuần này</p>
+          <div class="divider"></div>
+        </div>
+        <div class="products-grid">
+
+          <!-- Card 1 -->
+          <div class="card">
+            <img src="images/burger1.jpg" alt="Double Beef Burger" class="card-img" />
+            <div class="card-body">
+              <h3 class="card-title">Double Beef Burger</h3>
+              <p class="card-desc">Hai lớp thịt bò tươi, phô mai, rau tươi & sốt đặc biệt</p>
+              <span class="card-price">59.000đ</span>
+            </div>
+            <div class="card-footer">
+              <div class="rating">⭐⭐⭐⭐⭐ (128)</div>
+              <a href="chitiet.html" class="btn btn-primary">Thêm vào giỏ</a>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="card">
+            <img src="images/chicken1.jpg" alt="Gà Rán Giòn" class="card-img" />
+            <div class="card-body">
+              <h3 class="card-title">Gà Rán Giòn Cay</h3>
+              <p class="card-desc">Gà tươi ướp gia vị đặc biệt, chiên vàng giòn rụm</p>
+              <span class="card-price">45.000đ</span>
+            </div>
+            <div class="card-footer">
+              <div class="rating">⭐⭐⭐⭐ (98)</div>
+              <a href="chitiet.html" class="btn btn-primary">Thêm vào giỏ</a>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="card">
+            <img src="images/pizza1.jpg" alt="Pizza Phô Mai" class="card-img" />
+            <div class="card-body">
+              <h3 class="card-title">Pizza 4 Phô Mai</h3>
+              <p class="card-desc">Đế giòn, phô mai kéo sợi, sốt cà chua tươi thơm ngon</p>
+              <span class="card-price">89.000đ</span>
+            </div>
+            <div class="card-footer">
+              <div class="rating">⭐⭐⭐⭐⭐ (201)</div>
+              <a href="chitiet.html" class="btn btn-primary">Thêm vào giỏ</a>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="card">
+            <img src="images/fries1.jpg" alt="Khoai Tây Chiên" class="card-img" />
+            <div class="card-body">
+              <h3 class="card-title">Khoai Tây Chiên Bơ</h3>
+              <p class="card-desc">Khoai tây giòn rụm, phủ bơ thơm lừng, ăn kèm tương cà</p>
+              <span class="card-price">29.000đ</span>
+            </div>
+            <div class="card-footer">
+              <div class="rating">⭐⭐⭐⭐ (76)</div>
+              <a href="chitiet.html" class="btn btn-primary">Thêm vào giỏ</a>
+            </div>
+          </div>
+
+        </div>
+        <div style="text-align:center; margin-top:30px;">
+          <a href="sanpham.html" class="btn btn-outline">Xem Tất Cả Món →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 4: COMBO KHUYẾN MÃI ── -->
+    <section class="promo-section">
+      <div class="container">
+        <div class="section-title">
+          <h2>🎉 Combo Tiết Kiệm</h2>
+          <p>Chọn combo - Tiết kiệm hơn gọi lẻ</p>
+          <div class="divider"></div>
+        </div>
+        <div class="combo-grid">
+
+          <!-- Combo 1 -->
+          <div class="combo-card">
+            <div class="combo-badge">-20%</div>
+            <img src="images/combo1.jpg" alt="Combo 1" />
+            <div class="combo-body">
+              <h3>Combo Burger Đôi</h3>
+              <p>2 Burger + 2 Khoai Tây + 2 Coca</p>
+              <div class="combo-price">
+                <span class="old-price">150.000đ</span>
+                <span class="new-price">120.000đ</span>
+              </div>
+              <a href="datmon.html" class="btn btn-primary">Đặt Ngay</a>
+            </div>
+          </div>
+
+          <!-- Combo 2 -->
+          <div class="combo-card">
+            <div class="combo-badge">-25%</div>
+            <img src="images/combo2.jpg" alt="Combo 2" />
+            <div class="combo-body">
+              <h3>Combo Gia Đình</h3>
+              <p>1 Pizza lớn + 4 Gà Rán + 4 Nước</p>
+              <div class="combo-price">
+                <span class="old-price">300.000đ</span>
+                <span class="new-price">225.000đ</span>
+              </div>
+              <a href="datmon.html" class="btn btn-primary">Đặt Ngay</a>
+            </div>
+          </div>
+
+          <!-- Combo 3 -->
+          <div class="combo-card">
+            <div class="combo-badge">-15%</div>
+            <img src="images/combo3.jpg" alt="Combo 3" />
+            <div class="combo-body">
+              <h3>Combo Một Mình</h3>
+              <p>1 Burger + 1 Khoai Tây + 1 Nước</p>
+              <div class="combo-price">
+                <span class="old-price">80.000đ</span>
+                <span class="new-price">68.000đ</span>
+              </div>
+              <a href="datmon.html" class="btn btn-primary">Đặt Ngay</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 5: TẠI SAO CHỌN CHÚNG TÔI ── -->
+    <section class="why-section">
+      <div class="container">
+        <div class="section-title">
+          <h2>Tại Sao Chọn FastFood?</h2>
+          <div class="divider"></div>
+        </div>
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-icon">🚀</div>
+            <h3>Giao Hàng Nhanh</h3>
+            <p>30 phút hoặc miễn phí. Cam kết giao đúng giờ mọi ngày trong tuần.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">🌱</div>
+            <h3>Nguyên Liệu Tươi</h3>
+            <p>Thực phẩm tươi sạch nhập mỗi ngày, không chất bảo quản.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">💰</div>
+            <h3>Giá Hợp Lý</h3>
+            <p>Menu đa dạng từ 20.000đ đến 200.000đ cho mọi túi tiền.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">⭐</div>
+            <h3>Đánh Giá Cao</h3>
+            <p>Hơn 10.000 khách hàng hài lòng với đánh giá trung bình 4.8/5.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 6: ĐÁNH GIÁ KHÁCH HÀNG ── -->
+    <section class="testimonial-section">
+      <div class="container">
+        <div class="section-title">
+          <h2>💬 Khách Hàng Nói Gì?</h2>
+          <div class="divider"></div>
+        </div>
+        <div class="testimonial-grid">
+
+          <div class="testimonial-card">
+            <p class="testimonial-text">"Burger ngon cực! Giao hàng siêu nhanh, đóng gói cẩn thận. Sẽ ủng hộ dài dài!"</p>
+            <div class="testimonial-author">
+              <img src="images/user1.jpg" alt="Nguyễn Minh" />
+              <div>
+                <strong>Nguyễn Minh</strong>
+                <span>⭐⭐⭐⭐⭐</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <p class="testimonial-text">"Pizza 4 phô mai ăn một lần là ghiền luôn. Đặt combo tiết kiệm hơn nhiều!"</p>
+            <div class="testimonial-author">
+              <img src="images/user2.jpg" alt="Trần Thu Hà" />
+              <div>
+                <strong>Trần Thu Hà</strong>
+                <span>⭐⭐⭐⭐⭐</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <p class="testimonial-text">"App dễ dùng, đặt hàng tiện lợi. Gà rán giòn ngon, không thua KFC chút nào!"</p>
+            <div class="testimonial-author">
+              <img src="images/user3.jpg" alt="Lê Quốc Hùng" />
+              <div>
+                <strong>Lê Quốc Hùng</strong>
+                <span>⭐⭐⭐⭐</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SECTION 7: BANNER DOWNLOAD APP ── -->
+    <section class="app-section">
+      <div class="container">
+        <div class="app-banner">
+          <div class="app-text">
+            <h2>📱 Tải App FastFood</h2>
+            <p>Đặt món nhanh hơn, nhận ưu đãi độc quyền và theo dõi đơn hàng theo thời gian thực.</p>
+            <div class="app-buttons">
+              <a href="#" class="btn btn-primary"><i class="fab fa-apple"></i> App Store</a>
+              <a href="#" class="btn btn-outline"><i class="fab fa-google-play"></i> Google Play</a>
+            </div>
+          </div>
+          <div class="app-image">
+            <img src="images/app-mockup.png" alt="App Mockup" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================
+       FOOTER
+  ======================================= -->
+  <footer>
+    <div class="footer-grid">
+
+      <!-- Cột 1: Brand -->
+      <div class="footer-col footer-brand">
+        <div class="logo-text">🍔 FastFood</div>
+        <p>Chuỗi cửa hàng fast food số 1 Việt Nam. Giao hàng nhanh — Ngon thật sự — Giá bình dân.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-tiktok"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <!-- Cột 2: Menu -->
+      <div class="footer-col">
+        <h4>Thực Đơn</h4>
+        <ul>
+          <li><a href="#">Burger</a></li>
+          <li><a href="#">Gà Rán</a></li>
+          <li><a href="#">Pizza</a></li>
+          <li><a href="#">Khoai Tây</a></li>
+          <li><a href="#">Đồ Uống</a></li>
+          <li><a href="#">Combo</a></li>
+        </ul>
+      </div>
+
+      <!-- Cột 3: Hỗ Trợ -->
+      <div class="footer-col">
+        <h4>Hỗ Trợ</h4>
+        <ul>
+          <li><a href="#">Chính sách giao hàng</a></li>
+          <li><a href="#">Hoàn trả & Đổi món</a></li>
+          <li><a href="#">Câu hỏi thường gặp</a></li>
+          <li><a href="#">Liên hệ</a></li>
+          <li><a href="#">Điều khoản sử dụng</a></li>
+        </ul>
+      </div>
+
+      <!-- Cột 4: Liên Hệ -->
+      <div class="footer-col">
+        <h4>Liên Hệ</h4>
+        <ul>
+          <li><i class="fa fa-map-marker-alt"></i> 123 Nguyễn Trãi, Q.1, TP.HCM</li>
+          <li><i class="fa fa-phone"></i> 1900 1234</li>
+          <li><i class="fa fa-envelope"></i> hello@fastfood.vn</li>
+          <li><i class="fa fa-clock"></i> 8:00 - 22:00 mỗi ngày</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <p>© 2026 FastFood Store. Thiết kế bởi <strong>FastFood Team</strong> — All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ======================================
+       JAVASCRIPT
+  ======================================= -->
+  <script>
+    // Toggle mobile nav
+    function toggleNav() {
+      const nav = document.getElementById('main-nav');
+      nav.classList.toggle('open');
+    }
+
+    // Update cart badge dynamically
+    function updateCartBadge(count) {
+      document.querySelector('.cart-badge').textContent = count;
+    }
+  </script>
+
+</body>
+</html>

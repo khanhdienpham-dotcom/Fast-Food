@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FastFood Store - Đặt Món</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/datmon.css" />
+</head>
+<body>
+
+  <!-- ====== HEADER ====== -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <img src="images/logo.png" alt="Logo" />
+        <span class="logo-text">🍔 FastFood</span>
+      </div>
+      <nav id="main-nav">
+        <ul>
+          <li><a href="index.html">Trang Chủ</a></li>
+          <li><a href="sanpham.html">Thực Đơn</a></li>
+          <li><a href="chitiet.html">Chi Tiết</a></li>
+          <li><a href="giohang.html">Giỏ Hàng</a></li>
+          <li><a href="datmon.html" class="active">Đặt Món</a></li>
+        </ul>
+      </nav>
+      <div class="header-icons">
+        <div class="search-bar">
+          <input type="text" placeholder="Tìm món ăn..." />
+          <button><i class="fa fa-search"></i></button>
+        </div>
+        <a href="giohang.html"><i class="fa fa-shopping-cart"></i><span class="cart-badge">3</span></a>
+        <a href="#"><i class="fa fa-user-circle"></i></a>
+        <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====== MAIN ====== -->
+  <main>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+      <div class="container">
+        <a href="index.html">Trang Chủ</a> /
+        <a href="giohang.html">Giỏ Hàng</a> /
+        <span>Đặt Món</span>
+      </div>
+    </div>
+
+    <!-- PROGRESS STEPS -->
+    <div class="checkout-steps">
+      <div class="container">
+        <div class="steps">
+          <div class="step done">
+            <div class="step-icon"><i class="fa fa-check"></i></div>
+            <span>Giỏ Hàng</span>
+          </div>
+          <div class="step-line done"></div>
+          <div class="step active">
+            <div class="step-icon"><i class="fa fa-map-marker-alt"></i></div>
+            <span>Địa Chỉ</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step">
+            <div class="step-icon"><i class="fa fa-credit-card"></i></div>
+            <span>Thanh Toán</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step">
+            <div class="step-icon"><i class="fa fa-check-circle"></i></div>
+            <span>Hoàn Tất</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FORM ĐẶT MÓN ── -->
+    <section class="order-section">
+      <div class="container">
+        <div class="order-layout">
+
+          <!-- CỘT TRÁI: Form thông tin -->
+          <div class="order-form-col">
+
+            <!-- KHỐI 1: Thông tin giao hàng -->
+            <div class="form-block">
+              <h3><i class="fa fa-user"></i> Thông Tin Người Nhận</h3>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Họ và Tên <span class="required">*</span></label>
+                  <input type="text" placeholder="Nguyễn Văn A" />
+                </div>
+                <div class="form-group">
+                  <label>Số Điện Thoại <span class="required">*</span></label>
+                  <input type="tel" placeholder="0901 234 567" />
+                </div>
+                <div class="form-group full-width">
+                  <label>Email</label>
+                  <input type="email" placeholder="example@email.com" />
+                </div>
+              </div>
+            </div>
+
+            <!-- KHỐI 2: Địa chỉ giao hàng -->
+            <div class="form-block">
+              <h3><i class="fa fa-map-marker-alt"></i> Địa Chỉ Giao Hàng</h3>
+
+              <!-- Tabs: Giao tận nơi / Đến lấy -->
+              <div class="delivery-type-tabs">
+                <button class="dtype-btn active" data-type="delivery">
+                  <i class="fa fa-motorcycle"></i> Giao Tận Nơi
+                </button>
+                <button class="dtype-btn" data-type="pickup">
+                  <i class="fa fa-store"></i> Đến Lấy Tại Cửa Hàng
+                </button>
+              </div>
+
+              <!-- Form giao tận nơi -->
+              <div id="delivery-form" class="delivery-form-content">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Tỉnh / Thành Phố <span class="required">*</span></label>
+                    <select>
+                      <option value="">-- Chọn Thành Phố --</option>
+                      <option>TP. Hồ Chí Minh</option>
+                      <option>Hà Nội</option>
+                      <option>Đà Nẵng</option>
+                      <option>Cần Thơ</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Quận / Huyện <span class="required">*</span></label>
+                    <select>
+                      <option value="">-- Chọn Quận --</option>
+                      <option>Quận 1</option>
+                      <option>Quận 2</option>
+                      <option>Quận 3</option>
+                      <option>Bình Thạnh</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Phường / Xã <span class="required">*</span></label>
+                    <select>
+                      <option value="">-- Chọn Phường --</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Số nhà, Tên đường <span class="required">*</span></label>
+                    <input type="text" placeholder="123 Nguyễn Trãi" />
+                  </div>
+                  <div class="form-group full-width">
+                    <label>Ghi chú địa chỉ</label>
+                    <input type="text" placeholder="Ví dụ: Tòa nhà A, tầng 3, căn 301" />
+                  </div>
+                </div>
+
+                <!-- Map placeholder -->
+                <div class="map-placeholder">
+                  <i class="fa fa-map-marked-alt"></i>
+                  <p>Bản đồ hiển thị tại đây</p>
+                  <small>Kéo để điều chỉnh vị trí giao hàng chính xác hơn</small>
+                </div>
+              </div>
+
+              <!-- Form đến lấy -->
+              <div id="pickup-form" class="delivery-form-content" style="display:none;">
+                <h4>Chọn Cửa Hàng Gần Nhất</h4>
+                <div class="store-list">
+                  <label class="store-option">
+                    <input type="radio" name="store" value="q1" />
+                    <div class="store-info">
+                      <strong>FastFood Quận 1</strong>
+                      <p>123 Nguyễn Trãi, Phường 2, Quận 1</p>
+                      <span class="store-open">🟢 Đang mở • 8:00 - 22:00</span>
+                      <span class="store-dist">1.2 km</span>
+                    </div>
+                  </label>
+                  <label class="store-option">
+                    <input type="radio" name="store" value="q3" />
+                    <div class="store-info">
+                      <strong>FastFood Quận 3</strong>
+                      <p>456 Lê Văn Sỹ, Phường 14, Quận 3</p>
+                      <span class="store-open">🟢 Đang mở • 8:00 - 22:00</span>
+                      <span class="store-dist">2.8 km</span>
+                    </div>
+                  </label>
+                  <label class="store-option">
+                    <input type="radio" name="store" value="bthanh" />
+                    <div class="store-info">
+                      <strong>FastFood Bình Thạnh</strong>
+                      <p>789 Đinh Tiên Hoàng, Phường 3, Bình Thạnh</p>
+                      <span class="store-open">🟢 Đang mở • 8:00 - 22:00</span>
+                      <span class="store-dist">4.1 km</span>
+                    </div>
+                  </label>
+                </div>
+
+                <!-- Thời gian đến lấy -->
+                <div class="form-group" style="margin-top:16px;">
+                  <label>Thời gian đến lấy:</label>
+                  <input type="datetime-local" />
+                </div>
+              </div>
+            </div>
+
+            <!-- KHỐI 3: Thời gian giao -->
+            <div class="form-block">
+              <h3><i class="fa fa-clock"></i> Thời Gian Giao Hàng</h3>
+              <div class="time-options">
+                <label class="time-opt">
+                  <input type="radio" name="time" value="now" checked />
+                  <div>
+                    <strong>🚀 Giao ngay bây giờ</strong>
+                    <p>Dự kiến: 25-35 phút</p>
+                  </div>
+                </label>
+                <label class="time-opt">
+                  <input type="radio" name="time" value="schedule" />
+                  <div>
+                    <strong>📅 Đặt lịch giao hàng</strong>
+                    <p>Chọn thời gian cụ thể</p>
+                  </div>
+                </label>
+              </div>
+              <div class="schedule-picker" id="schedule-picker" style="display:none;">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Ngày giao:</label>
+                    <input type="date" />
+                  </div>
+                  <div class="form-group">
+                    <label>Giờ giao:</label>
+                    <select>
+                      <option>08:00 - 09:00</option>
+                      <option>09:00 - 10:00</option>
+                      <option>11:00 - 12:00</option>
+                      <option>12:00 - 13:00</option>
+                      <option>18:00 - 19:00</option>
+                      <option>19:00 - 20:00</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- KHỐI 4: Ghi chú đơn hàng -->
+            <div class="form-block">
+              <h3><i class="fa fa-sticky-note"></i> Ghi Chú Đơn Hàng</h3>
+              <textarea placeholder="Ghi chú cho tài xế: không bấm chuông, để ở bảo vệ, v.v..." rows="3"></textarea>
+            </div>
+
+          </div><!-- /order-form-col -->
+
+          <!-- CỘT PHẢI: Tóm tắt đơn -->
+          <div class="order-summary-col">
+
+            <div class="order-summary-box">
+              <h3>📋 Xem Lại Đơn Hàng</h3>
+
+              <!-- Danh sách món -->
+              <div class="order-items">
+                <div class="order-item">
+                  <img src="images/burger1.jpg" alt="" />
+                  <div>
+                    <strong>Double Beef Burger</strong>
+                    <small>Size Vừa | Không cay | + Phô mai</small>
+                  </div>
+                  <span>x1</span>
+                  <span>59.000đ</span>
+                </div>
+                <div class="order-item">
+                  <img src="images/chicken1.jpg" alt="" />
+                  <div>
+                    <strong>Gà Rán Giòn Cay</strong>
+                    <small>Cay nhẹ</small>
+                  </div>
+                  <span>x2</span>
+                  <span>90.000đ</span>
+                </div>
+                <div class="order-item">
+                  <img src="images/drink1.jpg" alt="" />
+                  <div>
+                    <strong>Coca Cola Size L</strong>
+                    <small>500ml</small>
+                  </div>
+                  <span>x1</span>
+                  <span>20.000đ</span>
+                </div>
+              </div>
+
+              <a href="giohang.html" class="edit-cart-link">
+                <i class="fa fa-edit"></i> Chỉnh sửa giỏ hàng
+              </a>
+
+              <!-- Tính tiền -->
+              <div class="summary-rows">
+                <div class="summary-row">
+                  <span>Tạm tính:</span>
+                  <span>169.000đ</span>
+                </div>
+                <div class="summary-row">
+                  <span>Phí giao hàng:</span>
+                  <span class="free">Miễn phí</span>
+                </div>
+                <div class="summary-row">
+                  <span>Giảm giá (FASTFOOD10):</span>
+                  <span class="discount">-16.900đ</span>
+                </div>
+                <div class="summary-row total">
+                  <span>Tổng cộng:</span>
+                  <span>152.100đ</span>
+                </div>
+              </div>
+
+              <!-- Thanh toán -->
+              <div class="payment-summary">
+                <h4>💳 Phương Thức Thanh Toán</h4>
+                <div class="payment-chosen">
+                  <i class="fa fa-money-bill-wave"></i>
+                  <span>Tiền mặt (COD)</span>
+                  <a href="giohang.html">Thay đổi</a>
+                </div>
+              </div>
+
+              <!-- Nút đặt hàng -->
+              <button class="btn btn-primary place-order-btn" onclick="placeOrder()">
+                <i class="fa fa-check-circle"></i>
+                XÁC NHẬN ĐẶT MÓN — 152.100đ
+              </button>
+
+              <!-- Điều khoản -->
+              <p class="terms-note">
+                Bằng cách đặt hàng, bạn đồng ý với
+                <a href="#">Điều khoản dịch vụ</a> và
+                <a href="#">Chính sách bảo mật</a> của FastFood Store.
+              </p>
+
+              <!-- Bảo mật -->
+              <div class="security-badges">
+                <span><i class="fa fa-shield-alt"></i> Bảo mật SSL</span>
+                <span><i class="fa fa-lock"></i> Thanh toán an toàn</span>
+              </div>
+            </div>
+
+          </div><!-- /order-summary-col -->
+
+        </div><!-- /order-layout -->
+      </div>
+    </section>
+
+    <!-- ── MODAL XÁC NHẬN ĐẶT HÀNG THÀNH CÔNG ── -->
+    <div class="modal-overlay" id="success-modal" style="display:none;">
+      <div class="modal-box">
+        <div class="modal-icon">✅</div>
+        <h2>Đặt Món Thành Công!</h2>
+        <p>Mã đơn hàng: <strong>#FF20261005</strong></p>
+        <p>Cảm ơn bạn đã tin tưởng FastFood Store. Đơn hàng của bạn đang được chuẩn bị và sẽ được giao trong <strong>25-35 phút</strong>.</p>
+        <div class="order-status-track">
+          <div class="track-step done">✅ Đặt hàng thành công</div>
+          <div class="track-step active">🍳 Đang chuẩn bị món</div>
+          <div class="track-step">🛵 Đang giao hàng</div>
+          <div class="track-step">📦 Đã giao hàng</div>
+        </div>
+        <div class="modal-actions">
+          <a href="index.html" class="btn btn-primary">Về Trang Chủ</a>
+          <a href="sanpham.html" class="btn btn-outline">Đặt Thêm Món</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <div class="logo-text">🍔 FastFood</div>
+        <p>Chuỗi cửa hàng fast food số 1 Việt Nam.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Thực Đơn</h4>
+        <ul><li><a href="#">Burger</a></li><li><a href="#">Gà Rán</a></li><li><a href="#">Pizza</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Hỗ Trợ</h4>
+        <ul><li><a href="#">Giao hàng</a></li><li><a href="#">FAQ</a></li><li><a href="#">Liên hệ</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Liên Hệ</h4>
+        <ul><li>📍 123 Nguyễn Trãi, Q.1</li><li>📞 1900 1234</li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 FastFood Store. All rights reserved.</p></div>
+  </footer>
+
+  <script>
+    function toggleNav() {
+      document.getElementById('main-nav').classList.toggle('open');
+    }
+
+    // Delivery type tabs
+    document.querySelectorAll('.dtype-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.dtype-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const type = this.dataset.type;
+        document.getElementById('delivery-form').style.display = type === 'delivery' ? 'block' : 'none';
+        document.getElementById('pickup-form').style.display  = type === 'pickup'   ? 'block' : 'none';
+      });
+    });
+
+    // Time options
+    document.querySelectorAll('input[name="time"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        document.getElementById('schedule-picker').style.display =
+          this.value === 'schedule' ? 'block' : 'none';
+      });
+    });
+
+    // Place order
+    function placeOrder() {
+      document.getElementById('success-modal').style.display = 'flex';
+    }
+  </script>
+
+</body>
+</html>
