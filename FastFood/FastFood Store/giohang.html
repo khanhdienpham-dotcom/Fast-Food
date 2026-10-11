@@ -8,14 +8,111 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/giohang.css" />
+  <style>
+    :root { --primary:#E63946; --secondary:#F4A261; --dark:#1D1D1D; --light:#FFF8F0; --gray:#6C757D; }
+    body { background:var(--light); font-family:'Poppins',sans-serif; color:var(--dark); }
+    header { background:var(--dark); }
+    .logo-text { color:var(--secondary); }
+    nav ul li a { color:#ccc; }
+    nav ul li a:hover, nav ul li a.active { color:var(--secondary); border-bottom-color:var(--secondary); }
+    .header-icons a { color:#ccc; }
+    .cart-badge { background:var(--primary); color:#fff; }
+    .search-bar { background:rgba(255,255,255,0.1); }
+    .search-bar input { color:#fff; }
+    .search-bar button { background:var(--primary); color:#fff; }
+    .hamburger span { background:#ccc; }
+    .btn-primary { background:var(--primary); color:#fff; }
+    .btn-primary:hover { background:#c62836; }
+    .btn-outline { border-color:var(--primary); color:var(--primary); }
+    .btn-outline:hover { background:var(--primary); color:#fff; }
+
+    .breadcrumb { padding:12px 0; font-size:0.88rem; background:#fff; border-bottom:1px solid #eee; }
+    .breadcrumb a { color:var(--primary); }
+
+    /* STEPS */
+    .checkout-steps { padding:24px 0; background:#fff; border-bottom:1px solid #f0f0f0; margin-bottom:36px; }
+    .steps { display:flex; align-items:center; justify-content:center; gap:0; }
+    .step { display:flex; flex-direction:column; align-items:center; gap:6px; }
+    .step-icon { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1rem; border:2px solid #ddd; color:var(--gray); background:#fff; }
+    .step.active .step-icon { background:var(--primary); color:#fff; border-color:var(--primary); }
+    .step.done .step-icon { background:#2A9D8F; color:#fff; border-color:#2A9D8F; }
+    .step span { font-size:0.78rem; font-weight:600; color:var(--gray); }
+    .step.active span { color:var(--primary); font-weight:700; }
+    .step-line { flex:1; height:2px; min-width:80px; max-width:140px; margin-bottom:22px; background:#ddd; }
+
+    /* CART LAYOUT */
+    .cart-section { padding-bottom:60px; }
+    .cart-layout { display:grid; grid-template-columns:1fr 380px; gap:28px; align-items:start; }
+
+    .cart-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+    .cart-header h2 { font-size:1.2rem; font-weight:700; color:var(--dark); }
+    .btn-text-danger { background:none; border:none; cursor:pointer; font-size:0.85rem; font-weight:600; color:#dc3545; }
+
+    .cart-item { display:flex; align-items:center; gap:16px; padding:18px; border-radius:12px; margin-bottom:14px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,0.06); position:relative; transition:opacity 0.3s; }
+    .cart-item-img { width:90px; height:80px; object-fit:cover; border-radius:10px; flex-shrink:0; }
+    .cart-item-info { flex:1; }
+    .cart-item-info h3 { font-size:1rem; font-weight:700; color:var(--dark); margin-bottom:3px; }
+    .item-options { font-size:0.8rem; color:var(--gray); margin-bottom:10px; }
+    .item-price-row { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+    .item-price { font-size:0.9rem; color:var(--gray); }
+    .qty-control { display:flex; align-items:center; border-radius:20px; overflow:hidden; border:2px solid var(--primary); }
+    .qty-control button { width:30px; height:30px; border:none; font-size:1.1rem; font-weight:700; cursor:pointer; background:#fff3f3; color:var(--primary); }
+    .qty-control button:hover { background:var(--primary); color:#fff; }
+    .qty-val { width:36px; text-align:center; font-weight:700; }
+    .item-subtotal { font-size:1rem; font-weight:800; color:var(--primary); margin-left:auto; }
+    .item-remove { position:absolute; top:12px; right:12px; background:none; border:none; cursor:pointer; font-size:1rem; color:#ccc; }
+    .item-remove:hover { color:var(--primary); }
+
+    .coupon-section { padding:18px; border-radius:12px; margin:16px 0; background:#fff; border:2px dashed #f4a261; }
+    .coupon-section h4 { font-size:0.92rem; font-weight:700; margin-bottom:12px; color:var(--secondary); }
+    .coupon-form { display:flex; gap:10px; margin-bottom:12px; }
+    .coupon-form input { flex:1; padding:9px 14px; border:1px solid #ddd; border-radius:8px; font-family:inherit; }
+    .coupon-tags { display:flex; flex-wrap:wrap; gap:8px; }
+    .coupon-tag { padding:4px 12px; border-radius:12px; font-size:0.78rem; font-weight:600; cursor:pointer; background:#fff8f0; color:var(--secondary); border:1px solid #f4a261; }
+    .coupon-tag:hover { background:var(--secondary); color:#fff; }
+
+    .upsell-section { padding:18px; border-radius:12px; margin-bottom:16px; background:#fff; border:1px solid #f0f0f0; }
+    .upsell-section h4 { font-size:0.92rem; font-weight:700; margin-bottom:14px; color:var(--dark); }
+    .upsell-items { display:flex; gap:14px; flex-wrap:wrap; }
+    .upsell-item { display:flex; align-items:center; gap:10px; padding:10px; border-radius:10px; background:var(--light); border:1px solid #f0e8df; }
+    .upsell-item img { width:50px; height:45px; object-fit:cover; border-radius:6px; }
+    .upsell-item span { font-size:0.82rem; font-weight:600; }
+
+    /* SUMMARY */
+    .cart-summary { background:#fff; border:1px solid #f0f0f0; border-radius:14px; padding:22px; position:sticky; top:80px; box-shadow:0 4px 18px rgba(0,0,0,0.06); }
+    .cart-summary h3 { font-size:1.05rem; font-weight:700; margin-bottom:18px; color:var(--dark); }
+    .summary-rows { margin-bottom:18px; }
+    .summary-row { display:flex; justify-content:space-between; font-size:0.9rem; padding:8px 0; border-bottom:1px solid #f5f5f5; color:var(--gray); }
+    .summary-row.total { font-size:1.1rem; font-weight:800; border-bottom:none; margin-top:8px; color:var(--dark); }
+    .free { color:#2A9D8F; font-weight:600; }
+    .discount { color:var(--primary); font-weight:600; }
+    .delivery-estimate { display:flex; align-items:center; gap:12px; padding:12px; border-radius:10px; font-size:0.85rem; margin-bottom:14px; background:#f0fdf4; border:1px solid #d4edda; color:var(--dark); }
+    .delivery-address { padding:12px; border-radius:10px; font-size:0.85rem; margin-bottom:16px; background:#fff8f0; border:1px solid #f4d5a0; }
+    .address-header { display:flex; align-items:center; gap:8px; margin-bottom:6px; color:var(--dark); }
+    .address-header a { margin-left:auto; font-size:0.8rem; color:var(--primary); }
+    .payment-methods h4 { font-size:0.88rem; font-weight:700; margin-bottom:10px; }
+    .payment-opt { display:flex; align-items:center; gap:10px; padding:9px; border-radius:8px; margin-bottom:7px; cursor:pointer; border:1px solid #eee; font-size:0.85rem; }
+    .payment-opt:has(input:checked) { border-color:var(--primary); background:#fff3f3; }
+    .security-badges { display:flex; flex-direction:column; gap:5px; margin-top:12px; font-size:0.78rem; color:var(--gray); }
+
+    footer { background:var(--dark); color:#aaa; }
+    .footer-col h4 { color:var(--secondary); }
+    .footer-col ul li a { color:#aaa; }
+    .footer-col ul li a:hover { color:var(--secondary); }
+    .footer-brand p { color:#888; }
+    .social-links a { color:#aaa; border-color:rgba(255,255,255,0.15); }
+    .social-links a:hover { background:var(--primary); color:#fff; border-color:var(--primary); }
+    .footer-bottom { color:#666; }
+
+    @media(max-width:1000px){ .cart-layout{grid-template-columns:1fr;} .cart-summary{position:static;} }
+  </style>
 </head>
 <body>
 
-  <!-- ====== HEADER ====== -->
   <header>
     <div class="header-inner">
       <div class="logo">
-        <img src="images/logo.png" alt="Logo" />
+        <img src="https://img.icons8.com/color/48/000000/hamburger.png" alt="Logo" style="width:42px;height:42px;border-radius:50%;" />
         <span class="logo-text">🍔 FastFood</span>
       </div>
       <nav id="main-nav">
@@ -28,134 +125,95 @@
         </ul>
       </nav>
       <div class="header-icons">
-        <div class="search-bar">
-          <input type="text" placeholder="Tìm món ăn..." />
-          <button><i class="fa fa-search"></i></button>
-        </div>
-        <a href="giohang.html"><i class="fa fa-shopping-cart"></i><span class="cart-badge">3</span></a>
+        <div class="search-bar"><input type="text" placeholder="Tìm món ăn..." /><button><i class="fa fa-search"></i></button></div>
+        <a href="giohang.html" style="position:relative;"><i class="fa fa-shopping-cart"></i><span class="cart-badge">3</span></a>
         <a href="#"><i class="fa fa-user-circle"></i></a>
         <div class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></div>
       </div>
     </div>
   </header>
 
-  <!-- ====== MAIN ====== -->
   <main>
+    <div class="breadcrumb"><div class="container"><a href="index.html">Trang Chủ</a> / <span>Giỏ Hàng</span></div></div>
 
-    <!-- BREADCRUMB -->
-    <div class="breadcrumb">
-      <div class="container">
-        <a href="index.html">Trang Chủ</a> /
-        <span>Giỏ Hàng</span>
-      </div>
-    </div>
-
-    <!-- PROGRESS STEPS -->
     <div class="checkout-steps">
       <div class="container">
         <div class="steps">
-          <div class="step active">
-            <div class="step-icon"><i class="fa fa-shopping-cart"></i></div>
-            <span>Giỏ Hàng</span>
-          </div>
+          <div class="step active"><div class="step-icon"><i class="fa fa-shopping-cart"></i></div><span>Giỏ Hàng</span></div>
           <div class="step-line"></div>
-          <div class="step">
-            <div class="step-icon"><i class="fa fa-map-marker-alt"></i></div>
-            <span>Địa Chỉ</span>
-          </div>
+          <div class="step"><div class="step-icon"><i class="fa fa-map-marker-alt"></i></div><span>Địa Chỉ</span></div>
           <div class="step-line"></div>
-          <div class="step">
-            <div class="step-icon"><i class="fa fa-credit-card"></i></div>
-            <span>Thanh Toán</span>
-          </div>
+          <div class="step"><div class="step-icon"><i class="fa fa-credit-card"></i></div><span>Thanh Toán</span></div>
           <div class="step-line"></div>
-          <div class="step">
-            <div class="step-icon"><i class="fa fa-check-circle"></i></div>
-            <span>Hoàn Tất</span>
-          </div>
+          <div class="step"><div class="step-icon"><i class="fa fa-check-circle"></i></div><span>Hoàn Tất</span></div>
         </div>
       </div>
     </div>
 
-    <!-- ── GIỎ HÀNG CHÍNH ── -->
     <section class="cart-section">
       <div class="container">
         <div class="cart-layout">
 
-          <!-- CỘT TRÁI: Danh sách giỏ hàng -->
           <div class="cart-main">
             <div class="cart-header">
               <h2>🛒 Giỏ Hàng Của Bạn (3 món)</h2>
-              <button class="btn-text-danger" onclick="clearCart()">
-                <i class="fa fa-trash"></i> Xóa tất cả
-              </button>
+              <button class="btn-text-danger" onclick="clearCart()"><i class="fa fa-trash"></i> Xóa tất cả</button>
             </div>
 
-            <!-- Item 1 -->
             <div class="cart-item" id="item-1">
-              <img src="images/burger1.jpg" alt="Burger" class="cart-item-img" />
+              <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&q=80" alt="Burger" class="cart-item-img" />
               <div class="cart-item-info">
                 <h3>Double Beef Burger</h3>
                 <p class="item-options">Size: Vừa | Không cay | + Phô mai</p>
-                <p class="item-note">Ghi chú: Không hành</p>
                 <div class="item-price-row">
                   <span class="item-price">59.000đ</span>
                   <div class="qty-control">
-                    <button onclick="changeQty('item-1', -1)">−</button>
+                    <button onclick="changeQty('item-1',-1)">−</button>
                     <span class="qty-val">1</span>
-                    <button onclick="changeQty('item-1', 1)">+</button>
+                    <button onclick="changeQty('item-1',1)">+</button>
                   </div>
                   <span class="item-subtotal">59.000đ</span>
                 </div>
               </div>
-              <button class="item-remove" onclick="removeItem('item-1')">
-                <i class="fa fa-times"></i>
-              </button>
+              <button class="item-remove" onclick="removeItem('item-1')"><i class="fa fa-times"></i></button>
             </div>
 
-            <!-- Item 2 -->
             <div class="cart-item" id="item-2">
-              <img src="images/chicken1.jpg" alt="Gà" class="cart-item-img" />
+              <img src="https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=200&q=80" alt="Gà" class="cart-item-img" />
               <div class="cart-item-info">
                 <h3>Gà Rán Giòn Cay</h3>
                 <p class="item-options">Cay nhẹ 🌶️</p>
                 <div class="item-price-row">
                   <span class="item-price">45.000đ</span>
                   <div class="qty-control">
-                    <button onclick="changeQty('item-2', -1)">−</button>
+                    <button onclick="changeQty('item-2',-1)">−</button>
                     <span class="qty-val">2</span>
-                    <button onclick="changeQty('item-2', 1)">+</button>
+                    <button onclick="changeQty('item-2',1)">+</button>
                   </div>
                   <span class="item-subtotal">90.000đ</span>
                 </div>
               </div>
-              <button class="item-remove" onclick="removeItem('item-2')">
-                <i class="fa fa-times"></i>
-              </button>
+              <button class="item-remove" onclick="removeItem('item-2')"><i class="fa fa-times"></i></button>
             </div>
 
-            <!-- Item 3 -->
             <div class="cart-item" id="item-3">
-              <img src="images/drink1.jpg" alt="Coca" class="cart-item-img" />
+              <img src="https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=200&q=80" alt="Coca" class="cart-item-img" />
               <div class="cart-item-info">
                 <h3>Coca Cola Size L</h3>
                 <p class="item-options">Size: Lớn (500ml)</p>
                 <div class="item-price-row">
                   <span class="item-price">20.000đ</span>
                   <div class="qty-control">
-                    <button onclick="changeQty('item-3', -1)">−</button>
+                    <button onclick="changeQty('item-3',-1)">−</button>
                     <span class="qty-val">1</span>
-                    <button onclick="changeQty('item-3', 1)">+</button>
+                    <button onclick="changeQty('item-3',1)">+</button>
                   </div>
                   <span class="item-subtotal">20.000đ</span>
                 </div>
               </div>
-              <button class="item-remove" onclick="removeItem('item-3')">
-                <i class="fa fa-times"></i>
-              </button>
+              <button class="item-remove" onclick="removeItem('item-3')"><i class="fa fa-times"></i></button>
             </div>
 
-            <!-- Mã giảm giá -->
             <div class="coupon-section">
               <h4><i class="fa fa-tag"></i> Mã Giảm Giá</h4>
               <div class="coupon-form">
@@ -169,180 +227,81 @@
               </div>
             </div>
 
-            <!-- Gợi ý thêm món -->
             <div class="upsell-section">
               <h4>🍟 Thêm vào giỏ cho đủ combo?</h4>
               <div class="upsell-items">
                 <div class="upsell-item">
-                  <img src="images/fries1.jpg" alt="Khoai Tây" />
-                  <span>Khoai Tây Chiên</span>
-                  <span>29.000đ</span>
-                  <button class="btn btn-primary btn-sm">+ Thêm</button>
+                  <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=120&q=80" alt="Khoai Tây" />
+                  <div><span style="display:block;">Khoai Tây Chiên</span><span style="color:var(--primary);font-weight:700;">29.000đ</span></div>
+                  <button class="btn btn-primary btn-sm" style="padding:5px 12px;font-size:0.78rem;">+ Thêm</button>
                 </div>
                 <div class="upsell-item">
-                  <img src="images/combo1.jpg" alt="Combo" />
-                  <span>Combo Burger Đôi</span>
-                  <span>120.000đ</span>
-                  <button class="btn btn-primary btn-sm">+ Thêm</button>
+                  <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=120&q=80" alt="Pizza" />
+                  <div><span style="display:block;">Pizza 4 Phô Mai</span><span style="color:var(--primary);font-weight:700;">89.000đ</span></div>
+                  <button class="btn btn-primary btn-sm" style="padding:5px 12px;font-size:0.78rem;">+ Thêm</button>
                 </div>
               </div>
             </div>
 
-            <div class="cart-back">
-              <a href="sanpham.html" class="btn btn-outline">
-                ← Tiếp Tục Mua Sắm
-              </a>
-            </div>
+            <a href="sanpham.html" class="btn btn-outline">← Tiếp Tục Mua Sắm</a>
+          </div>
 
-          </div><!-- /cart-main -->
-
-          <!-- CỘT PHẢI: Tóm tắt đơn hàng -->
+          <!-- SUMMARY -->
           <div class="cart-summary">
             <h3>📋 Tóm Tắt Đơn Hàng</h3>
-
             <div class="summary-rows">
-              <div class="summary-row">
-                <span>Tạm tính (3 món):</span>
-                <span>169.000đ</span>
-              </div>
-              <div class="summary-row">
-                <span>Phí giao hàng:</span>
-                <span class="free">Miễn phí</span>
-              </div>
-              <div class="summary-row">
-                <span>Mã giảm giá (FASTFOOD10):</span>
-                <span class="discount">-16.900đ</span>
-              </div>
-              <div class="summary-row total">
-                <span>Tổng cộng:</span>
-                <span>152.100đ</span>
-              </div>
+              <div class="summary-row"><span>Tạm tính (3 món):</span><span>169.000đ</span></div>
+              <div class="summary-row"><span>Phí giao hàng:</span><span class="free">Miễn phí</span></div>
+              <div class="summary-row"><span>Giảm giá (FASTFOOD10):</span><span class="discount">-16.900đ</span></div>
+              <div class="summary-row total"><span>Tổng cộng:</span><span>152.100đ</span></div>
             </div>
-
-            <!-- Thời gian giao -->
             <div class="delivery-estimate">
-              <i class="fa fa-clock"></i>
-              <div>
-                <strong>Dự kiến giao hàng:</strong>
-                <p>25 - 35 phút • Giao đến địa chỉ của bạn</p>
-              </div>
+              <i class="fa fa-clock" style="color:#2A9D8F;font-size:1.2rem;"></i>
+              <div><strong>Dự kiến giao hàng:</strong><p style="margin:0;font-size:0.82rem;color:var(--gray);">25 - 35 phút • Giao đến địa chỉ của bạn</p></div>
             </div>
-
-            <!-- Địa chỉ giao -->
             <div class="delivery-address">
-              <div class="address-header">
-                <i class="fa fa-map-marker-alt"></i>
-                <strong>Địa chỉ giao hàng</strong>
-                <a href="#">Thay đổi</a>
-              </div>
-              <p>123 Nguyễn Trãi, Phường 2, Quận 1, TP.HCM</p>
+              <div class="address-header"><i class="fa fa-map-marker-alt" style="color:var(--primary);"></i><strong>Địa chỉ giao hàng</strong><a href="#">Thay đổi</a></div>
+              <p style="margin:0;font-size:0.85rem;color:var(--gray);">123 Nguyễn Trãi, Phường 2, Quận 1, TP.HCM</p>
             </div>
-
-            <!-- Phương thức thanh toán -->
             <div class="payment-methods">
-              <h4><i class="fa fa-credit-card"></i> Phương Thức Thanh Toán</h4>
-              <label class="payment-opt">
-                <input type="radio" name="payment" value="cod" checked />
-                <img src="images/cod.png" alt="" /> Tiền mặt (COD)
-              </label>
-              <label class="payment-opt">
-                <input type="radio" name="payment" value="momo" />
-                <img src="images/momo.png" alt="" /> Ví MoMo
-              </label>
-              <label class="payment-opt">
-                <input type="radio" name="payment" value="vnpay" />
-                <img src="images/vnpay.png" alt="" /> VNPay
-              </label>
-              <label class="payment-opt">
-                <input type="radio" name="payment" value="zalopay" />
-                <img src="images/zalopay.png" alt="" /> ZaloPay
-              </label>
-              <label class="payment-opt">
-                <input type="radio" name="payment" value="card" />
-                <i class="fa fa-credit-card"></i> Thẻ tín dụng/ghi nợ
-              </label>
+              <h4>💳 Phương Thức Thanh Toán</h4>
+              <label class="payment-opt"><input type="radio" name="payment" value="cod" checked /> 💵 Tiền mặt (COD)</label>
+              <label class="payment-opt"><input type="radio" name="payment" value="momo" /> 🟣 Ví MoMo</label>
+              <label class="payment-opt"><input type="radio" name="payment" value="vnpay" /> 🔵 VNPay</label>
+              <label class="payment-opt"><input type="radio" name="payment" value="zalopay" /> 🟢 ZaloPay</label>
             </div>
-
-            <a href="datmon.html" class="btn btn-primary" style="width:100%; text-align:center; padding:14px; margin-top:16px; font-size:1rem;">
+            <a href="datmon.html" class="btn btn-primary" style="width:100%;text-align:center;padding:14px;margin-top:14px;font-size:0.95rem;display:block;">
               <i class="fa fa-lock"></i> Tiến Hành Đặt Món →
             </a>
-
-            <!-- Bảo mật -->
             <div class="security-badges">
-              <span><i class="fa fa-shield-alt"></i> Thanh toán bảo mật 256-bit</span>
+              <span><i class="fa fa-shield-alt"></i> Thanh toán bảo mật 256-bit SSL</span>
               <span><i class="fa fa-undo"></i> Hoàn tiền 100% nếu không hài lòng</span>
             </div>
+          </div>
 
-          </div><!-- /cart-summary -->
-
-        </div><!-- /cart-layout -->
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ====== FOOTER ====== -->
-  <footer>
-    <div class="footer-grid">
-      <div class="footer-col footer-brand">
-        <div class="logo-text">🍔 FastFood</div>
-        <p>Chuỗi cửa hàng fast food số 1 Việt Nam.</p>
-        <div class="social-links">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-tiktok"></i></a>
         </div>
       </div>
-      <div class="footer-col">
-        <h4>Thực Đơn</h4>
-        <ul><li><a href="#">Burger</a></li><li><a href="#">Gà Rán</a></li><li><a href="#">Pizza</a></li></ul>
-      </div>
-      <div class="footer-col">
-        <h4>Hỗ Trợ</h4>
-        <ul><li><a href="#">Giao hàng</a></li><li><a href="#">FAQ</a></li><li><a href="#">Liên hệ</a></li></ul>
-      </div>
-      <div class="footer-col">
-        <h4>Liên Hệ</h4>
-        <ul><li>📍 123 Nguyễn Trãi, Q.1</li><li>📞 1900 1234</li></ul>
-      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col footer-brand"><div class="logo-text">🍔 FastFood</div><p>Chuỗi cửa hàng fast food số 1 Việt Nam.</p>
+        <div class="social-links"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div></div>
+      <div class="footer-col"><h4>Thực Đơn</h4><ul><li><a href="#">Burger</a></li><li><a href="#">Gà Rán</a></li><li><a href="#">Pizza</a></li></ul></div>
+      <div class="footer-col"><h4>Hỗ Trợ</h4><ul><li><a href="#">Giao hàng</a></li><li><a href="#">FAQ</a></li><li><a href="#">Liên hệ</a></li></ul></div>
+      <div class="footer-col"><h4>Liên Hệ</h4><ul><li>📍 123 Nguyễn Trãi, Q.1</li><li>📞 1900 1234</li></ul></div>
     </div>
     <div class="footer-bottom"><p>© 2026 FastFood Store. All rights reserved.</p></div>
   </footer>
 
   <script>
-    function toggleNav() {
-      document.getElementById('main-nav').classList.toggle('open');
-    }
-    function changeQty(id, delta) {
-      const qtyEl = document.querySelector(`#${id} .qty-val`);
-      let val = parseInt(qtyEl.textContent) + delta;
-      if (val < 1) val = 1;
-      qtyEl.textContent = val;
-    }
-    function removeItem(id) {
-      const item = document.getElementById(id);
-      if (confirm('Xóa món này khỏi giỏ hàng?')) {
-        item.style.opacity = '0';
-        setTimeout(() => item.remove(), 300);
-      }
-    }
-    function clearCart() {
-      if (confirm('Xóa toàn bộ giỏ hàng?')) {
-        document.querySelectorAll('.cart-item').forEach(i => i.remove());
-      }
-    }
-    function applyCoupon() {
-      const code = document.getElementById('coupon-input').value.trim().toUpperCase();
-      if (['FASTFOOD10','FREESHIP','NEWUSER20'].includes(code)) {
-        alert(`✅ Áp dụng mã "${code}" thành công!`);
-      } else {
-        alert('❌ Mã giảm giá không hợp lệ!');
-      }
-    }
-    function useCoupon(code) {
-      document.getElementById('coupon-input').value = code;
-    }
+    function toggleNav() { document.getElementById('main-nav').classList.toggle('open'); }
+    function changeQty(id, d) { const el = document.querySelector(`#${id} .qty-val`); let v = parseInt(el.textContent) + d; if(v<1) v=1; el.textContent = v; }
+    function removeItem(id) { const item = document.getElementById(id); item.style.opacity='0'; setTimeout(()=>item.remove(),300); }
+    function clearCart() { if(confirm('Xóa toàn bộ giỏ hàng?')) document.querySelectorAll('.cart-item').forEach(i=>i.remove()); }
+    function applyCoupon() { const c = document.getElementById('coupon-input').value.trim().toUpperCase(); if(['FASTFOOD10','FREESHIP','NEWUSER20'].includes(c)) alert(`✅ Áp dụng mã "${c}" thành công!`); else alert('❌ Mã không hợp lệ!'); }
+    function useCoupon(code) { document.getElementById('coupon-input').value = code; }
   </script>
-
 </body>
 </html>
