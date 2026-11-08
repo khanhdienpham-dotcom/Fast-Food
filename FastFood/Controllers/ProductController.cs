@@ -46,13 +46,20 @@ namespace FastFood.Controllers
             // lọc giá, sắp xếp được thực hiện trên danh sách đã lấy về (dữ liệu nhỏ nên không ảnh hưởng hiệu năng).
             IEnumerable<Product> list = await query.ToListAsync();
 
-            // 2. Tìm kiếm theo từ khóa (không phân biệt hoa thường, không phân biệt dấu: "ga ran" tìm được "Gà Rán")
+            // 2. Tìm kiếm theo từ khóa (không phân biệt hoa thường)
+            //    - Gõ KHÔNG dấu ("ga ran") -> so sánh không dấu, tìm được "Gà Rán"
+            //    - Gõ CÓ dấu ("đồ") -> so sánh đúng dấu, không bị khớp nhầm "Double", "độc quyền"
             if (!string.IsNullOrWhiteSpace(keyword))
             {
-                string kw = RemoveDiacritics(keyword.Trim());
-                list = list.Where(p => RemoveDiacritics(p.ProductName).Contains(kw) ||
-                                       (p.Description != null && RemoveDiacritics(p.Description).Contains(kw)) ||
-                                       (p.Category != null && RemoveDiacritics(p.Category.CategoryName).Contains(kw)));
+                string kwTrim = keyword.Trim();
+                bool hasAccent = RemoveDiacritics(kwTrim) != kwTrim.ToLowerInvariant();
+                Func<string?, string> norm = hasAccent
+                    ? (s => (s ?? string.Empty).ToLowerInvariant().Normalize(System.Text.NormalizationForm.FormC))
+                    : (s => RemoveDiacritics(s ?? string.Empty));
+                string kw = norm(kwTrim);
+                list = list.Where(p => norm(p.ProductName).Contains(kw) ||
+                                       norm(p.Description).Contains(kw) ||
+                                       (p.Category != null && norm(p.Category.CategoryName).Contains(kw)));
             }
 
             // 3. Lọc theo khoảng giá
