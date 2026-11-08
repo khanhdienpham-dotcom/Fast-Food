@@ -41,7 +41,7 @@
                     </div>
                     <div class="mb-3">
                         <label asp-for="Password" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
-                        <input asp-for="Password" class="form-control" type="password" placeholder="Nhập mật khẩu (tối thiểu 4 ký tự)" />
+                        <input asp-for="Password" class="form-control" type="password" placeholder="Nhập mật khẩu (tối thiểu 4 ký tự)" maxlength="100" />
                         <span asp-validation-for="Password" class="text-danger small"></span>
                     </div>
                     <div class="mb-4">

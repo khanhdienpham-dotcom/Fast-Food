@@ -5,10 +5,12 @@ namespace FastFood.Models.ViewModels
     public class LoginViewModel
     {
         [Required(ErrorMessage = "Vui lòng nhập tên đăng nhập hoặc email")]
+        [StringLength(100, ErrorMessage = "Tên đăng nhập hoặc email không quá 100 ký tự")]
         [Display(Name = "Tên đăng nhập")]
         public string Username { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
+        [StringLength(100, ErrorMessage = "Mật khẩu không quá 100 ký tự")]
         [DataType(DataType.Password)]
         [Display(Name = "Mật khẩu")]
         public string Password { get; set; } = string.Empty;
@@ -46,7 +48,7 @@ namespace FastFood.Models.ViewModels
         public string? Address { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
-        [StringLength(100, MinimumLength = 4, ErrorMessage = "Mật khẩu phải từ 4 ký tự trở lên")]
+        [StringLength(100, MinimumLength = 4, ErrorMessage = "Mật khẩu phải từ 4 đến 100 ký tự")]
         [DataType(DataType.Password)]
         [Display(Name = "Mật khẩu")]
         public string Password { get; set; } = string.Empty;
