@@ -1,0 +1,72 @@
+﻿@model FastFood.Models.Product
+@{
+    ViewData["Title"] = "Xóa Món Ăn";
+    bool hasOrders = Model.OrderDetails != null && Model.OrderDetails.Any();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold text-dark mb-1">Xác Nhận Xóa Món Ăn</h4>
+        <p class="text-muted small mb-0">Kiểm tra ràng buộc dữ liệu đơn hàng trước khi xóa</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="fa fa-arrow-left me-1"></i> Quay Lại
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card card-custom border-danger">
+            <div class="card-body p-4 p-md-5">
+                @if (hasOrders)
+                {
+                    <div class="alert alert-danger d-flex align-items-center gap-3 mb-4" role="alert">
+                        <i class="fa fa-exclamation-triangle fa-2x"></i>
+                        <div>
+                            <strong>CẢNH BÁO RÀNG BUỘC TOÀN VẸN DỮ LIỆU (CONSTRAINTS):</strong><br />
+                            Món ăn này đã xuất hiện trong <strong>@(Model.OrderDetails?.Count ?? 0)</strong> đơn hàng lịch sử của khách hàng. Hệ thống không cho phép xóa để bảo toàn dữ liệu hóa đơn!
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning d-flex align-items-center gap-3 mb-4" role="alert">
+                        <i class="fa fa-question-circle fa-2x"></i>
+                        <div>
+                            Bạn có chắc chắn muốn xóa món ăn này khỏi hệ thống không?
+                        </div>
+                    </div>
+                }
+
+                <div class="p-3 bg-light rounded-3 mb-4 border d-flex gap-3 align-items-center">
+                    <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100&q=80" : Model.ImageUrl)" 
+                         width="70" height="70" class="rounded-3 shadow-sm object-fit-cover" alt="" />
+                    <div>
+                        <h5 class="fw-bold text-dark mb-1">@Model.ProductName</h5>
+                        <div class="text-danger fw-bold mb-1">@Model.Price.ToString("N0") đ</div>
+                        <div class="small text-muted">
+                            Danh mục: <strong>@(Model.Category?.CategoryName ?? "N/A")</strong> | Tồn kho: <strong>@Model.Quantity</strong> phần
+                        </div>
+                    </div>
+                </div>
+
+                <form asp-action="Delete" method="post" class="d-flex justify-content-end gap-2">
+                    <input type="hidden" asp-for="ProductId" />
+                    <a asp-action="Index" class="btn btn-secondary px-4">Hủy Bỏ</a>
+                    @if (hasOrders)
+                    {
+                        <button type="submit" class="btn btn-danger px-4" disabled title="Không thể xóa do ràng buộc dữ liệu">
+                            <i class="fa fa-ban me-1"></i> Bị Khóa (Không Thể Xóa)
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-danger px-4 fw-bold">
+                            <i class="fa fa-trash me-1"></i> Đồng Ý Xóa
+                        </button>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

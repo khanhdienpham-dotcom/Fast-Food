@@ -1,0 +1,25 @@
+@model FastFood.Models.Order
+@{
+    Layout = "_MasterLayout";
+    ViewData["Title"] = "Đặt Món Thành Công!";
+}
+<div class="container py-5 text-center">
+    <div class="card border-0 shadow-sm rounded-4 p-5 bg-white mx-auto" style="max-width: 650px;">
+        <div class="display-3 text-success mb-3"><i class="fa fa-check-circle"></i></div>
+        <h2 class="fw-extrabold text-dark mb-2">Đặt Món Thành Công!</h2>
+        <p class="text-muted">Mã đơn hàng: <strong class="text-primary font-monospace fs-5">#@Model.OrderCode</strong></p>
+        <p class="text-muted mb-4">
+            Cảm ơn bạn <strong>@Model.CustomerName</strong> đã đặt món tại FastFood Store.
+            Đơn hàng đang được chuẩn bị và sẽ giao đến <strong>@Model.Address</strong> trong khoảng <strong>25 - 35 phút</strong>.
+        </p>
+
+        <div class="d-flex justify-content-center gap-3">
+            <a asp-controller="Order" asp-action="Detail" asp-route-id="@Model.OrderId" class="btn btn-outline-danger fw-semibold px-4 rounded-pill">
+                <i class="fa fa-receipt me-1"></i> Xem Hóa Đơn Chi Tiết
+            </a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-danger fw-semibold px-4 rounded-pill">
+                <i class="fa fa-home me-1"></i> Về Trang Chủ
+            </a>
+        </div>
+    </div>
+</div>

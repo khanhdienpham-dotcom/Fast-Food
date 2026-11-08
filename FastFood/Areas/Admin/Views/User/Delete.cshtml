@@ -1,0 +1,25 @@
+@model FastFood.Models.User
+@{
+    ViewData["Title"] = "Xóa Quản Trị Viên";
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold text-dark mb-1">Xác Nhận Xóa Quản Trị Viên</h4>
+        <p class="text-muted small mb-0">Xóa tài khoản quản trị viên khỏi hệ thống</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="fa fa-arrow-left me-1"></i> Quay Lại</a>
+</div>
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card card-custom border-danger">
+            <div class="card-body p-4 p-md-5">
+                <div class="alert alert-warning mb-4"><i class="fa fa-exclamation-triangle me-2"></i> Bạn có chắc muốn xóa quản trị viên <strong>@Model.FullName (@Model.Username)</strong>?</div>
+                <form asp-action="Delete" method="post" class="d-flex justify-content-end gap-2">
+                    <input type="hidden" asp-for="UserId" />
+                    <a asp-action="Index" class="btn btn-secondary px-4">Hủy Bỏ</a>
+                    <button type="submit" class="btn btn-danger px-4 fw-bold"><i class="fa fa-trash me-1"></i> Xóa Tài Khoản</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

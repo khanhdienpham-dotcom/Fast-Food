@@ -1,0 +1,137 @@
+@model FastFood.Models.Order
+
+<div class="card shadow border-0 rounded-4 overflow-hidden bg-white" style="max-width: 850px; margin: 0 auto;">
+    <!-- HEADER HÓA ĐƠN -->
+    <div class="p-4 bg-dark text-white d-flex flex-wrap justify-content-between align-items-center border-bottom border-danger border-4">
+        <div class="d-flex align-items-center gap-3">
+            <img src="https://img.icons8.com/color/48/000000/hamburger.png" width="48" height="48" alt="FastFood" />
+            <div>
+                <h4 class="mb-0 fw-bold text-warning">HÓA ĐƠN BÁN HÀNG</h4>
+                <small class="text-white-50">CỬA HÀNG THỨC ĂN NHANH FASTFOOD STORE</small>
+            </div>
+        </div>
+        <div class="text-md-end mt-2 mt-md-0">
+            <div class="fs-5 fw-bold font-monospace text-white">#@Model.OrderCode</div>
+            <small class="text-white-50"><i class="fa fa-calendar-alt me-1"></i> Ngày đặt: @Model.OrderDate.ToString("dd/MM/yyyy HH:mm:ss")</small>
+        </div>
+    </div>
+
+    <div class="card-body p-4 p-md-5">
+        <!-- TRẠNG THÁI & PHƯƠNG THỨC -->
+        <div class="row g-3 mb-4 p-3 bg-light rounded-3 border">
+            <div class="col-sm-6">
+                <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.75rem;">Trạng thái đơn hàng</small>
+                @switch (Model.Status)
+                {
+                    case "Đã giao":
+                        <span class="badge bg-success fs-6 mt-1"><i class="fa fa-check-circle me-1"></i> Đã giao hàng thành công</span>
+                        break;
+                    case "Đang giao":
+                        <span class="badge bg-info text-dark fs-6 mt-1"><i class="fa fa-motorcycle me-1"></i> Tài xế đang trên đường giao</span>
+                        break;
+                    case "Đã hủy":
+                        <span class="badge bg-danger fs-6 mt-1"><i class="fa fa-times-circle me-1"></i> Đã hủy đơn</span>
+                        break;
+                    default:
+                        <span class="badge bg-warning text-dark fs-6 mt-1"><i class="fa fa-utensils me-1"></i> @Model.Status</span>
+                        break;
+                }
+            </div>
+            <div class="col-sm-6 text-sm-end">
+                <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.75rem;">Phương thức thanh toán</small>
+                <span class="fw-bold text-dark mt-1 d-inline-block">
+                    <i class="fa fa-credit-card text-danger me-1"></i> @Model.PaymentMethod
+                </span>
+            </div>
+        </div>
+
+        <!-- THÔNG TIN KHÁCH HÀNG & GIAO HÀNG -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-6">
+                <div class="p-3 border rounded-3 h-100 bg-white">
+                    <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">
+                        <i class="fa fa-user-circle text-danger me-2"></i>Thông Tin Khách Hàng
+                    </h6>
+                    <p class="mb-1"><small class="text-muted">Họ và tên:</small> <strong>@Model.CustomerName</strong></p>
+                    <p class="mb-1"><small class="text-muted">Số điện thoại:</small> <strong>@Model.Phone</strong></p>
+                    @if (Model.User != null)
+                    {
+                        <p class="mb-0"><small class="text-muted">Tài khoản thành viên:</small> <span class="badge bg-primary">@Model.User.Username</span></p>
+                    }
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-3 border rounded-3 h-100 bg-white">
+                    <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">
+                        <i class="fa fa-map-marker-alt text-danger me-2"></i>Địa Chỉ Nhận Hàng
+                    </h6>
+                    <p class="mb-1"><strong>@Model.Address</strong></p>
+                    <p class="mb-0 text-muted small">
+                        <i class="fa fa-comment-dots text-warning me-1"></i> Ghi chú: <em>@(string.IsNullOrEmpty(Model.Note) ? "Không có" : Model.Note)</em>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DANH SÁCH CHI TIẾT MÓN ĂN (ORDER DETAILS) -->
+        <h6 class="fw-bold text-dark mb-3">
+            <i class="fa fa-list-ul text-danger me-2"></i>Chi Tiết Các Món Đã Đặt
+        </h6>
+        <div class="table-responsive mb-4">
+            <table class="table table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width: 50px;" class="text-center">STT</th>
+                        <th>Tên món ăn</th>
+                        <th class="text-end" style="width: 140px;">Đơn giá</th>
+                        <th class="text-center" style="width: 100px;">Số lượng</th>
+                        <th class="text-end" style="width: 160px;">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int index = 1;
+                    }
+                    @if (Model.OrderDetails != null && Model.OrderDetails.Any())
+                    {
+                        foreach (var item in Model.OrderDetails)
+                        {
+                            <tr>
+                                <td class="text-center fw-bold text-muted">@index</td>
+                                <td>
+                                    <strong class="text-dark">@item.ProductName</strong>
+                                </td>
+                                <td class="text-end">@item.Price.ToString("N0") đ</td>
+                                <td class="text-center">
+                                    <span class="badge bg-secondary">x @item.Quantity</span>
+                                </td>
+                                <td class="text-end fw-bold text-danger">@item.SubTotal.ToString("N0") đ</td>
+                            </tr>
+                            index++;
+                        }
+                    }
+                </tbody>
+                <tfoot class="table-light">
+                    <tr>
+                        <td colspan="4" class="text-end fw-semibold">Tạm tính:</td>
+                        <td class="text-end fw-semibold">@Model.TotalAmount.ToString("N0") đ</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="text-end fw-semibold">Phí vận chuyển (Giao nhanh 30p):</td>
+                        <td class="text-end text-success fw-semibold">MIỄN PHÍ</td>
+                    </tr>
+                    <tr class="table-warning border-top border-2">
+                        <td colspan="4" class="text-end fs-5 fw-bold text-dark">TỔNG CỘNG THANH TOÁN:</td>
+                        <td class="text-end fs-5 fw-extrabold text-danger">@Model.TotalAmount.ToString("N0") đ</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <!-- LỜI CẢM ƠN -->
+        <div class="text-center pt-3 border-top text-muted small">
+            <p class="mb-1"><i class="fa fa-heart text-danger"></i> Cảm ơn quý khách đã tin tưởng và thưởng thức món ăn tại FastFood Store!</p>
+            <p class="mb-0">Mọi thắc mắc về đơn hàng xin vui lòng liên hệ Hotline: <strong>1900 1234</strong></p>
+        </div>
+    </div>
+</div>

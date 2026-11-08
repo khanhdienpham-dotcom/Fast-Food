@@ -1,0 +1,83 @@
+@model IEnumerable<FastFood.Models.Product>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th style="width: 70px;">Ảnh</th>
+                <th>Tên món ăn</th>
+                <th>Danh mục</th>
+                <th class="text-end">Đơn giá</th>
+                <th class="text-center">Số lượng tồn</th>
+                <th class="text-center">Đã bán</th>
+                <th class="text-center">Trạng thái kho</th>
+                <th class="text-end">Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100&q=80" : item.ImageUrl)" 
+                                 width="50" height="50" class="rounded-3 shadow-sm object-fit-cover" alt="@item.ProductName" />
+                        </td>
+                        <td>
+                            <strong class="text-dark d-block">@item.ProductName</strong>
+                            <small class="text-muted">Mã: #@item.ProductId</small>
+                        </td>
+                        <td>
+                            <span class="badge bg-light text-dark border">@(item.Category?.CategoryName ?? "N/A")</span>
+                        </td>
+                        <td class="text-end fw-bold text-danger">
+                            @item.Price.ToString("N0") đ
+                        </td>
+                        <td class="text-center">
+                            @if (item.Quantity > 10)
+                            {
+                                <span class="badge bg-success-subtle text-success border border-success fs-6">@item.Quantity</span>
+                            }
+                            else if (item.Quantity > 0)
+                            {
+                                <span class="badge bg-warning text-dark fs-6">@item.Quantity (Sắp hết)</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger fs-6">0 (Hết hàng)</span>
+                            }
+                        </td>
+                        <td class="text-center fw-semibold text-muted">
+                            @item.SoldQuantity
+                        </td>
+                        <td class="text-center">
+                            @if (item.Quantity > 0)
+                            {
+                                <span class="text-success small fw-bold"><i class="fa fa-check-circle me-1"></i>Sẵn sàng bán</span>
+                            }
+                            else
+                            {
+                                <span class="text-danger small fw-bold"><i class="fa fa-exclamation-circle me-1"></i>Cần nhập hàng ngay</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a asp-area="Admin" asp-controller="Product" asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-sm btn-outline-warning">
+                                <i class="fa fa-plus-circle me-1"></i> Nhập hàng / Sửa SL
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8" class="text-center py-4 text-muted">
+                        <i class="fa fa-box-open fa-2x mb-2 d-block text-secondary"></i>
+                        Không có sản phẩm nào trong danh mục này.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

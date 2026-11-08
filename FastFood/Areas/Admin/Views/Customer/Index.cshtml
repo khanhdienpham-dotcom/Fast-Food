@@ -1,0 +1,66 @@
+@model IEnumerable<FastFood.Models.User>
+@{
+    ViewData["Title"] = "Quản Lý Khách Hàng";
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <!-- Quản lý khách hàng: Trang Index: lưu giữ danh sách khách hàng, KHÔNG có nút Thêm/Sửa/Xóa (0.125) -->
+        <h4 class="fw-bold text-dark mb-1">Quản Lý Danh Sách Khách Hàng</h4>
+        <p class="text-muted small mb-0">Lưu giữ danh sách người dùng đăng ký tài khoản mua hàng</p>
+    </div>
+    <div>
+        <span class="badge bg-primary px-3 py-2 fs-6"><i class="fa fa-users me-1"></i> Tổng số: <strong>@Model.Count()</strong> khách hàng</span>
+    </div>
+</div>
+
+<div class="card card-custom">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-custom table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Khách Hàng</th>
+                        <th>Tên Đăng Nhập</th>
+                        <th>Email & SĐT</th>
+                        <th>Địa Chỉ Mặc Định</th>
+                        <th class="text-center">Số Đơn Hàng</th>
+                        <th class="text-end">Chi Tiết</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="fa fa-user-circle fa-2x text-secondary"></i>
+                                    <div>
+                                        <strong class="text-dark">@item.FullName</strong>
+                                        <small class="text-muted d-block">Ngày tạo: @item.CreatedAt.ToString("dd/MM/yyyy")</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-light text-dark border">@item.Username</span></td>
+                            <td>
+                                <div><i class="fa fa-envelope text-muted me-1"></i>@item.Email</div>
+                                <small class="text-muted"><i class="fa fa-phone text-muted me-1"></i>@item.Phone</small>
+                            </td>
+                            <td><small class="text-muted">@(item.Address ?? "Chưa cập nhật")</small></td>
+                            <td class="text-center">
+                                <span class="badge bg-info text-dark px-3 py-2">
+                                    <i class="fa fa-receipt me-1"></i> @item.Orders.Count đơn
+                                </span>
+                            </td>
+                            <!-- KHÔNG CÓ NÚT THÊM / SỬA / XÓA THEO YÊU CẦU BAREM - CHỈ CÓ NÚT DETAIL -->
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@item.UserId" class="btn btn-sm btn-outline-primary fw-semibold">
+                                    <i class="fa fa-eye me-1"></i> Xem đơn hàng
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

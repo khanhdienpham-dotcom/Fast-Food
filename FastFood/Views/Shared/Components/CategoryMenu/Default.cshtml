@@ -1,0 +1,19 @@
+@model IEnumerable<FastFood.Models.Category>
+
+<div class="dropdown d-inline-block">
+    <a class="nav-link dropdown-toggle text-white fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa fa-utensils me-1 text-warning"></i> Danh Mục Món
+    </a>
+    <ul class="dropdown-menu shadow-lg border-0 rounded-3">
+        <li><a class="dropdown-item py-2 fw-semibold" asp-controller="Product" asp-action="Index"><i class="fa fa-th-large me-2 text-danger"></i>Tất cả món ăn</a></li>
+        <li><hr class="dropdown-divider"></li>
+        @foreach (var cat in Model)
+        {
+            <li>
+                <a class="dropdown-item py-2" asp-controller="Product" asp-action="Index" asp-route-categoryId="@cat.CategoryId">
+                    <i class="fa fa-angle-right me-2 text-warning"></i>@cat.CategoryName
+                </a>
+            </li>
+        }
+    </ul>
+</div>

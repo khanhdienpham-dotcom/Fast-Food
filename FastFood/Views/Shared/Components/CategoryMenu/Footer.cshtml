@@ -1,0 +1,6 @@
+@model IEnumerable<FastFood.Models.Category>
+
+@foreach (var cat in Model)
+{
+    <a asp-area="" asp-controller="Product" asp-action="Index" asp-route-categoryId="@cat.CategoryId">@cat.CategoryName</a>
+}

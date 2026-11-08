@@ -1,0 +1,93 @@
+@model IEnumerable<FastFood.Models.Order>
+@{
+    ViewData["Title"] = "Tổng Quan Hệ Thống";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-1">Bảng Điều Khiển Tổng Quan</h3>
+        <p class="text-muted small mb-0">Hệ thống quản lý chuỗi nhà hàng thức ăn nhanh FastFood Store</p>
+    </div>
+    <div>
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-outline-danger fw-semibold" target="_blank">
+            <i class="fa fa-external-link-alt me-1"></i> Xem Website Khách Hàng
+        </a>
+    </div>
+</div>
+
+<!-- 4 THẺ THỐNG KÊ CHÍNH -->
+<div class="row g-3 mb-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-custom p-3 border-start border-4 border-danger">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-muted small text-uppercase fw-bold">Doanh Thu Đơn Hàng</span>
+                    <h3 class="fw-bold text-danger mb-0 mt-1">@ViewBag.TotalRevenue.ToString("N0") đ</h3>
+                </div>
+                <div class="p-3 bg-danger-subtle rounded-3 text-danger fs-3">
+                    <i class="fa fa-coins"></i>
+                </div>
+            </div>
+            <div class="mt-2 text-muted small"><i class="fa fa-shopping-bag me-1"></i>Tổng số <strong>@ViewBag.TotalOrders</strong> đơn hàng</div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-custom p-3 border-start border-4 border-primary">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-muted small text-uppercase fw-bold">Tổng Món Ăn</span>
+                    <h3 class="fw-bold text-primary mb-0 mt-1">@ViewBag.TotalProducts món</h3>
+                </div>
+                <div class="p-3 bg-primary-subtle rounded-3 text-primary fs-3">
+                    <i class="fa fa-hamburger"></i>
+                </div>
+            </div>
+            <div class="mt-2 text-muted small"><i class="fa fa-folder me-1"></i>Thuộc <strong>@ViewBag.TotalCategories</strong> danh mục</div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-custom p-3 border-start border-4 border-success">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-muted small text-uppercase fw-bold">Hàng Tồn Kho</span>
+                    <h3 class="fw-bold text-success mb-0 mt-1">@ViewBag.InStockCount món</h3>
+                </div>
+                <div class="p-3 bg-success-subtle rounded-3 text-success fs-3">
+                    <i class="fa fa-warehouse"></i>
+                </div>
+            </div>
+            <div class="mt-2 text-muted small"><i class="fa fa-check-circle text-success me-1"></i>Sẵn sàng phục vụ khách</div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-custom p-3 border-start border-4 border-warning">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-muted small text-uppercase fw-bold">Hàng Cần Nhập</span>
+                    <h3 class="fw-bold text-warning mb-0 mt-1">@ViewBag.OutOfStockCount món</h3>
+                </div>
+                <div class="p-3 bg-warning-subtle rounded-3 text-warning fs-3">
+                    <i class="fa fa-exclamation-triangle"></i>
+                </div>
+            </div>
+            <div class="mt-2 text-muted small">
+                <a asp-area="Admin" asp-controller="Inventory" asp-action="Index" class="text-warning fw-bold text-decoration-none">
+                    Xem danh sách cần nhập <i class="fa fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ĐƠN HÀNG MỚI NHẤT -->
+<div class="card card-custom mb-4">
+    <div class="card-header-custom">
+        <h5 class="fw-bold"><i class="fa fa-clock text-danger me-2"></i>Đơn Hàng Gần Đây</h5>
+        <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="btn btn-sm btn-outline-secondary">
+            Xem tất cả đơn hàng
+        </a>
+    </div>
+    <div class="card-body p-0">
+        @await Html.PartialAsync("_OrderListPartial", Model, new ViewDataDictionary(ViewData) { { "IsAdmin", true } })
+    </div>
+</div>

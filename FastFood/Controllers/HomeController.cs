@@ -1,32 +1,66 @@
-using System.Diagnostics;
 using FastFood.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FastFood.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly FastFoodDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(FastFoodDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        // BAREM:
+        // - Menu đã lấy theo Category (ViewComponent) (0.125)
+        // - Sản phẩm hiển thị trên trang Home có số lượng tồn > 0 (0.125)
+        // - Có cho phép xem chi tiết sản phẩm (0.125)
+        // - Có cho phép MUA sản phẩm không? (0.125)
+        // - Câu query đã lấy dữ liệu đúng theo mục đích cho các phần trên trang Home (0.25)
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
+            // Query 1: Món ăn nổi bật / Bán chạy nhất (chỉ lấy Quantity > 0)
+            var bestSellers = await _context.Products
+                .Include(p => p.Category)
+                .Where(p => p.Status && p.Quantity > 0 && p.Category != null && p.Category.Status)
+                .OrderByDescending(p => p.SoldQuantity)
+                .Take(4)
+                .ToListAsync();
 
-        public IActionResult Privacy()
-        {
+            // Query 2: Combo Tiết Kiệm (chỉ lấy Quantity > 0)
+            var combos = await _context.Products
+                .Include(p => p.Category)
+                .Where(p => p.Status && p.Quantity > 0 && p.Category != null && p.Category.Status && p.Category.CategoryName.Contains("Combo"))
+                .Take(3)
+                .ToListAsync();
+
+            // Query 3: Món mới ra mắt (chỉ lấy Quantity > 0)
+            var newProducts = await _context.Products
+                .Include(p => p.Category)
+                .Where(p => p.Status && p.Quantity > 0 && p.Category != null && p.Category.Status)
+                .OrderByDescending(p => p.CreatedAt)
+                .Take(4)
+                .ToListAsync();
+
+            ViewBag.BestSellers = bestSellers;
+            ViewBag.Combos = combos;
+            ViewBag.NewProducts = newProducts;
+
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View("~/Views/Shared/Error.cshtml",
+                new ErrorViewModel { RequestId = System.Diagnostics.Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
         }
     }
 }

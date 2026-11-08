@@ -1,0 +1,184 @@
+@model List<FastFood.Models.CartItem>
+@{
+    Layout = "_MasterLayout";
+    ViewData["Title"] = "Giỏ Hàng Của Bạn";
+    decimal totalAmount = Model?.Sum(i => i.SubTotal) ?? 0;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-danger text-decoration-none">Trang Chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Giỏ Hàng</li>
+        </ol>
+    </nav>
+
+    <h2 class="fw-extrabold text-dark mb-4">
+        <i class="fa fa-shopping-cart text-danger me-2"></i>Giỏ Hàng (@(Model?.Sum(i => i.Quantity) ?? 0) món)
+    </h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row g-4">
+            <!-- DANH SÁCH MÓN TRONG GIỎ -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-3">
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 80px;">Ảnh</th>
+                                    <th>Món Ăn</th>
+                                    <th class="text-end">Đơn Giá</th>
+                                    <th class="text-center" style="width: 170px;">Số Lượng</th>
+                                    <th class="text-end">Thành Tiền</th>
+                                    <th class="text-center" style="width: 50px;">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100&q=80" : item.ImageUrl)" 
+                                                 width="60" height="60" class="rounded-3 shadow-sm object-fit-cover" alt="@item.ProductName" />
+                                        </td>
+                                        <td>
+                                            <strong class="text-dark d-block">@item.ProductName</strong>
+                                            <small class="text-muted">Tồn kho còn: @item.MaxQuantity</small>
+                                        </td>
+                                        <td class="text-end fw-semibold text-muted">@item.Price.ToString("N0") đ</td>
+                                        <!-- TĂNG GIẢM SỐ LƯỢNG (KIỂM TRA KHÔNG < 0 VÀ KHÔNG > TỒN KHO) -->
+                                        <td class="text-center">
+                                            <!-- Nút -/+ hoặc gõ trực tiếp số lượng (tự gửi khi rời ô / nhấn Enter).
+                                                 Client chặn < 0 và > tồn kho, server kiểm tra lại lần nữa. -->
+                                            <form asp-action="UpdateQuantity" method="post" class="d-inline-flex align-items-center cart-qty-form">
+                                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                                <div class="input-group input-group-sm" style="width: 130px;">
+                                                    <button type="button" class="btn btn-outline-secondary btn-qty-minus">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                    <input type="number" name="quantity" class="form-control text-center fw-bold qty-input"
+                                                           value="@item.Quantity" min="0" max="@item.MaxQuantity" step="1"
+                                                           data-old="@item.Quantity" data-max="@item.MaxQuantity" />
+                                                    <button type="button" class="btn btn-outline-secondary btn-qty-plus"
+                                                            disabled="@(item.Quantity >= item.MaxQuantity)">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </td>
+                                        <td class="text-end fw-bold text-danger fs-6">@item.SubTotal.ToString("N0") đ</td>
+                                        <!-- XÓA KHỎI GIỎ HÀNG -->
+                                        <td class="text-center">
+                                            <form asp-action="RemoveFromCart" method="post" class="d-inline">
+                                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                                <button type="submit" class="btn btn-sm btn-link text-danger p-0" title="Xóa món">
+                                                    <i class="fa fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- LINK TIẾP TỤC MUA HÀNG (YÊU CẦU BAREM) -->
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary fw-semibold rounded-pill px-4">
+                        <i class="fa fa-arrow-left me-2"></i> Tiếp Tục Mua Hàng
+                    </a>
+                    <a asp-action="ClearCart" class="btn btn-light text-danger btn-sm">
+                        <i class="fa fa-trash me-1"></i> Xóa toàn bộ giỏ
+                    </a>
+                </div>
+            </div>
+
+            <!-- TỔNG TIỀN VÀ THANH TOÁN -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white sticky-top" style="top: 90px;">
+                    <h5 class="fw-bold text-dark mb-3">Tóm Tắt Đơn Hàng</h5>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Tổng số món:</span>
+                        <strong class="text-dark">@Model.Sum(i => i.Quantity) phần</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Tạm tính:</span>
+                        <strong>@totalAmount.ToString("N0") đ</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Phí giao hàng:</span>
+                        <span class="badge bg-success-subtle text-success">Miễn phí 30p</span>
+                    </div>
+                    <hr class="my-3" />
+                    <div class="d-flex justify-content-between align-items-baseline mb-4">
+                        <span class="fs-5 fw-bold text-dark">Tổng cộng:</span>
+                        <span class="fs-3 fw-extrabold text-danger">@totalAmount.ToString("N0") đ</span>
+                    </div>
+
+                    <!-- LINK THANH TOÁN (YÊU CẦU BAREM: ẨN KHI GIỎ HÀNG RỖNG) -->
+                    <a asp-action="Checkout" class="btn btn-danger btn-lg w-100 fw-bold rounded-pill shadow">
+                        <i class="fa fa-credit-card me-2"></i> TIẾN HÀNH THANH TOÁN
+                    </a>
+
+                    <div class="text-center mt-3 text-muted small">
+                        <i class="fa fa-shield-alt text-success me-1"></i> Thanh toán an toàn & bảo mật 100%
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- GIỎ HÀNG RỖNG - ẨN NÚT THANH TOÁN THEO YÊU CẦU BAREM -->
+        <div class="card border-0 shadow-sm rounded-4 p-5 text-center bg-white my-4">
+            <div class="mb-3 text-danger fs-1">
+                <i class="fa fa-shopping-basket fa-3x"></i>
+            </div>
+            <h3 class="fw-bold text-dark">Giỏ hàng của bạn đang rỗng!</h3>
+            <p class="text-muted mb-4">Bạn chưa chọn món ăn nào. Hãy dạo quanh thực đơn và chọn món ăn ngon bạn yêu thích nhé.</p>
+            <div>
+                <!-- LINK TIẾP TỤC MUA HÀNG -->
+                <a asp-controller="Product" asp-action="Index" class="btn btn-danger btn-lg px-5 fw-bold rounded-pill shadow">
+                    <i class="fa fa-utensils me-2"></i> KHÁM PHÁ THỰC ĐƠN NGAY
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Kiểm tra số lượng khi tăng / giảm / nhập tay: không cho < 0 và không cho > số lượng tồn
+        document.querySelectorAll('.cart-qty-form').forEach(function (form) {
+            var input = form.querySelector('.qty-input');
+            var max = parseInt(input.dataset.max) || 0;
+            var old = parseInt(input.dataset.old) || 1;
+
+            function submitQty(val) {
+                if (isNaN(val)) { alertMsg('Vui lòng nhập số lượng hợp lệ!'); input.value = old; return; }
+                if (val < 0) { alertMsg('Số lượng không được nhỏ hơn 0!'); input.value = old; return; }
+                if (val > max) { alertMsg('Số lượng tồn kho chỉ còn ' + max + ' phần!'); val = max; }
+                if (val === 0 && !confirm('Số lượng = 0 sẽ xóa món này khỏi giỏ. Bạn có chắc không?')) { input.value = old; return; }
+                input.value = val;
+                if (val !== old) form.submit();
+            }
+            function alertMsg(msg) {
+                input.classList.add('is-invalid');
+                input.title = msg;
+                setTimeout(function () { input.classList.remove('is-invalid'); }, 2000);
+                window.alert(msg);
+            }
+
+            form.querySelector('.btn-qty-minus').addEventListener('click', function () { submitQty(old - 1); });
+            form.querySelector('.btn-qty-plus').addEventListener('click', function () { submitQty(old + 1); });
+            input.addEventListener('change', function () { submitQty(parseInt(input.value)); });
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') { e.preventDefault(); submitQty(parseInt(input.value)); }
+                if (e.key === '-' || e.key === 'e' || e.key === '.' || e.key === ',') e.preventDefault();
+            });
+        });
+    </script>
+}

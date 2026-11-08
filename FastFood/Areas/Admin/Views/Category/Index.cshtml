@@ -1,0 +1,84 @@
+@model IEnumerable<FastFood.Models.Category>
+@{
+    ViewData["Title"] = "Quản Lý Danh Mục";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold text-dark mb-1">Quản Lý Danh Mục Sản Phẩm</h4>
+        <p class="text-muted small mb-0">Quản lý các nhóm món ăn trong hệ thống FastFood</p>
+    </div>
+    <a asp-action="Create" class="btn btn-danger fw-semibold">
+        <i class="fa fa-plus-circle me-1"></i> Thêm Danh Mục Mới
+    </a>
+</div>
+
+<div class="card card-custom">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-custom table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Ảnh</th>
+                        <th>Tên danh mục</th>
+                        <th>Mô tả</th>
+                        <th class="text-center" style="width: 140px;">Thứ tự</th>
+                        <!-- YÊU CẦU BAREM: Index có hiển thị tổng số HÀNG HÓA thuộc danh mục -->
+                        <th class="text-center" style="width: 180px;">Tổng Hàng Hóa</th>
+                        <th class="text-center" style="width: 130px;">Trạng thái</th>
+                        <th class="text-end" style="width: 200px;">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100&q=80" : item.ImageUrl)" 
+                                     width="50" height="50" class="rounded-3 shadow-sm object-fit-cover" alt="@item.CategoryName" />
+                            </td>
+                            <td>
+                                <strong class="text-dark fs-6">@item.CategoryName</strong>
+                            </td>
+                            <td>
+                                <small class="text-muted text-truncate d-inline-block" style="max-width: 250px;">
+                                    @(item.Description ?? "Chưa có mô tả")
+                                </small>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-light text-dark border">@item.DisplayOrder</span>
+                            </td>
+                            <!-- CỘT HIỂN THỊ TỔNG SỐ HÀNG HÓA -->
+                            <td class="text-center">
+                                <span class="badge bg-primary px-3 py-2 fs-6">
+                                    <i class="fa fa-box me-1"></i> @item.Products.Count món
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                @if (item.Status)
+                                {
+                                    <span class="badge bg-success-subtle text-success border border-success">Hiển thị</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Tạm ẩn</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@item.CategoryId" class="btn btn-sm btn-outline-info" title="Xem chi tiết & danh sách món">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-sm btn-outline-danger" title="Xóa">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

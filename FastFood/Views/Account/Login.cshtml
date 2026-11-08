@@ -1,0 +1,59 @@
+@model FastFood.Models.ViewModels.LoginViewModel
+@{
+    Layout = "_MasterLayout";
+    ViewData["Title"] = "Đăng Nhập";
+}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden bg-white">
+                <div class="p-4 bg-dark text-white text-center">
+                    <img src="https://img.icons8.com/color/48/000000/hamburger.png" width="40" height="40" alt="" />
+                    <h4 class="fw-bold text-warning mt-2 mb-0">ĐĂNG NHẬP</h4>
+                    <small class="text-white-50">Chào mừng bạn quay lại FastFood Store</small>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <!-- BAREM: ĐĂNG NHẬP THẤT BẠI CÓ HIỂN THỊ THÔNG BÁO -->
+                    <form asp-action="Login" method="post" asp-route-returnUrl="@ViewBag.ReturnUrl">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Username" class="form-label fw-semibold"></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                <input asp-for="Username" class="form-control" placeholder="Tên đăng nhập hoặc email" autofocus />
+                            </div>
+                            <span asp-validation-for="Username" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label fw-semibold"></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                <input asp-for="Password" class="form-control" placeholder="Mật khẩu" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" asp-for="RememberMe" />
+                                <label class="form-check-label small" asp-for="RememberMe">Ghi nhớ đăng nhập</label>
+                            </div>
+                            <a href="#" class="small text-danger text-decoration-none">Quên mật khẩu?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-danger btn-lg w-100 fw-bold rounded-pill shadow mb-3">
+                            <i class="fa fa-sign-in-alt me-2"></i> ĐĂNG NHẬP
+                        </button>
+
+                        <div class="text-center small text-muted">
+                            Chưa có tài khoản? <a asp-action="Register" class="text-danger fw-bold text-decoration-none">Đăng ký ngay</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }

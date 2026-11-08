@@ -1,0 +1,23 @@
+@model FastFood.Models.Order
+@{
+    Layout = "_MasterLayout";
+    ViewData["Title"] = "Chi Tiết Hóa Đơn #" + Model.OrderCode;
+}
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-danger text-decoration-none">Trang Chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Order" asp-action="History" class="text-danger text-decoration-none">Lịch Sử Giao Dịch</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Hóa Đơn #@Model.OrderCode</li>
+        </ol>
+    </nav>
+
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+        <a asp-action="History" class="btn btn-outline-secondary btn-sm"><i class="fa fa-arrow-left me-1"></i> Quay Lại Danh Sách Giao Dịch</a>
+        <button class="btn btn-sm btn-outline-dark" onclick="window.print()"><i class="fa fa-print me-1"></i> In Hóa Đơn</button>
+    </div>
+
+    <!-- BAREM: Xem chi tiết: có hiển thị Hóa đơn mua hàng (giống trang Detail của quản lý đơn hàng)? (0.25)
+         Tạo chung 1 Partial View dùng cho cả trang Admin và Customer -->
+    @await Html.PartialAsync("_InvoicePartial", Model)
+</div>

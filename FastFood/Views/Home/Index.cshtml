@@ -1,8 +1,189 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    Layout = "_MasterLayout";
+    ViewData["Title"] = "Trang Chủ - FastFood Store";
+    var bestSellers = ViewBag.BestSellers as List<FastFood.Models.Product> ?? new List<FastFood.Models.Product>();
+    var combos = ViewBag.Combos as List<FastFood.Models.Product> ?? new List<FastFood.Models.Product>();
+    var newProducts = ViewBag.NewProducts as List<FastFood.Models.Product> ?? new List<FastFood.Models.Product>();
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- HERO BANNER -->
+<section class="py-5" style="background: linear-gradient(135deg, #1D1D1D 0%, #2b2024 100%); color: #fff;">
+    <div class="container py-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3 fs-6">
+                    🔥 Ưu đãi số 1 hôm nay: Giảm 20% cho thành viên mới
+                </span>
+                <h1 class="display-4 fw-extrabold mb-3 text-white lh-sm">
+                    MÓN ĂN NHANH <span class="text-danger">CHUẨN VỊ MỸ</span> NÓNG HỔI GIAO TẬN NƠI!
+                </h1>
+                <p class="lead text-white-50 mb-4">
+                    Thịt bò Úc 100% nướng lửa hồng, phô mai Cheddar béo ngậy, gà rán giòn rụm và nước uống mát lạnh giao thần tốc trong 30 phút.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-danger btn-lg px-4 fw-bold rounded-pill shadow-lg">
+                        <i class="fa fa-utensils me-2"></i> XEM THỰC ĐƠN NGAY
+                    </a>
+                    <a href="#combos" class="btn btn-outline-warning btn-lg px-4 fw-semibold rounded-pill">
+                        <i class="fa fa-fire me-2"></i> Combo Siêu Tiết Kiệm
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=650&q=80" 
+                     class="img-fluid rounded-4 shadow-lg" alt="FastFood Hero Burger" 
+                     style="max-height: 420px; object-fit: cover; border: 4px solid rgba(255,255,255,0.1);" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MÓN ĂN BÁN CHẠY NHẤT (QUERY CÓ SỐ LƯỢNG TỒN > 0, CÓ NÚT XEM CHI TIẾT & MUA) -->
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <span class="text-danger text-uppercase fw-bold small">Thực Đơn Đề Xuất</span>
+                <h2 class="fw-extrabold text-dark mb-0">Món Ăn Bán Chạy Nhất</h2>
+            </div>
+            <a asp-controller="Product" asp-action="Index" class="text-danger fw-bold text-decoration-none">
+                Xem tất cả món <i class="fa fa-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var item in bestSellers)
+            {
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                        <div class="position-relative">
+                            <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">
+                                <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80" : item.ImageUrl)" 
+                                     class="card-img-top object-fit-cover" height="220" alt="@item.ProductName" />
+                            </a>
+                            <span class="badge bg-danger position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill fw-bold">
+                                Hot: @item.SoldQuantity đã bán
+                            </span>
+                        </div>
+                        <div class="card-body p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <small class="text-muted d-block mb-1">@(item.Category?.CategoryName ?? "FastFood")</small>
+                                <h5 class="fw-bold mb-2">
+                                    <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId" class="text-dark text-decoration-none">
+                                        @item.ProductName
+                                    </a>
+                                </h5>
+                                <p class="text-muted small text-truncate-2 mb-3">
+                                    @(item.Description ?? "Món ngon đậm vị chuẩn chất lượng.")
+                                </p>
+                            </div>
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="fs-5 fw-bold text-danger">@item.Price.ToString("N0") đ</span>
+                                    <span class="badge bg-success-subtle text-success border border-success">Còn: @item.Quantity</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <!-- NÚT MUA SẢN PHẨM (YÊU CẦU BAREM) -->
+                                    <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline">
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <input type="hidden" name="quantity" value="1" />
+                                        <button type="submit" class="btn btn-danger w-100 fw-bold rounded-3">
+                                            <i class="fa fa-cart-plus me-1"></i> Mua Ngay
+                                        </button>
+                                    </form>
+                                    <!-- NÚT XEM CHI TIẾT SẢN PHẨM (YÊU CẦU BAREM) -->
+                                    <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId" class="btn btn-outline-secondary btn-sm rounded-3">
+                                        <i class="fa fa-eye me-1"></i> Xem chi tiết
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- COMBOS TIẾT KIỆM -->
+<section id="combos" class="py-5 bg-white border-top border-bottom">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-2">SIÊU TIẾT KIỆM</span>
+            <h2 class="fw-extrabold text-dark">Combo Ăn Thả Ga - Không Lo Về Giá</h2>
+            <p class="text-muted">Đầy đủ món chính, món phụ và nước uống cực đã cho bạn và gia đình</p>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var combo in combos)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 border-2 border-warning rounded-4 overflow-hidden shadow-sm">
+                        <img src="@(string.IsNullOrEmpty(combo.ImageUrl) ? "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=500&q=80" : combo.ImageUrl)" 
+                             class="card-img-top object-fit-cover" height="240" alt="@combo.ProductName" />
+                        <div class="card-body p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <h4 class="fw-bold text-dark mb-2">@combo.ProductName</h4>
+                                <p class="text-muted small mb-3">@combo.Description</p>
+                            </div>
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="fs-4 fw-extrabold text-danger">@combo.Price.ToString("N0") đ</span>
+                                    <span class="badge bg-success">Còn @combo.Quantity phần</span>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <form asp-controller="Cart" asp-action="AddToCart" method="post" class="flex-grow-1">
+                                        <input type="hidden" name="productId" value="@combo.ProductId" />
+                                        <input type="hidden" name="quantity" value="1" />
+                                        <button type="submit" class="btn btn-warning w-100 fw-bold">
+                                            <i class="fa fa-shopping-bag me-1"></i> Đặt Combo
+                                        </button>
+                                    </form>
+                                    <a asp-controller="Product" asp-action="Detail" asp-route-id="@combo.ProductId" class="btn btn-outline-secondary">
+                                        <i class="fa fa-info-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- VÌ SAO CHỌN CHÚNG TÔI -->
+<section class="py-5" style="background-color: #FFF8F0;">
+    <div class="container py-3">
+        <div class="row g-4 text-center">
+            <div class="col-md-3">
+                <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+                    <div class="fs-1 text-danger mb-3"><i class="fa fa-shipping-fast"></i></div>
+                    <h5 class="fw-bold">Giao Nhanh 30 Phút</h5>
+                    <p class="text-muted small mb-0">Đảm bảo đồ ăn tới tay luôn nóng hổi giòn rụm.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+                    <div class="fs-1 text-warning mb-3"><i class="fa fa-leaf"></i></div>
+                    <h5 class="fw-bold">Nguyên Liệu Tươi 100%</h5>
+                    <p class="text-muted small mb-0">Thịt nhập khẩu, rau sạch chuẩn tiêu chuẩn quốc tế.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+                    <div class="fs-1 text-success mb-3"><i class="fa fa-shield-alt"></i></div>
+                    <h5 class="fw-bold">An Toàn Vệ Sinh</h5>
+                    <p class="text-muted small mb-0">Quy trình chế biến khép kín chuẩn ATTP.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+                    <div class="fs-1 text-primary mb-3"><i class="fa fa-headset"></i></div>
+                    <h5 class="fw-bold">Hỗ Trợ 24/7</h5>
+                    <p class="text-muted small mb-0">Tổng đài 1900 1234 luôn sẵn sàng phục vụ bạn.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
