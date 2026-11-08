@@ -173,7 +173,7 @@ namespace FastFood.Models
                 new User
                 {
                     Username = "admin",
-                    Password = "123", // In production use hash, for student project plain/simple
+                    Password = FastFood.Helpers.PasswordHelper.Hash("123"), // mật khẩu được mã hóa PBKDF2
                     FullName = "Quản Trị Hệ Thống",
                     Email = "admin@fastfood.vn",
                     Phone = "0988888888",
@@ -185,7 +185,7 @@ namespace FastFood.Models
                 new User
                 {
                     Username = "khachhang",
-                    Password = "123",
+                    Password = FastFood.Helpers.PasswordHelper.Hash("123"),
                     FullName = "Nguyễn Văn A",
                     Email = "nguyenvana@gmail.com",
                     Phone = "0901234567",
@@ -197,7 +197,7 @@ namespace FastFood.Models
                 new User
                 {
                     Username = "tranb",
-                    Password = "123",
+                    Password = FastFood.Helpers.PasswordHelper.Hash("123"),
                     FullName = "Trần Thị B",
                     Email = "tranthib@gmail.com",
                     Phone = "0912345678",

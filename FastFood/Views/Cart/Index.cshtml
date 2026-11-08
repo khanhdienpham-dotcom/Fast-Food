@@ -90,9 +90,11 @@
                     <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary fw-semibold rounded-pill px-4">
                         <i class="fa fa-arrow-left me-2"></i> Tiếp Tục Mua Hàng
                     </a>
-                    <a asp-action="ClearCart" class="btn btn-light text-danger btn-sm">
-                        <i class="fa fa-trash me-1"></i> Xóa toàn bộ giỏ
-                    </a>
+                    <form asp-action="ClearCart" method="post" class="d-inline" onsubmit="return confirm('Xóa toàn bộ món trong giỏ hàng?');">
+                        <button type="submit" class="btn btn-light text-danger btn-sm">
+                            <i class="fa fa-trash me-1"></i> Xóa toàn bộ giỏ
+                        </button>
+                    </form>
                 </div>
             </div>
 

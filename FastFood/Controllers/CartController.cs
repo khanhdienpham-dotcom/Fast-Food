@@ -88,6 +88,8 @@ namespace FastFood.Controllers
 
             // Không cho phép số lượng mua < 1 (chặn dữ liệu âm / bằng 0 gửi từ client)
             if (quantity < 1) quantity = 1;
+            // Chặn tấn công tràn số: gửi quantity = 2147483647 làm item.Quantity + quantity bị tràn thành số ÂM
+            if (quantity > product.Quantity) quantity = product.Quantity;
 
             var cart = GetCart();
             var item = cart.FirstOrDefault(c => c.ProductId == productId);
@@ -96,7 +98,7 @@ namespace FastFood.Controllers
             {
                 item.MaxQuantity = product.Quantity;
                 item.Price = product.Price;
-                if (item.Quantity + quantity > product.Quantity)
+                if ((long)item.Quantity + quantity > product.Quantity)
                 {
                     item.Quantity = product.Quantity;
                     TempData["ErrorMessage"] = $"Số lượng trong giỏ đã đạt tối đa tồn kho ({product.Quantity} phần)!";
@@ -184,6 +186,10 @@ namespace FastFood.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Chỉ nhận POST + token: trước đây là link GET nên trang web khác chỉ cần nhúng
+        // <img src="/Cart/ClearCart"> là xóa sạch giỏ hàng của khách (tấn công CSRF)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ClearCart()
         {
             HttpContext.Session.Remove("Cart");
@@ -242,6 +248,18 @@ namespace FastFood.Controllers
                 return View("Checkout", model);
             }
 
+            // Chặn dữ liệu giỏ hàng bất thường (số lượng <= 0)
+            if (cart.Any(i => i.Quantity <= 0))
+            {
+                cart.RemoveAll(i => i.Quantity <= 0);
+                SaveCart(cart);
+                TempData["ErrorMessage"] = "Giỏ hàng có số lượng không hợp lệ, vui lòng kiểm tra lại!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Dùng transaction: nếu 1 bước lỗi thì không tạo đơn dở dang và không trừ kho sai
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+
             // Kiểm tra lại số lượng tồn kho trước khi tạo đơn hàng
             foreach (var cartItem in cart)
             {
@@ -270,12 +288,12 @@ namespace FastFood.Controllers
 
             var order = new Order
             {
-                OrderCode = "FF-" + DateTime.Now.ToString("yyyyMMddHHmmss"),
+                OrderCode = "FF-" + DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + Guid.NewGuid().ToString("N")[..4].ToUpper(),
                 UserId = userId,
-                CustomerName = model.CustomerName,
-                Phone = model.Phone,
-                Address = model.Address,
-                Note = model.Note,
+                CustomerName = model.CustomerName.Trim(),
+                Phone = model.Phone.Trim(),
+                Address = model.Address.Trim(),
+                Note = model.Note?.Trim(),
                 PaymentMethod = model.PaymentMethod,
                 Status = "Đang chuẩn bị",
                 OrderDate = DateTime.Now,
@@ -305,8 +323,14 @@ namespace FastFood.Controllers
                 }
             }
 
+            // Mã đơn dễ đọc, không bao giờ trùng: FF-yyyyMMdd-<mã đơn>
+            order.OrderCode = $"FF-{order.OrderDate:yyyyMMdd}-{order.OrderId:D4}";
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+
             HttpContext.Session.Remove("Cart");
+            // Ghi nhớ đơn vừa đặt để trang Success chỉ cho xem đơn của chính mình
+            HttpContext.Session.SetInt32("LastOrderId", order.OrderId);
 
             TempData["SuccessMessage"] = "Đặt hàng thành công!";
             return RedirectToAction("Success", new { orderId = order.OrderId });
@@ -319,6 +343,17 @@ namespace FastFood.Controllers
                 .FirstOrDefaultAsync(o => o.OrderId == orderId);
 
             if (order == null) return RedirectToAction("Index", "Home");
+
+            // CHẶN XEM TRỘM ĐƠN NGƯỜI KHÁC: trước đây gõ /Cart/Success?orderId=1, 2, 3...
+            // là xem được tên, SĐT, địa chỉ của mọi khách hàng.
+            bool isJustPlaced = HttpContext.Session.GetInt32("LastOrderId") == order.OrderId;
+            bool isOwner = order.UserId != null && HttpContext.Session.GetInt32("UserId") == order.UserId;
+            bool isAdmin = HttpContext.Session.GetString("Role") == "Admin";
+            if (!isJustPlaced && !isOwner && !isAdmin)
+            {
+                TempData["ErrorMessage"] = "Bạn không có quyền xem đơn hàng này!";
+                return RedirectToAction("Index", "Home");
+            }
 
             return View(order);
         }

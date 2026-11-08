@@ -17,7 +17,7 @@
         <i class="fa fa-credit-card text-danger me-2"></i>Thông Tin Giao Hàng & Thanh Toán
     </h2>
 
-    <form asp-action="ProcessCheckout" method="post">
+    <form asp-action="ProcessCheckout" method="post" id="checkoutForm">
         <div class="row g-4">
             <!-- THÔNG TIN NGƯỜI NHẬN HÀNG (TỰ ĐỘNG ĐIỀN NẾU ĐÃ ĐĂNG NHẬP) -->
             <div class="col-lg-7">
@@ -119,7 +119,7 @@
                     </div>
 
                     <!-- NÚT XÁC NHẬN ĐẶT HÀNG (SẼ TẠO ORDER, ORDERDETAIL, TÍNH TỒN KHO) -->
-                    <button type="submit" class="btn btn-danger btn-lg w-100 fw-bold rounded-pill shadow">
+                    <button type="submit" id="btnCheckout" class="btn btn-danger btn-lg w-100 fw-bold rounded-pill shadow">
                         <i class="fa fa-check-circle me-2"></i> XÁC NHẬN ĐẶT MÓN
                     </button>
                 </div>
@@ -127,3 +127,19 @@
         </div>
     </form>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Chống bấm "Xác nhận đặt món" 2 lần liên tiếp (tạo ra 2 đơn hàng trùng)
+        document.getElementById('checkoutForm').addEventListener('submit', function (e) {
+            var form = this;
+            if (window.jQuery && $(form).valid && !$(form).valid()) return; // form còn lỗi thì cho sửa tiếp
+            if (form.dataset.submitted === '1') { e.preventDefault(); return; }
+            form.dataset.submitted = '1';
+            var btn = document.getElementById('btnCheckout');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Đang xử lý đơn hàng...';
+        });
+    </script>
+}

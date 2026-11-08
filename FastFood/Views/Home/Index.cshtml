@@ -105,6 +105,67 @@
     </div>
 </section>
 
+<!-- MÓN MỚI RA MẮT (Query 3 trong HomeController: sắp xếp theo CreatedAt, chỉ lấy tồn kho > 0) -->
+@if (newProducts.Any())
+{
+<section class="py-5 bg-white border-top">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <span class="text-danger text-uppercase fw-bold small">Vừa Cập Nhật</span>
+                <h2 class="fw-extrabold text-dark mb-0">Món Mới Ra Mắt</h2>
+            </div>
+            <a asp-controller="Product" asp-action="Index" class="text-danger fw-bold text-decoration-none">
+                Xem tất cả món <i class="fa fa-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var item in newProducts)
+            {
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                        <div class="position-relative">
+                            <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">
+                                <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80" : item.ImageUrl)"
+                                     class="card-img-top object-fit-cover" height="220" alt="@item.ProductName" />
+                            </a>
+                            <span class="badge bg-success position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill fw-bold">MỚI</span>
+                        </div>
+                        <div class="card-body p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <small class="text-muted d-block mb-1">@(item.Category?.CategoryName ?? "FastFood")</small>
+                                <h5 class="fw-bold mb-2">
+                                    <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId" class="text-dark text-decoration-none">@item.ProductName</a>
+                                </h5>
+                            </div>
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="fs-5 fw-bold text-danger">@item.Price.ToString("N0") đ</span>
+                                    <span class="badge bg-success-subtle text-success border border-success">Còn: @item.Quantity</span>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline">
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <input type="hidden" name="quantity" value="1" />
+                                        <button type="submit" class="btn btn-danger w-100 fw-bold rounded-3">
+                                            <i class="fa fa-cart-plus me-1"></i> Mua Ngay
+                                        </button>
+                                    </form>
+                                    <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId" class="btn btn-outline-secondary btn-sm rounded-3">
+                                        <i class="fa fa-eye me-1"></i> Xem chi tiết
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+}
+
 <!-- COMBOS TIẾT KIỆM -->
 <section id="combos" class="py-5 bg-white border-top border-bottom">
     <div class="container">

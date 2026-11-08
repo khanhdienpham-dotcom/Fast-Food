@@ -12,6 +12,7 @@ namespace FastFood.Models
 
         [Required(ErrorMessage = "Vui lòng nhập tên đăng nhập")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Tên đăng nhập từ 3 đến 50 ký tự")]
+        [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Tên đăng nhập chỉ chứa chữ cái, số và dấu gạch dưới")]
         [Display(Name = "Tên đăng nhập")]
         public string Username { get; set; } = string.Empty;
 
@@ -33,12 +34,12 @@ namespace FastFood.Models
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
-        [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
+        [RegularExpression(@"^0\d{9,10}$", ErrorMessage = "Số điện thoại phải bắt đầu bằng 0 và gồm 10-11 chữ số")]
         [StringLength(20)]
         [Display(Name = "Số điện thoại")]
         public string Phone { get; set; } = string.Empty;
 
-        [StringLength(250)]
+        [StringLength(250, ErrorMessage = "Địa chỉ không quá 250 ký tự")]
         [Display(Name = "Địa chỉ")]
         public string? Address { get; set; }
 

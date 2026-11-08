@@ -58,6 +58,13 @@ namespace FastFood.Controllers
                 new ErrorViewModel { RequestId = System.Diagnostics.Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        // Trang lỗi thân thiện (404 - không tìm thấy, 400, 403...)
+        public IActionResult HttpError(int code = 404)
+        {
+            ViewBag.Code = code;
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

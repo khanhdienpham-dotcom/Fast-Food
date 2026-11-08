@@ -24,6 +24,17 @@ namespace FastFood.Helpers
             if (role != "Admin")
             {
                 context.Result = new RedirectToActionResult("Index", "Home", new { area = "" });
+                return;
+            }
+
+            // Kiểm tra lại trong DB: admin đã bị xóa / bị khóa thì phiên đăng nhập cũ không còn hiệu lực
+            var userId = session.GetInt32("UserId");
+            var db = context.HttpContext.RequestServices.GetService(typeof(FastFood.Models.FastFoodDbContext)) as FastFood.Models.FastFoodDbContext;
+            var user = (db != null && userId != null) ? db.Users.Find(userId.Value) : null;
+            if (user == null || !user.Status || user.Role != "Admin")
+            {
+                session.Clear();
+                context.Result = new RedirectToActionResult("Login", "Account", new { area = "" });
             }
         }
     }

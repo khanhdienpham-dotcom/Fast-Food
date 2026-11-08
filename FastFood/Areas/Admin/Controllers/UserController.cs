@@ -50,6 +50,7 @@ namespace FastFood.Areas.Admin.Controllers
             {
                 user.Role = "Admin";
                 user.CreatedAt = DateTime.Now;
+                user.Password = FastFood.Helpers.PasswordHelper.Hash(user.Password);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Thêm quản trị viên thành công!";
@@ -78,10 +79,10 @@ namespace FastFood.Areas.Admin.Controllers
             if (existing == null) return NotFound();
 
             // Ô mật khẩu để trống = giữ nguyên mật khẩu cũ (ô password không hiển thị lại mật khẩu)
-            if (string.IsNullOrEmpty(user.Password))
+            bool keepOldPassword = string.IsNullOrEmpty(user.Password);
+            if (keepOldPassword)
             {
                 ModelState.Remove("Password");
-                user.Password = existing.Password;
             }
             // Tên đăng nhập không cho đổi
             ModelState.Remove("Username");
@@ -102,7 +103,8 @@ namespace FastFood.Areas.Admin.Controllers
                 existing.Email = user.Email!.Trim();
                 existing.Phone = user.Phone!.Trim();
                 existing.Address = user.Address;
-                existing.Password = user.Password;
+                if (!keepOldPassword)
+                    existing.Password = FastFood.Helpers.PasswordHelper.Hash(user.Password);
                 existing.Status = user.Status;
                 await _context.SaveChangesAsync();
 
