@@ -175,7 +175,7 @@ namespace FastFood.Controllers
             }
             if (!string.IsNullOrEmpty(model.Password) && (model.Password.Length < 4 || model.Password.Length > 100))
             {
-                TempData["ErrorMessage"] = "Mật khẩu mới phải từ 4 ký tự trở lên!";
+                TempData["ErrorMessage"] = "Mật khẩu mới phải từ 4 đến 100 ký tự!";
                 return RedirectToAction(nameof(Profile));
             }
 

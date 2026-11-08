@@ -43,7 +43,7 @@
                     <div class="mb-3">
                         <label class="form-label fw-semibold" for="Password">Mật khẩu mới <small class="text-muted fw-normal">(để trống nếu giữ nguyên mật khẩu cũ)</small></label>
                         <input id="Password" name="Password" class="form-control" type="password" autocomplete="new-password"
-                               data-val="true" data-val-length="Mật khẩu tối thiểu 4 ký tự" data-val-length-min="4" data-val-length-max="100" />
+                               data-val="true" data-val-length="Mật khẩu phải từ 4 đến 100 ký tự" data-val-length-min="4" data-val-length-max="100" maxlength="100" />
                         <span asp-validation-for="Password" class="text-danger small"></span>
                     </div>
                     <div class="mb-3">

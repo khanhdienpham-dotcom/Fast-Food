@@ -17,7 +17,7 @@ namespace FastFood.Models
         public string Username { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
-        [StringLength(100, MinimumLength = 4, ErrorMessage = "Mật khẩu tối thiểu 4 ký tự")]
+        [StringLength(100, MinimumLength = 4, ErrorMessage = "Mật khẩu phải từ 4 đến 100 ký tự")]
         [DataType(DataType.Password)]
         [Display(Name = "Mật khẩu")]
         public string Password { get; set; } = string.Empty;
