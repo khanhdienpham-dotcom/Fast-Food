@@ -54,6 +54,10 @@ namespace FastFood.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CategoryName,Description,ImageUrl,DisplayOrder,Status")] Category category)
         {
+            // Không cho tạo 2 danh mục trùng tên
+            if (!string.IsNullOrWhiteSpace(category.CategoryName) &&
+                await _context.Categories.AnyAsync(c => c.CategoryName.ToLower() == category.CategoryName.Trim().ToLower()))
+                ModelState.AddModelError("CategoryName", "Tên danh mục này đã tồn tại!");
             if (ModelState.IsValid)
             {
                 _context.Add(category);
@@ -82,6 +86,10 @@ namespace FastFood.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("CategoryId,CategoryName,Description,ImageUrl,DisplayOrder,Status")] Category category)
         {
             if (id != category.CategoryId) return NotFound();
+
+            if (!string.IsNullOrWhiteSpace(category.CategoryName) &&
+                await _context.Categories.AnyAsync(c => c.CategoryId != category.CategoryId && c.CategoryName.ToLower() == category.CategoryName.Trim().ToLower()))
+                ModelState.AddModelError("CategoryName", "Tên danh mục này đã tồn tại!");
 
             if (ModelState.IsValid)
             {

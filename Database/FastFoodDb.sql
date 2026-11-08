@@ -141,6 +141,8 @@ INSERT INTO Products (ProductId, ProductName, Description, Price, ImageUrl, Quan
 SET IDENTITY_INSERT Products OFF;
 GO
 
+/* Mật khẩu mẫu để dạng '123' cho dễ nhập. Website sẽ TỰ ĐỘNG mã hóa (PBKDF2) mật khẩu này
+   ngay lần đăng nhập đầu tiên; tài khoản tạo mới qua web luôn được lưu dạng mã hóa. */
 SET IDENTITY_INSERT Users ON;
 INSERT INTO Users (UserId, Username, Password, FullName, Email, Phone, Address, Role, CreatedAt, Status) VALUES
 (1, N'admin',     N'123', N'Quản Trị Hệ Thống', N'admin@fastfood.vn',    N'0988888888', N'123 Nguyễn Trãi, Quận 1, TP.HCM',        N'Admin',    DATEADD(DAY, -30, GETDATE()), 1),
@@ -151,9 +153,9 @@ GO
 
 SET IDENTITY_INSERT Orders ON;
 INSERT INTO Orders (OrderId, OrderCode, UserId, CustomerName, Phone, Address, Note, TotalAmount, PaymentMethod, Status, OrderDate) VALUES
-(1, N'FF-20261108-001', 2, N'Nguyễn Văn A', N'0901234567', N'456 Lê Văn Sỹ, Quận 3, TP.HCM',         N'Giao giờ hành chính, không bấm chuông', 149000, N'COD',   N'Đã giao',       DATEADD(DAY,  -2, GETDATE())),
-(2, N'FF-20261108-002', 2, N'Nguyễn Văn A', N'0901234567', N'456 Lê Văn Sỹ, Quận 3, TP.HCM',         N'Cho thêm nhiều tương cà và tương ớt',   109000, N'COD',   N'Đang chuẩn bị', DATEADD(HOUR, -1, GETDATE())),
-(3, N'FF-20261108-003', 3, N'Trần Thị B',   N'0912345678', N'789 Điện Biên Phủ, Bình Thạnh, TP.HCM', N'Giao trước 18h',                        199000, N'VNPAY', N'Đang giao',     DATEADD(HOUR, -3, GETDATE()));
+(1, N'FF-20261108-0001', 2, N'Nguyễn Văn A', N'0901234567', N'456 Lê Văn Sỹ, Quận 3, TP.HCM',         N'Giao giờ hành chính, không bấm chuông', 149000, N'COD',   N'Đã giao',       DATEADD(DAY,  -2, GETDATE())),
+(2, N'FF-20261108-0002', 2, N'Nguyễn Văn A', N'0901234567', N'456 Lê Văn Sỹ, Quận 3, TP.HCM',         N'Cho thêm nhiều tương cà và tương ớt',   109000, N'COD',   N'Đang chuẩn bị', DATEADD(HOUR, -1, GETDATE())),
+(3, N'FF-20261108-0003', 3, N'Trần Thị B',   N'0912345678', N'789 Điện Biên Phủ, Bình Thạnh, TP.HCM', N'Giao trước 18h',                        199000, N'VNPAY', N'Đang giao',     DATEADD(HOUR, -3, GETDATE()));
 SET IDENTITY_INSERT Orders OFF;
 GO
 

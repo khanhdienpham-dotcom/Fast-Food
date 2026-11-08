@@ -69,6 +69,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Trang lỗi thân thiện cho 404 (gõ sai đường dẫn, /Product/Detail/99999 ...) thay vì trang trắng của trình duyệt
+app.UseStatusCodePagesWithReExecute("/Home/HttpError", "?code={0}");
+
 app.UseHttpsRedirection();
 
 // Cố định văn hóa vi-VN cho mọi máy (định dạng tiền 59.000 đ, ngày dd/MM/yyyy),

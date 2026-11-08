@@ -32,14 +32,16 @@ namespace FastFood.Models.ViewModels
 
         [Required(ErrorMessage = "Vui lòng nhập email")]
         [EmailAddress(ErrorMessage = "Địa chỉ email không hợp lệ")]
+        [StringLength(100, ErrorMessage = "Email không quá 100 ký tự")]
         [Display(Name = "Email")]
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
-        [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
+        [RegularExpression(@"^0\d{9,10}$", ErrorMessage = "Số điện thoại phải bắt đầu bằng 0 và gồm 10-11 chữ số")]
         [Display(Name = "Số điện thoại")]
         public string Phone { get; set; } = string.Empty;
 
+        [StringLength(250, ErrorMessage = "Địa chỉ không quá 250 ký tự")]
         [Display(Name = "Địa chỉ nhận hàng")]
         public string? Address { get; set; }
 
@@ -76,18 +78,22 @@ namespace FastFood.Models.ViewModels
     public class CheckoutViewModel
     {
         [Required(ErrorMessage = "Vui lòng nhập họ và tên")]
+        [StringLength(100, ErrorMessage = "Họ tên không quá 100 ký tự")]
         [Display(Name = "Họ và tên người nhận")]
         public string CustomerName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
-        [Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
+        [RegularExpression(@"^0\d{9,10}$", ErrorMessage = "Số điện thoại phải bắt đầu bằng 0 và gồm 10-11 chữ số")]
         [Display(Name = "Số điện thoại")]
         public string Phone { get; set; } = string.Empty;
 
+        [EmailAddress(ErrorMessage = "Địa chỉ email không hợp lệ")]
+        [StringLength(100)]
         [Display(Name = "Email")]
         public string? Email { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập địa chỉ nhận hàng")]
+        [StringLength(250, MinimumLength = 5, ErrorMessage = "Địa chỉ từ 5 đến 250 ký tự")]
         [Display(Name = "Địa chỉ nhận hàng chi tiết")]
         public string Address { get; set; } = string.Empty;
 

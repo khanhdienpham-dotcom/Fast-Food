@@ -1,3 +1,4 @@
+using FastFood.Helpers;
 using FastFood.Models;
 using FastFood.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -46,7 +47,7 @@ namespace FastFood.Controllers
                 var user = new User
                 {
                     Username = model.Username.Trim(),
-                    Password = model.Password,
+                    Password = PasswordHelper.Hash(model.Password),
                     FullName = model.FullName.Trim(),
                     Email = model.Email.Trim(),
                     Phone = model.Phone.Trim(),
@@ -87,11 +88,23 @@ namespace FastFood.Controllers
             {
                 string loginName = model.Username.Trim().ToLower();
                 var user = await _context.Users.FirstOrDefaultAsync(u =>
-                    (u.Username.ToLower() == loginName || u.Email.ToLower() == loginName)
-                    && u.Password == model.Password);
+                    u.Username.ToLower() == loginName || u.Email.ToLower() == loginName);
+
+                // Mật khẩu được so sánh bằng hash (không so chuỗi trực tiếp trong SQL)
+                if (user != null && !PasswordHelper.Verify(model.Password, user.Password))
+                {
+                    user = null;
+                }
 
                 if (user != null)
                 {
+                    // Tài khoản cũ còn lưu mật khẩu dạng chữ thường -> mã hóa lại ngay
+                    if (!PasswordHelper.IsHashed(user.Password))
+                    {
+                        user.Password = PasswordHelper.Hash(model.Password);
+                        await _context.SaveChangesAsync();
+                    }
+
                     if (!user.Status)
                     {
                         TempData["ErrorMessage"] = "Tài khoản của bạn đang tạm thời bị khóa!";
@@ -150,7 +163,17 @@ namespace FastFood.Controllers
                 TempData["ErrorMessage"] = "Họ tên và số điện thoại không được để trống!";
                 return RedirectToAction(nameof(Profile));
             }
-            if (!string.IsNullOrEmpty(model.Password) && model.Password.Length < 4)
+            if (!System.Text.RegularExpressions.Regex.IsMatch(model.Phone.Trim(), @"^0\d{9,10}$"))
+            {
+                TempData["ErrorMessage"] = "Số điện thoại phải bắt đầu bằng 0 và gồm 10-11 chữ số!";
+                return RedirectToAction(nameof(Profile));
+            }
+            if (model.FullName.Trim().Length > 100 || (model.Address?.Length ?? 0) > 250)
+            {
+                TempData["ErrorMessage"] = "Họ tên tối đa 100 ký tự, địa chỉ tối đa 250 ký tự!";
+                return RedirectToAction(nameof(Profile));
+            }
+            if (!string.IsNullOrEmpty(model.Password) && (model.Password.Length < 4 || model.Password.Length > 100))
             {
                 TempData["ErrorMessage"] = "Mật khẩu mới phải từ 4 ký tự trở lên!";
                 return RedirectToAction(nameof(Profile));
@@ -161,10 +184,10 @@ namespace FastFood.Controllers
             {
                 user.FullName = model.FullName.Trim();
                 user.Phone = model.Phone.Trim();
-                user.Address = model.Address;
+                user.Address = model.Address?.Trim();
                 if (!string.IsNullOrEmpty(model.Password))
                 {
-                    user.Password = model.Password;
+                    user.Password = PasswordHelper.Hash(model.Password);
                 }
 
                 await _context.SaveChangesAsync();

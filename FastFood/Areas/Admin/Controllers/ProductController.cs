@@ -73,6 +73,11 @@ namespace FastFood.Areas.Admin.Controllers
         {
             var imgError = ValidateImage(uploadImage);
             if (imgError != null) ModelState.AddModelError("", imgError);
+            if (!await _context.Categories.AnyAsync(c => c.CategoryId == product.CategoryId))
+                ModelState.AddModelError("CategoryId", "Danh mục không tồn tại, vui lòng chọn lại!");
+            if (!string.IsNullOrWhiteSpace(product.ProductName) &&
+                await _context.Products.AnyAsync(p => p.ProductName.ToLower() == product.ProductName.Trim().ToLower()))
+                ModelState.AddModelError("ProductName", "Tên món ăn này đã tồn tại!");
             if (ModelState.IsValid)
             {
                 // XỬ LÝ UPLOAD ẢNH SẢN PHẨM (YÊU CẦU BAREM: Upload được ảnh sản phẩm)
@@ -83,7 +88,7 @@ namespace FastFood.Areas.Admin.Controllers
                     {
                         Directory.CreateDirectory(uploadsFolder);
                     }
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(uploadImage.FileName);
+                    string uniqueFileName = Guid.NewGuid().ToString("N") + Path.GetExtension(uploadImage.FileName).ToLowerInvariant();
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
@@ -133,6 +138,11 @@ namespace FastFood.Areas.Admin.Controllers
 
             var editImgError = ValidateImage(uploadImage);
             if (editImgError != null) ModelState.AddModelError("", editImgError);
+            if (!await _context.Categories.AnyAsync(c => c.CategoryId == product.CategoryId))
+                ModelState.AddModelError("CategoryId", "Danh mục không tồn tại, vui lòng chọn lại!");
+            if (!string.IsNullOrWhiteSpace(product.ProductName) &&
+                await _context.Products.AnyAsync(p => p.ProductId != product.ProductId && p.ProductName.ToLower() == product.ProductName.Trim().ToLower()))
+                ModelState.AddModelError("ProductName", "Tên món ăn này đã tồn tại!");
 
             if (ModelState.IsValid)
             {
@@ -146,7 +156,7 @@ namespace FastFood.Areas.Admin.Controllers
                         {
                             Directory.CreateDirectory(uploadsFolder);
                         }
-                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(uploadImage.FileName);
+                        string uniqueFileName = Guid.NewGuid().ToString("N") + Path.GetExtension(uploadImage.FileName).ToLowerInvariant();
                         string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                         using (var fileStream = new FileStream(filePath, FileMode.Create))
                         {
