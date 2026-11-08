@@ -1,0 +1,21 @@
+@model IEnumerable<FastFood.Models.Order>
+@{
+    ViewData["Title"] = "Quản Lý Đơn Hàng";
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <!-- Quản lý đơn hàng: Trang Index: lưu giữ danh sách đơn hàng, KHÔNG có nút Thêm/Sửa/Xóa (0.125) -->
+        <h4 class="fw-bold text-dark mb-1">Quản Lý Danh Sách Đơn Hàng</h4>
+        <p class="text-muted small mb-0">Theo dõi toàn bộ đơn hàng khách đặt qua website FastFood</p>
+    </div>
+    <div>
+        <span class="badge bg-danger px-3 py-2 fs-6"><i class="fa fa-receipt me-1"></i> Tổng số: <strong>@Model.Count()</strong> đơn hàng</span>
+    </div>
+</div>
+
+<div class="card card-custom">
+    <div class="card-body p-0">
+        <!-- KHÔNG CÓ NÚT THÊM / SỬA / XÓA - TÁI SỬ DỤNG PARTIAL VIEW -->
+        @await Html.PartialAsync("_OrderListPartial", Model, new ViewDataDictionary(ViewData) { { "IsAdmin", true } })
+    </div>
+</div>

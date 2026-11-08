@@ -1,0 +1,320 @@
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var username = HttpContextAccessor.HttpContext?.Session.GetString("Username") ?? "Admin";
+    var fullName = HttpContextAccessor.HttpContext?.Session.GetString("FullName") ?? "Quản trị viên";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Quản Trị FastFood</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <style>
+        :root {
+            --admin-primary: #E63946;
+            --admin-sidebar: #1E232A;
+            --admin-sidebar-hover: #2B323C;
+            --admin-bg: #F4F6F9;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--admin-bg);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        #admin-sidebar {
+            width: 270px;
+            background-color: var(--admin-sidebar);
+            color: #fff;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s;
+        }
+
+        .sidebar-brand {
+            padding: 20px 24px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #F4A261;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            text-decoration: none;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 15px 0;
+            margin: 0;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8c9ba5;
+            padding: 14px 24px 6px;
+            font-weight: 700;
+        }
+
+        .sidebar-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .sidebar-item a:hover {
+            color: #fff;
+            background-color: var(--admin-sidebar-hover);
+            border-left: 4px solid var(--admin-primary);
+        }
+
+        /* Sub-menu styling */
+        .sidebar-submenu {
+            list-style: none;
+            padding-left: 20px;
+            background-color: rgba(0,0,0,0.15);
+        }
+
+        .sidebar-submenu a {
+            padding: 9px 24px 9px 36px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .sidebar-submenu a:hover {
+            color: #F4A261;
+            background-color: transparent;
+            border-left: none;
+        }
+
+        /* CONTENT WRAPPER */
+        #admin-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* TOP NAVBAR */
+        .admin-topbar {
+            background-color: #fff;
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .admin-main-container {
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        .card-custom {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+            background: #fff;
+        }
+
+        .card-header-custom {
+            background: #fff;
+            border-bottom: 1px solid #edf2f7;
+            padding: 18px 24px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header-custom h5 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: #2d3748;
+        }
+
+        .table-custom th {
+            background-color: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 14px 16px;
+        }
+
+        .table-custom td {
+            vertical-align: middle;
+            padding: 14px 16px;
+            color: #334155;
+            font-size: 0.92rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+    </style>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <!-- SIDEBAR -->
+    <aside id="admin-sidebar">
+        <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="sidebar-brand">
+            <img src="https://img.icons8.com/color/48/000000/hamburger.png" width="32" height="32" alt="" />
+            <span>FastFood Admin</span>
+        </a>
+
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <a asp-area="Admin" asp-controller="Home" asp-action="Index">
+                    <i class="fa fa-tachometer-alt fa-fw text-warning"></i> Tổng Quan Dashboard
+                </a>
+            </li>
+
+            <!-- 1. QUẢN LÝ DANH MỤC (Gom các bảng phụ vào sub-menu Quản lý danh mục) -->
+            <li class="sidebar-header">DANH MỤC & HÀNG HÓA</li>
+            <li class="sidebar-item">
+                <a class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#menuDanhMuc" role="button" aria-expanded="true">
+                    <span><i class="fa fa-folder fa-fw text-info"></i> Quản lý danh mục</span>
+                    <i class="fa fa-chevron-down fa-xs"></i>
+                </a>
+                <div class="collapse show" id="menuDanhMuc">
+                    <ul class="sidebar-submenu">
+                        <li><a asp-area="Admin" asp-controller="Category" asp-action="Index"><i class="fa fa-list me-2"></i>Danh sách danh mục</a></li>
+                        <li><a asp-area="Admin" asp-controller="Category" asp-action="Create"><i class="fa fa-plus-circle me-2"></i>Thêm danh mục mới</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- 2. QUẢN LÝ HÀNG HÓA (Gom 2 phần Product và Product Detail vào sub-menu Quản lý hàng hóa) -->
+            <li class="sidebar-item">
+                <a class="d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#menuHangHoa" role="button" aria-expanded="true">
+                    <span><i class="fa fa-hamburger fa-fw text-danger"></i> Quản lý hàng hóa</span>
+                    <i class="fa fa-chevron-down fa-xs"></i>
+                </a>
+                <div class="collapse show" id="menuHangHoa">
+                    <ul class="sidebar-submenu">
+                        <li><a asp-area="Admin" asp-controller="Product" asp-action="Index"><i class="fa fa-boxes me-2"></i>Danh sách sản phẩm</a></li>
+                        <li><a asp-area="Admin" asp-controller="Product" asp-action="Create"><i class="fa fa-plus-circle me-2"></i>Thêm sản phẩm mới</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- 3. QUẢN LÝ KHO HÀNG (Hàng tồn > 0 và Hàng cần nhập = 0) -->
+            <li class="sidebar-item">
+                <a asp-area="Admin" asp-controller="Inventory" asp-action="Index">
+                    <i class="fa fa-warehouse fa-fw text-success"></i> Quản lý kho hàng
+                </a>
+            </li>
+
+            <!-- 4. NGƯỜI DÙNG & KHÁCH HÀNG -->
+            <li class="sidebar-header">TÀI KHOẢN & KHÁCH HÀNG</li>
+            <!-- Quản lý người dùng: Chỉ lưu giữ danh sách người quản trị (Thêm/Sửa/Xóa) -->
+            <li class="sidebar-item">
+                <a asp-area="Admin" asp-controller="User" asp-action="Index">
+                    <i class="fa fa-user-shield fa-fw text-warning"></i> Quản lý người dùng (Admin)
+                </a>
+            </li>
+            <!-- Quản lý khách hàng: Chỉ lưu giữ danh sách khách hàng (Không Thêm/Sửa/Xóa, có Xem chi tiết đơn hàng) -->
+            <li class="sidebar-item">
+                <a asp-area="Admin" asp-controller="Customer" asp-action="Index">
+                    <i class="fa fa-users fa-fw text-primary"></i> Quản lý khách hàng
+                </a>
+            </li>
+
+            <!-- 5. QUẢN LÝ ĐƠN HÀNG (Không Thêm/Sửa/Xóa, có Xem chi tiết Hóa đơn) -->
+            <li class="sidebar-header">BÁN HÀNG</li>
+            <li class="sidebar-item">
+                <a asp-area="Admin" asp-controller="Order" asp-action="Index">
+                    <i class="fa fa-receipt fa-fw text-danger"></i> Quản lý đơn hàng
+                </a>
+            </li>
+
+            <!-- HỆ THỐNG -->
+            <li class="sidebar-header">HỆ THỐNG</li>
+            <li class="sidebar-item">
+                <a asp-area="" asp-controller="Home" asp-action="Index" target="_blank">
+                    <i class="fa fa-external-link-alt fa-fw text-secondary"></i> Xem trang khách hàng
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a asp-area="" asp-controller="Account" asp-action="Logout">
+                    <i class="fa fa-sign-out-alt fa-fw text-danger"></i> Đăng xuất
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- CONTENT -->
+    <div id="admin-content">
+        <!-- TOPBAR -->
+        <header class="admin-topbar">
+            <div>
+                <span class="text-muted small">Khu vực: </span>
+                <strong class="text-dark">Hệ Thống Quản Trị FastFood</strong>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fa fa-user-circle fa-2x text-primary"></i>
+                    <div>
+                        <div class="fw-bold small text-dark">@fullName</div>
+                        <div class="text-muted" style="font-size: 0.75rem;">@username (Quản trị viên)</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN CONTAINER -->
+        <main class="admin-main-container">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa fa-check-circle me-2"></i> @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-triangle me-2"></i> @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

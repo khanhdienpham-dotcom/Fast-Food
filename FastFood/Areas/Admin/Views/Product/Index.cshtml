@@ -1,0 +1,94 @@
+@model IEnumerable<FastFood.Models.Product>
+@{
+    ViewData["Title"] = "Quản Lý Hàng Hóa";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold text-dark mb-1">Quản Lý Hàng Hóa (Món Ăn)</h4>
+        <p class="text-muted small mb-0">Danh sách các món ăn trong thực đơn FastFood</p>
+    </div>
+    <a asp-action="Create" class="btn btn-danger fw-semibold">
+        <i class="fa fa-plus-circle me-1"></i> Thêm Món Ăn Mới
+    </a>
+</div>
+
+<div class="card card-custom">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <!-- YÊU CẦU BAREM: Trang Index: chỉ hiện 4-5 cột dữ liệu chính (tên, ảnh, giá, số lượng tồn, chủng loại) -->
+            <table class="table table-custom table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Ảnh</th>
+                        <th>Tên Món Ăn</th>
+                        <th>Chủng Loại (Danh Mục)</th>
+                        <th class="text-end" style="width: 140px;">Đơn Giá</th>
+                        <th class="text-center" style="width: 140px;">Số Lượng Tồn</th>
+                        <th class="text-end" style="width: 180px;">Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <!-- 1. CỘT ẢNH -->
+                            <td>
+                                <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100&q=80" : item.ImageUrl)" 
+                                     width="54" height="54" class="rounded-3 shadow-sm object-fit-cover" alt="@item.ProductName" />
+                            </td>
+                            <!-- 2. CỘT TÊN -->
+                            <td>
+                                <strong class="text-dark d-block">@item.ProductName</strong>
+                                <small class="text-muted">Đã bán: @item.SoldQuantity phần</small>
+                            </td>
+                            <!-- 3. CỘT CHỦNG LOẠI -->
+                            <td>
+                                <span class="badge bg-light text-dark border">
+                                    <i class="fa fa-tag text-warning me-1"></i>@(item.Category?.CategoryName ?? "Chưa phân loại")
+                                </span>
+                            </td>
+                            <!-- 4. CỘT GIÁ -->
+                            <td class="text-end fw-bold text-danger">
+                                @item.Price.ToString("N0") đ
+                            </td>
+                            <!-- 5. CỘT SỐ LƯỢNG TỒN -->
+                            <td class="text-center">
+                                @if (item.Quantity > 10)
+                                {
+                                    <span class="badge bg-success-subtle text-success border border-success fs-6">
+                                        @item.Quantity
+                                    </span>
+                                }
+                                else if (item.Quantity > 0)
+                                {
+                                    <span class="badge bg-warning text-dark fs-6">
+                                        @item.Quantity (Sắp hết)
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger fs-6">
+                                        0 (Hết hàng)
+                                    </span>
+                                }
+                            </td>
+                            <!-- THAO TÁC -->
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@item.ProductId" class="btn btn-sm btn-outline-info" title="Xem chi tiết">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-sm btn-outline-danger" title="Xóa">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

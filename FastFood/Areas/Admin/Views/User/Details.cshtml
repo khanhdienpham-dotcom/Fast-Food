@@ -1,0 +1,51 @@
+@model FastFood.Models.User
+@{
+    ViewData["Title"] = "Chi Tiết Quản Trị Viên";
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold text-dark mb-1">Chi Tiết Quản Trị Viên: <span class="text-danger">@Model.Username</span></h4>
+        <p class="text-muted small mb-0">Thông tin tài khoản người quản trị hệ thống</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.UserId" class="btn btn-warning fw-semibold"><i class="fa fa-edit me-1"></i> Chỉnh Sửa</a>
+        <a asp-action="Index" class="btn btn-outline-secondary"><i class="fa fa-arrow-left me-1"></i> Quay Lại</a>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card card-custom">
+            <div class="card-body p-4 p-md-5">
+                <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
+                    <i class="fa fa-user-shield fa-3x text-danger"></i>
+                    <div>
+                        <h5 class="fw-bold mb-0">@Model.FullName</h5>
+                        <span class="badge bg-danger">@Model.Role</span>
+                        @if (Model.Status)
+                        {
+                            <span class="badge bg-success-subtle text-success border border-success">Hoạt động</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Khóa</span>
+                        }
+                    </div>
+                </div>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 text-muted fw-normal">@Html.DisplayNameFor(m => m.UserId)</dt>
+                    <dd class="col-sm-8 fw-semibold">#@Model.UserId</dd>
+                    <dt class="col-sm-4 text-muted fw-normal">@Html.DisplayNameFor(m => m.Username)</dt>
+                    <dd class="col-sm-8 fw-semibold">@Model.Username</dd>
+                    <dt class="col-sm-4 text-muted fw-normal">@Html.DisplayNameFor(m => m.Email)</dt>
+                    <dd class="col-sm-8 fw-semibold">@Model.Email</dd>
+                    <dt class="col-sm-4 text-muted fw-normal">@Html.DisplayNameFor(m => m.Phone)</dt>
+                    <dd class="col-sm-8 fw-semibold">@Model.Phone</dd>
+                    <dt class="col-sm-4 text-muted fw-normal">@Html.DisplayNameFor(m => m.Address)</dt>
+                    <dd class="col-sm-8 fw-semibold">@(Model.Address ?? "Chưa cập nhật")</dd>
+                    <dt class="col-sm-4 text-muted fw-normal">@Html.DisplayNameFor(m => m.CreatedAt)</dt>
+                    <dd class="col-sm-8 fw-semibold">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

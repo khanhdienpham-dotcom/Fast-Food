@@ -1,0 +1,28 @@
+@model FastFood.Models.Order
+@{
+    ViewData["Title"] = "Chi Tiết Đơn Hàng #" + Model.OrderCode;
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold text-dark mb-1">Hóa Đơn Đơn Hàng: <span class="text-danger">#@Model.OrderCode</span></h4>
+        <p class="text-muted small mb-0">Hiển thị định dạng hóa đơn mua hàng và cập nhật tiến độ giao</p>
+    </div>
+    <div class="d-flex gap-2">
+        <!-- Cập nhật trạng thái đơn hàng -->
+        <form asp-action="UpdateStatus" method="post" class="d-inline-flex gap-2 align-items-center">
+            <input type="hidden" name="orderId" value="@Model.OrderId" />
+            <select name="status" class="form-select form-select-sm" style="width: 170px;">
+                <option value="Đang chuẩn bị" selected="@(Model.Status == "Đang chuẩn bị")">Đang chuẩn bị</option>
+                <option value="Đang giao" selected="@(Model.Status == "Đang giao")">Đang giao</option>
+                <option value="Đã giao" selected="@(Model.Status == "Đã giao")">Đã giao</option>
+                <option value="Đã hủy" selected="@(Model.Status == "Đã hủy")">Đã hủy</option>
+            </select>
+            <button type="submit" class="btn btn-sm btn-primary fw-bold text-nowrap"><i class="fa fa-sync-alt me-1"></i> Cập nhật</button>
+        </form>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="fa fa-arrow-left me-1"></i> Danh Sách</a>
+    </div>
+</div>
+
+<!-- YÊU CẦU BAREM: Trang Detail: CSS để hiển thị giống như Hóa đơn mua hàng.
+     Tạo Partial View cho trang Index của Order Detail để nhúng Danh sách chi tiết đơn hàng vào trang Detail của Order -->
+@await Html.PartialAsync("_InvoicePartial", Model)

@@ -1,0 +1,131 @@
+@model FastFood.Models.Product
+@{
+    bool isCustomer = ViewData["IsCustomer"] as bool? ?? false;
+}
+
+<div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+    <div class="row g-0">
+        <!-- Ảnh sản phẩm -->
+        <div class="col-md-5 bg-white p-4 d-flex align-items-center justify-content-center">
+            <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80" : Model.ImageUrl)" 
+                 class="img-fluid rounded-4 shadow-sm" 
+                 alt="@Model.ProductName" 
+                 style="max-height: 380px; width: 100%; object-fit: cover;" />
+        </div>
+
+        <!-- Chi tiết sản phẩm -->
+        <div class="col-md-7 p-4 p-lg-5 d-flex flex-column justify-content-between">
+            <div>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold">
+                        <i class="fa fa-tag me-1"></i> @(Model.Category?.CategoryName ?? "Món ngon FastFood")
+                    </span>
+                    @if (Model.Quantity > 0)
+                    {
+                        <span class="badge bg-success-subtle text-success border border-success px-3 py-2 rounded-pill fw-semibold">
+                            <i class="fa fa-check-circle me-1"></i> Còn hàng (@Model.Quantity phần)
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger px-3 py-2 rounded-pill fw-semibold">
+                            <i class="fa fa-times-circle me-1"></i> Hết hàng (Cần nhập)
+                        </span>
+                    }
+                </div>
+
+                <h2 class="fw-bold text-dark mt-2 mb-3">@Model.ProductName</h2>
+
+                <div class="d-flex align-items-baseline gap-3 mb-4">
+                    <span class="fs-2 fw-extrabold text-danger">@Model.Price.ToString("N0") đ</span>
+                    <span class="text-muted small"><i class="fa fa-fire text-danger me-1"></i> Đã bán: <strong>@Model.SoldQuantity</strong> phần</span>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="fw-bold text-dark mb-2"><i class="fa fa-info-circle text-primary me-2"></i>Mô tả món ăn:</h6>
+                    <p class="text-secondary leading-relaxed">
+                        @(string.IsNullOrEmpty(Model.Description) ? "Món ăn nhanh thơm ngon, chế biến nóng hổi ngay khi khách đặt hàng. Đảm bảo vệ sinh an toàn thực phẩm 100%." : Model.Description)
+                    </p>
+                </div>
+
+                <div class="row g-2 mb-4">
+                    <div class="col-6">
+                        <div class="p-3 bg-light rounded-3 border">
+                            <small class="text-muted d-block">Thời gian chuẩn bị:</small>
+                            <strong class="text-dark"><i class="fa fa-clock text-warning me-1"></i> 10 - 15 phút</strong>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 bg-light rounded-3 border">
+                            <small class="text-muted d-block">Tiêu chuẩn:</small>
+                            <strong class="text-dark"><i class="fa fa-shield-alt text-success me-1"></i> Vệ sinh ATTP 100%</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHỈ HIỆN NÚT MUA VÀ CHỌN SỐ LƯỢNG KHI LÀ TRANG CUSTOMER -->
+            @if (isCustomer)
+            {
+                <div class="pt-3 border-top">
+                    @if (Model.Quantity > 0)
+                    {
+                        <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-flex align-items-center gap-3" onsubmit="return validateBuyQty(@Model.Quantity)">
+                            <input type="hidden" name="productId" value="@Model.ProductId" />
+                            <div class="input-group" style="width: 140px;">
+                                <button type="button" class="btn btn-outline-secondary" onclick="decreaseQty()"><i class="fa fa-minus"></i></button>
+                                <input type="number" id="buyQuantity" name="quantity" class="form-control text-center fw-bold" value="1" min="1" max="@Model.Quantity" />
+                                <button type="button" class="btn btn-outline-secondary" onclick="increaseQty(@Model.Quantity)"><i class="fa fa-plus"></i></button>
+                            </div>
+
+                            <button type="submit" class="btn btn-danger btn-lg px-4 fw-bold flex-grow-1 shadow-sm">
+                                <i class="fa fa-cart-plus me-2"></i> THÊM VÀO GIỎ HÀNG
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning mb-0" role="alert">
+                            <i class="fa fa-exclamation-triangle me-2"></i> Món ăn này hiện đang tạm hết hàng. Quý khách vui lòng chọn món ăn khác!
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <!-- TRANG ADMIN: KHÔNG CÓ NÚT MUA HÀNG -->
+                <div class="pt-3 border-top d-flex gap-2">
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-warning fw-semibold px-4">
+                        <i class="fa fa-edit me-1"></i> Chỉnh sửa sản phẩm
+                    </a>
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary px-3">
+                        <i class="fa fa-arrow-left me-1"></i> Quay lại danh sách
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function decreaseQty() {
+        var input = document.getElementById('buyQuantity');
+        if (input && parseInt(input.value) > 1) {
+            input.value = parseInt(input.value) - 1;
+        }
+    }
+    // Kiểm tra số lượng mua trước khi thêm vào giỏ: 1 <= SL <= tồn kho
+    function validateBuyQty(max) {
+        var input = document.getElementById('buyQuantity');
+        var v = parseInt(input.value);
+        if (isNaN(v) || v < 1) { alert('Số lượng mua phải từ 1 trở lên!'); input.value = 1; return false; }
+        if (v > max) { alert('Chỉ còn ' + max + ' phần trong kho!'); input.value = max; return false; }
+        return true;
+    }
+    function increaseQty(max) {
+        var input = document.getElementById('buyQuantity');
+        if (input && parseInt(input.value) < max) {
+            input.value = parseInt(input.value) + 1;
+        }
+    }
+</script>

@@ -1,0 +1,71 @@
+@model IEnumerable<FastFood.Models.User>
+@{
+    ViewData["Title"] = "Quản Lý Người Quản Trị";
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold text-dark mb-1">Quản Lý Người Quản Trị (Admin)</h4>
+        <p class="text-muted small mb-0">Chỉ lưu giữ và quản lý danh sách các tài khoản quản trị hệ thống</p>
+    </div>
+    <a asp-action="Create" class="btn btn-danger fw-semibold">
+        <i class="fa fa-user-plus me-1"></i> Thêm Quản Trị Viên
+    </a>
+</div>
+
+<div class="card card-custom">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <!-- Bảng Users có nhiều hơn 5 cột (UserId, Username, Password, FullName, Email, Phone, Address, Role, CreatedAt, Status)
+                 nên GIỮ chức năng Detail theo barem (chỉ bỏ Detail khi bảng < 5 cột) -->
+            <table class="table table-custom table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Họ và Tên</th>
+                        <th>Tên Đăng Nhập</th>
+                        <th>Email</th>
+                        <th>Số Điện Thoại</th>
+                        <th class="text-center">Trạng Thái</th>
+                        <th class="text-end">Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong class="text-dark">@item.FullName</strong>
+                                <small class="text-muted d-block">Tham gia: @item.CreatedAt.ToString("dd/MM/yyyy")</small>
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary font-monospace">@item.Username</span>
+                            </td>
+                            <td>@item.Email</td>
+                            <td>@item.Phone</td>
+                            <td class="text-center">
+                                @if (item.Status)
+                                {
+                                    <span class="badge bg-success-subtle text-success border border-success">Hoạt động</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Khóa</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@item.UserId" class="btn btn-sm btn-outline-info" title="Xem chi tiết">
+                                    <i class="fa fa-eye"></i> Xem
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@item.UserId" class="btn btn-sm btn-outline-warning" title="Chỉnh sửa">
+                                    <i class="fa fa-edit"></i> Sửa
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.UserId" class="btn btn-sm btn-outline-danger" title="Xóa">
+                                    <i class="fa fa-trash"></i> Xóa
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+@model FastFood.Models.Product
+@{
+    ViewData["Title"] = "Thêm Mới Món Ăn";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold text-dark mb-1">Thêm Món Ăn Mới</h4>
+        <p class="text-muted small mb-0">Thêm món ăn mới vào thực đơn kinh doanh</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="fa fa-arrow-left me-1"></i> Quay Lại
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="card card-custom">
+            <div class="card-body p-4 p-md-5">
+                <!-- FORM UPLOAD MULTIPART -->
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-8">
+                            <label asp-for="ProductName" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
+                            <input asp-for="ProductName" class="form-control" placeholder="Ví dụ: Burger Gà Nướng Tiêu Đen..." />
+                            <span asp-validation-for="ProductName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="CategoryId" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
+                            <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId">
+                                <option value="">-- Chọn danh mục --</option>
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Price" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
+                            <div class="input-group">
+                                <input asp-for="Price" class="form-control" type="number" min="1000" step="1" placeholder="59000" value="@(Model != null && Model.Price > 0 ? Model.Price.ToString("0", System.Globalization.CultureInfo.InvariantCulture) : "")" />
+                                <span class="input-group-text">VNĐ</span>
+                            </div>
+                            <span asp-validation-for="Price" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Quantity" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
+                            <input asp-for="Quantity" class="form-control" type="number" min="0" placeholder="Số lượng trong kho (ví dụ: 50)" />
+                            <span asp-validation-for="Quantity" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label fw-semibold"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Mô tả thành phần, hương vị của món ăn..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <!-- YÊU CẦU BAREM: UPLOAD ĐƯỢC ẢNH SẢN PHẨM -->
+                    <div class="row g-3 mb-4 p-3 bg-light rounded-3 border">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-dark"><i class="fa fa-upload text-danger me-1"></i> Tải Lên Ảnh Từ Máy Tính</label>
+                            <input type="file" name="uploadImage" class="form-control" accept="image/*" />
+                            <small class="text-muted">Định dạng hỗ trợ: JPG, PNG, WEBP (Lưu vào thư mục wwwroot/images/products)</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold text-dark"><i class="fa fa-link text-primary me-1"></i> Hoặc Nhập URL Hình Ảnh (Online)</label>
+                            <input type="text" name="imageUrl" class="form-control" placeholder="https://images.unsplash.com/..." />
+                            <small class="text-muted">Ưu tiên ảnh upload nếu chọn cả 2 cách</small>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check form-switch fs-5">
+                            <input class="form-check-input" type="checkbox" role="switch" asp-for="Status" />
+                            <label class="form-check-label fs-6 fw-semibold" asp-for="Status">Đang mở bán trên thực đơn</label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 border-top pt-4">
+                        <a asp-action="Index" class="btn btn-light px-4">Hủy Bỏ</a>
+                        <button type="submit" class="btn btn-danger px-4 fw-bold">
+                            <i class="fa fa-save me-1"></i> Lưu Món Ăn
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

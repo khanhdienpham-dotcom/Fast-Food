@@ -1,0 +1,22 @@
+@model FastFood.Models.Product
+@{
+    ViewData["Title"] = "Chi Tiết Sản Phẩm: " + Model.ProductName;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold text-dark mb-1">Chi Tiết Món Ăn</h4>
+        <p class="text-muted small mb-0">Hiển thị thông tin chi tiết của món ăn (Giao diện chuẩn hóa Partial View)</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-warning fw-semibold">
+            <i class="fa fa-edit me-1"></i> Chỉnh Sửa
+        </a>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fa fa-arrow-left me-1"></i> Quay Lại Danh Sách
+        </a>
+    </div>
+</div>
+
+<!-- TÁI SỬ DỤNG PARTIAL VIEW DETAIL PRODUCT CHO TRANG ADMIN (KHÔNG CÓ NÚT MUA HÀNG) -->
+@await Html.PartialAsync("_ProductDetailPartial", Model, new ViewDataDictionary(ViewData) { { "IsCustomer", false } })

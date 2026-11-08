@@ -1,0 +1,38 @@
+@model FastFood.Models.User
+@{
+    ViewData["Title"] = "Chi Tiết Khách Hàng: " + Model.FullName;
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold text-dark mb-1">Hồ Sơ Khách Hàng: <span class="text-danger">@Model.FullName</span></h4>
+        <p class="text-muted small mb-0">Hiển thị thông tin khách hàng và danh sách lịch sử đơn hàng</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="fa fa-arrow-left me-1"></i> Quay Lại Danh Sách</a>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card card-custom h-100">
+            <div class="card-header-custom"><h6 class="fw-bold mb-0"><i class="fa fa-id-card text-primary me-2"></i>Thông Tin Cá Nhân</h6></div>
+            <div class="card-body p-4">
+                <p class="mb-2"><small class="text-muted">Họ và tên:</small> <strong class="d-block">@Model.FullName</strong></p>
+                <p class="mb-2"><small class="text-muted">Tên tài khoản:</small> <strong class="d-block text-primary">@Model.Username</strong></p>
+                <p class="mb-2"><small class="text-muted">Email:</small> <strong class="d-block">@Model.Email</strong></p>
+                <p class="mb-2"><small class="text-muted">Số điện thoại:</small> <strong class="d-block">@Model.Phone</strong></p>
+                <p class="mb-0"><small class="text-muted">Địa chỉ nhận hàng:</small> <strong class="d-block">@(Model.Address ?? "Chưa thiết lập")</strong></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <!-- YÊU CẦU BAREM: Trang Detail: hiển thị thông tin khách hàng + danh sách đơn hàng của khách hàng.
+             Tạo Partial View cho trang Index của Order để nhúng Danh sách đơn hàng vào trang Detail của Customer -->
+        <div class="card card-custom h-100">
+            <div class="card-header-custom">
+                <h6 class="fw-bold mb-0"><i class="fa fa-shopping-bag text-danger me-2"></i>Lịch Sử Các Đơn Hàng Của Khách Hàng (@Model.Orders.Count đơn)</h6>
+            </div>
+            <div class="card-body p-0">
+                @await Html.PartialAsync("_OrderListPartial", Model.Orders, new ViewDataDictionary(ViewData) { { "IsAdmin", true } })
+            </div>
+        </div>
+    </div>
+</div>

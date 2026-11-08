@@ -1,0 +1,83 @@
+﻿@model FastFood.Models.Category
+@{
+    ViewData["Title"] = "Xóa Danh Mục";
+    bool hasProducts = Model.Products != null && Model.Products.Any();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold text-dark mb-1">Xác Nhận Xóa Danh Mục</h4>
+        <p class="text-muted small mb-0">Kiểm tra ràng buộc dữ liệu trước khi xóa</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="fa fa-arrow-left me-1"></i> Quay Lại
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card card-custom border-danger">
+            <div class="card-body p-4 p-md-5">
+                @if (hasProducts)
+                {
+                    <div class="alert alert-danger d-flex align-items-center gap-3 mb-4" role="alert">
+                        <i class="fa fa-exclamation-triangle fa-2x"></i>
+                        <div>
+                            <strong>CẢNH BÁO RÀNG BUỘC KHÓA NGOẠI (CONSTRAINTS):</strong><br />
+                            Danh mục này hiện đang có <strong>@(Model.Products?.Count ?? 0)</strong> sản phẩm liên kết. Hệ thống không cho phép xóa danh mục khi còn sản phẩm!
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning d-flex align-items-center gap-3 mb-4" role="alert">
+                        <i class="fa fa-question-circle fa-2x"></i>
+                        <div>
+                            Bạn có chắc chắn muốn xóa danh mục này khỏi cơ sở dữ liệu không?
+                        </div>
+                    </div>
+                }
+
+                <div class="p-3 bg-light rounded-3 mb-4 border">
+                    <div class="row mb-2">
+                        <div class="col-sm-4 text-muted">Mã danh mục:</div>
+                        <div class="col-sm-8 fw-bold">#@Model.CategoryId</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-sm-4 text-muted">Tên danh mục:</div>
+                        <div class="col-sm-8 fw-bold text-danger">@Model.CategoryName</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-sm-4 text-muted">Mô tả:</div>
+                        <div class="col-sm-8">@(Model.Description ?? "Không có")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 text-muted">Số sản phẩm liên kết:</div>
+                        <div class="col-sm-8">
+                            <span class="badge @(hasProducts ? "bg-danger" : "bg-success")">
+                                @(Model.Products?.Count ?? 0) sản phẩm
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <form asp-action="Delete" method="post" class="d-flex justify-content-end gap-2">
+                    <input type="hidden" asp-for="CategoryId" />
+                    <a asp-action="Index" class="btn btn-secondary px-4">Hủy Bỏ</a>
+                    @if (hasProducts)
+                    {
+                        <button type="submit" class="btn btn-danger px-4" disabled title="Không thể xóa do ràng buộc dữ liệu">
+                            <i class="fa fa-ban me-1"></i> Bị Khóa (Không Thể Xóa)
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-danger px-4 fw-bold">
+                            <i class="fa fa-trash me-1"></i> Đồng Ý Xóa
+                        </button>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

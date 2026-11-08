@@ -1,0 +1,422 @@
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var username = HttpContextAccessor.HttpContext?.Session.GetString("Username");
+    var fullName = HttpContextAccessor.HttpContext?.Session.GetString("FullName");
+    var role = HttpContextAccessor.HttpContext?.Session.GetString("Role");
+    bool isLoggedIn = !string.IsNullOrEmpty(username);
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FastFood Store</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <style>
+        :root {
+            --primary: #E63946;
+            --primary-hover: #c62836;
+            --secondary: #F4A261;
+            --dark: #1D1D1D;
+            --dark-card: #282828;
+            --light: #FFF8F0;
+            --gray: #6C757D;
+            --success: #2A9D8F;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* NAVBAR & HEADER */
+        .fastfood-navbar {
+            background-color: var(--dark);
+            padding: 12px 0;
+            border-bottom: 2px solid #333;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary) !important;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar-brand:hover {
+            color: #fff !important;
+        }
+
+        .nav-link {
+            color: #ddd !important;
+            font-weight: 500;
+            padding: 8px 14px !important;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--secondary) !important;
+        }
+
+        .search-form-nav {
+            position: relative;
+            max-width: 280px;
+        }
+
+        .search-form-nav input {
+            border-radius: 20px;
+            padding: 7px 38px 7px 16px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .search-form-nav input::placeholder {
+            color: #aaa;
+        }
+
+        .search-form-nav input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-color: var(--secondary);
+            box-shadow: none;
+        }
+
+        .search-form-nav button {
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+
+        .btn-fastfood-primary {
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            font-weight: 600;
+            padding: 9px 20px;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .btn-fastfood-primary:hover {
+            background-color: var(--primary-hover);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+        }
+
+        .btn-fastfood-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+            font-weight: 600;
+            padding: 7px 18px;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .btn-fastfood-outline:hover {
+            background-color: var(--primary);
+            color: #fff;
+        }
+
+        /* USER & CART */
+        .cart-icon-btn {
+            position: relative;
+            color: #fff;
+            font-size: 1.25rem;
+            padding: 6px 12px;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .user-dropdown-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff !important;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-dropdown-btn:hover {
+            background: rgba(255,255,255,0.18);
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: auto;
+            background-color: var(--dark);
+            color: #bbb;
+            padding: 40px 0 20px;
+            border-top: 3px solid var(--primary);
+        }
+
+        footer h5 {
+            color: var(--secondary);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 18px;
+        }
+
+        footer a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.2s;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        footer a:hover {
+            color: var(--secondary);
+            padding-left: 4px;
+        }
+
+        .social-link {
+            display: inline-flex;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: #fff !important;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            transition: background 0.2s;
+        }
+
+        .social-link:hover {
+            background: var(--primary) !important;
+        }
+
+        /* FLASH MESSAGES */
+        .alert-floating {
+            margin-top: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+    </style>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <!-- HEADER & NAVBAR -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark fastfood-navbar">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <img src="https://img.icons8.com/color/48/000000/hamburger.png" width="36" height="36" alt="FastFood" />
+                    <span>FastFood</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#fastfoodNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="fastfoodNav">
+                    <!-- Left Menu -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index"><i class="fa fa-home me-1"></i> Trang Chủ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Product" asp-action="Index"><i class="fa fa-book-open me-1"></i> Thực Đơn</a>
+                        </li>
+                        <!-- Dynamic Categories from Database -->
+                        <li class="nav-item">
+                            @await Component.InvokeAsync("CategoryMenu", new { view = "Default" })
+                        </li>
+                    </ul>
+
+                    <!-- Search Box -->
+                    <form class="search-form-nav d-none d-md-flex me-3" asp-controller="Product" asp-action="Index" method="get">
+                        <input class="form-control" type="search" name="keyword" placeholder="Tìm kiếm món ăn..." aria-label="Search" value="@Context.Request.Query["keyword"]" />
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+
+                    <!-- Cart & User -->
+                    <div class="d-flex align-items-center gap-3">
+                        <!-- Giỏ hàng có icon và hiển thị số lượng -->
+                        <a asp-controller="Cart" asp-action="Index" class="cart-icon-btn" title="Xem giỏ hàng">
+                            <i class="fa fa-shopping-cart fa-lg text-warning"></i>
+                            @await Component.InvokeAsync("CartCount")
+                        </a>
+
+                        @if (isLoggedIn)
+                        {
+                            <!-- Đã đăng nhập: hiển thị icon Hồ sơ người dùng và tên người dùng cạnh icon, ẩn Đăng ký / Đăng nhập -->
+                            <div class="dropdown">
+                                <a href="#" class="user-dropdown-btn dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-user-circle fa-lg text-secondary"></i>
+                                    <span class="fw-bold">@fullName</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 mt-2">
+                                    <li class="px-3 py-2 border-bottom">
+                                        <small class="text-muted d-block">Tài khoản: <strong>@username</strong></small>
+                                        <span class="badge bg-success">@role</span>
+                                    </li>
+                                    <!-- 2 link bắt buộc: Lịch sử giao dịch và Hồ sơ khách hàng -->
+                                    <li>
+                                        <a class="dropdown-item py-2" asp-controller="Order" asp-action="History">
+                                            <i class="fa fa-receipt me-2 text-primary"></i> Lịch sử giao dịch
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item py-2" asp-controller="Account" asp-action="Profile">
+                                            <i class="fa fa-id-card me-2 text-info"></i> Hồ sơ khách hàng
+                                        </a>
+                                    </li>
+                                    @if (role == "Admin")
+                                    {
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item py-2 fw-bold text-danger" asp-area="Admin" asp-controller="Home" asp-action="Index">
+                                                <i class="fa fa-cog me-2"></i> Trang Quản Trị (Admin)
+                                            </a>
+                                        </li>
+                                    }
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item py-2 text-danger" asp-controller="Account" asp-action="Logout">
+                                            <i class="fa fa-sign-out-alt me-2"></i> Đăng xuất
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+                        else
+                        {
+                            <!-- Chưa đăng nhập: hiện nút Đăng nhập và Đăng ký -->
+                            <div class="d-flex gap-2">
+                                <a asp-controller="Account" asp-action="Login" class="btn btn-sm btn-fastfood-outline">
+                                    <i class="fa fa-sign-in-alt me-1"></i> Đăng nhập
+                                </a>
+                                <a asp-controller="Account" asp-action="Register" class="btn btn-sm btn-fastfood-primary">
+                                    <i class="fa fa-user-plus me-1"></i> Đăng ký
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main role="main" class="flex-grow-1">
+        <div class="container">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show alert-floating" role="alert">
+                    <i class="fa fa-check-circle me-2"></i> @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show alert-floating" role="alert">
+                    <i class="fa fa-exclamation-triangle me-2"></i> @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+        </div>
+
+        @RenderBody()
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="https://img.icons8.com/color/48/000000/hamburger.png" width="32" height="32" alt="" />
+                        <span class="fs-4 fw-bold text-white">FastFood Store</span>
+                    </div>
+                    <p class="small text-muted mb-3">
+                        Hệ thống chuỗi cửa hàng thức ăn nhanh số 1 với nguyên liệu nhập khẩu tươi sạch, phục vụ nhanh chóng, mang đến bữa ăn thơm ngon trọn vị cho bạn và gia đình.
+                    </p>
+                    <div class="d-flex">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5>Danh Mục</h5>
+                    <a asp-controller="Product" asp-action="Index">Tất cả món</a>
+                    @* Lấy danh mục từ DB thay vì gõ cứng mã danh mục *@
+                    @await Component.InvokeAsync("CategoryMenu", new { view = "Footer" })
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Hỗ Trợ Khách Hàng</h5>
+                    <a href="#">Chính sách giao hàng</a>
+                    <a href="#">Điều khoản sử dụng</a>
+                    <a href="#">Chính sách bảo mật</a>
+                    <a href="#">Hướng dẫn thanh toán</a>
+                    <a href="#">Câu hỏi thường gặp (FAQ)</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Liên Hệ Cửa Hàng</h5>
+                    <p class="small mb-2"><i class="fa fa-map-marker-alt text-danger me-2"></i> 123 Nguyễn Trãi, Phường 2, Quận 1, TP.HCM</p>
+                    <p class="small mb-2"><i class="fa fa-phone-alt text-danger me-2"></i> Hotline: <strong>1900 1234</strong> (8h - 22h)</p>
+                    <p class="small mb-2"><i class="fa fa-envelope text-danger me-2"></i> Email: hotro@fastfood.vn</p>
+                    <div class="mt-3">
+                        <span class="badge bg-danger p-2"><i class="fa fa-shipping-fast me-1"></i> Giao hàng trong 30 phút</span>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary my-4" />
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start small text-muted">
+                    © 2026 FastFood Store. Tất cả các quyền được bảo lưu.
+                </div>
+                <div class="col-md-6 text-center text-md-end small text-muted">
+                    Xây dựng bằng ASP.NET Core 8.0 MVC
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
