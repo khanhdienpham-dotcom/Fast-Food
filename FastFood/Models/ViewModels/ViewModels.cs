@@ -112,7 +112,7 @@ namespace FastFood.Models.ViewModels
 
     public class InventoryViewModel
     {
-        public List<Product> InStockProducts { get; set; } = new List<Product>(); // Quantity > 0
-        public List<Product> OutOfStockProducts { get; set; } = new List<Product>(); // Quantity == 0
+        public List<Product> InStockProducts { get; set; } = new List<Product>();
+        public List<Product> OutOfStockProducts { get; set; } = new List<Product>();
     }
 }

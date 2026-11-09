@@ -1,18 +1,11 @@
-/* ===========================
-   SANPHAM.CSS - TRANG THỰC ĐƠN
-   =========================== */
 
-/* Breadcrumb */
 .breadcrumb {
   padding: 12px 0;
   font-size: 0.88rem;
-  /* TODO: background-color: ; */
-  /* TODO: color: ; */
   border-bottom: 1px solid #eee;
 }
-.breadcrumb a { /* TODO: color: ; */ }
+.breadcrumb a {  }
 
-/* ── TOOLBAR ── */
 .menu-toolbar {
   display: flex;
   align-items: center;
@@ -22,8 +15,6 @@
   margin-bottom: 28px;
   padding: 16px;
   border-radius: 10px;
-  /* TODO: background-color: ; */
-  /* TODO: border: 1px solid ; */
 }
 
 .filter-tabs {
@@ -40,16 +31,10 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  /* TODO: border-color: ; */
-  /* TODO: color: ; */
-  /* TODO: background: ; */
 }
 
 .filter-btn.active,
 .filter-btn:hover {
-  /* TODO: background-color: ; */
-  /* TODO: color: ; */
-  /* TODO: border-color: ; */
 }
 
 .menu-sort {
@@ -63,23 +48,17 @@
   padding: 6px 12px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  /* TODO: background: ; */
-  /* TODO: color: ; */
 }
 
-/* ── LAYOUT ── */
 .menu-layout {
   display: grid;
   grid-template-columns: 260px 1fr;
   gap: 28px;
 }
 
-/* SIDEBAR */
 .menu-sidebar {
-  /* TODO: background: ; */
   border-radius: 12px;
   padding: 20px;
-  /* TODO: border: 1px solid ; */
   height: fit-content;
   position: sticky;
   top: 80px;
@@ -99,7 +78,6 @@
   font-size: 0.95rem;
   font-weight: 700;
   margin-bottom: 12px;
-  /* TODO: color: ; */
 }
 
 .sidebar-block label {
@@ -109,12 +87,10 @@
   margin-bottom: 8px;
   font-size: 0.88rem;
   cursor: pointer;
-  /* TODO: color: ; */
 }
 
 .price-range input[type="range"] {
   width: 100%;
-  /* TODO: accent-color: ; */
 }
 
 .price-labels {
@@ -122,10 +98,8 @@
   justify-content: space-between;
   font-size: 0.82rem;
   margin-top: 6px;
-  /* TODO: color: ; */
 }
 
-/* CONTENT AREA */
 .menu-content { width: 100%; }
 
 .menu-result-bar {
@@ -134,7 +108,6 @@
   align-items: center;
   margin-bottom: 20px;
   font-size: 0.9rem;
-  /* TODO: color: ; */
 }
 
 .view-toggle {
@@ -148,24 +121,17 @@
   border-radius: 6px;
   border: 1px solid #ccc;
   cursor: pointer;
-  /* TODO: background: ; */
-  /* TODO: color: ; */
 }
 
 .view-toggle button.active {
-  /* TODO: background: ; */
-  /* TODO: color: ; */
-  /* TODO: border-color: ; */
 }
 
-/* PRODUCTS GRID */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
 }
 
-/* LIST VIEW mode */
 .products-grid.list-view {
   grid-template-columns: 1fr;
 }
@@ -180,7 +146,6 @@
   height: 120px;
 }
 
-/* Card Badges */
 .card { position: relative; }
 
 .card-badge-new,
@@ -194,11 +159,9 @@
   font-size: 0.75rem;
   font-weight: 700;
   z-index: 1;
-  /* TODO: background: ; */
-  /* TODO: color: ; */
 }
-.card-badge-hot  { /* TODO: background: ; */ }
-.card-badge-sale { /* TODO: background: ; */ }
+.card-badge-hot  {  }
+.card-badge-sale {  }
 
 .card-actions {
   display: flex;
@@ -216,14 +179,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* TODO: color: ; */
   transition: all 0.2s;
 }
 
 .btn-icon:hover {
-  /* TODO: background: ; */
-  /* TODO: color: ; */
-  /* TODO: border-color: ; */
 }
 
 .btn-sm {
@@ -231,7 +190,6 @@
   font-size: 0.82rem;
 }
 
-/* PAGINATION */
 .pagination {
   display: flex;
   justify-content: center;
@@ -248,19 +206,12 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  /* TODO: border-color: ; */
-  /* TODO: color: ; */
-  /* TODO: background: ; */
 }
 
 .page-btn.active,
 .page-btn:hover {
-  /* TODO: background: ; */
-  /* TODO: color: ; */
-  /* TODO: border-color: ; */
 }
 
-/* Responsive */
 @media (max-width: 900px) {
   .menu-layout { grid-template-columns: 1fr; }
   .menu-sidebar { position: static; }

@@ -13,7 +13,6 @@ namespace FastFood.ViewComponents
             _context = context;
         }
 
-        // view = "Default" (menu dropdown trên thanh điều hướng) hoặc "Footer" (danh sách link ở chân trang)
         public async Task<IViewComponentResult> InvokeAsync(string view = "Default")
         {
             var categories = await _context.Categories

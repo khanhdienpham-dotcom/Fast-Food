@@ -4,7 +4,6 @@
 }
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <!-- Quản lý khách hàng: Trang Index: lưu giữ danh sách khách hàng, KHÔNG có nút Thêm/Sửa/Xóa (0.125) -->
         <h4 class="fw-bold text-dark mb-1">Quản Lý Danh Sách Khách Hàng</h4>
         <p class="text-muted small mb-0">Lưu giữ danh sách người dùng đăng ký tài khoản mua hàng</p>
     </div>
@@ -51,7 +50,6 @@
                                     <i class="fa fa-receipt me-1"></i> @item.Orders.Count đơn
                                 </span>
                             </td>
-                            <!-- KHÔNG CÓ NÚT THÊM / SỬA / XÓA THEO YÊU CẦU BAREM - CHỈ CÓ NÚT DETAIL -->
                             <td class="text-end">
                                 <a asp-action="Details" asp-route-id="@item.UserId" class="btn btn-sm btn-outline-primary fw-semibold">
                                     <i class="fa fa-eye me-1"></i> Xem đơn hàng

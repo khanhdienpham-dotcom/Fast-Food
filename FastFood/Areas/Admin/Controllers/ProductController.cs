@@ -18,7 +18,6 @@ namespace FastFood.Areas.Admin.Controllers
             _env = env;
         }
 
-        // Chỉ cho phép ảnh .jpg/.jpeg/.png/.gif/.webp, tối đa 5MB
         private static readonly string[] AllowedImageExt = { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
 
         private static string? ValidateImage(IFormFile? file)
@@ -30,8 +29,6 @@ namespace FastFood.Areas.Admin.Controllers
             return null;
         }
 
-        // GET: Admin/Product
-        // Trang Index: chỉ hiện 4-5 cột dữ liệu chính (tên, ảnh, giá, số lượng tồn, chủng loại) (0.125)
         public async Task<IActionResult> Index()
         {
             var products = await _context.Products
@@ -42,9 +39,6 @@ namespace FastFood.Areas.Admin.Controllers
             return View(products);
         }
 
-        // GET: Admin/Product/Details/5
-        // Trang Detail: format giống trang Detail Product cho trang Customer (không có nút MUA HÀNG)
-        // Tạo Partial View Detail Product để tái sử dụng cho cả 2 trang Admin và Customer (0.125)
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -58,15 +52,12 @@ namespace FastFood.Areas.Admin.Controllers
             return View(product);
         }
 
-        // GET: Admin/Product/Create
         public IActionResult Create()
         {
             ViewBag.CategoryId = new SelectList(_context.Categories.Where(c => c.Status).OrderBy(c => c.DisplayOrder), "CategoryId", "CategoryName");
             return View(new Product { Status = true });
         }
 
-        // POST: Admin/Product/Create
-        // Create: Data Annotation + Upload được ảnh sản phẩm (0.25)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProductName,Description,Price,Quantity,CategoryId,Status")] Product product, IFormFile? uploadImage, string? imageUrl)
@@ -80,7 +71,6 @@ namespace FastFood.Areas.Admin.Controllers
                 ModelState.AddModelError("ProductName", "Tên món ăn này đã tồn tại!");
             if (ModelState.IsValid)
             {
-                // XỬ LÝ UPLOAD ẢNH SẢN PHẨM (YÊU CẦU BAREM: Upload được ảnh sản phẩm)
                 if (uploadImage != null && uploadImage.Length > 0)
                 {
                     string uploadsFolder = Path.Combine(_env.WebRootPath, "images", "products");
@@ -116,7 +106,6 @@ namespace FastFood.Areas.Admin.Controllers
             return View(product);
         }
 
-        // GET: Admin/Product/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -128,8 +117,6 @@ namespace FastFood.Areas.Admin.Controllers
             return View(product);
         }
 
-        // POST: Admin/Product/Edit/5
-        // Edit: Data Annotation + Upload ảnh (0.25)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProductId,ProductName,Description,Price,Quantity,SoldQuantity,CategoryId,Status,ImageUrl")] Product product, IFormFile? uploadImage)
@@ -148,7 +135,6 @@ namespace FastFood.Areas.Admin.Controllers
             {
                 try
                 {
-                    // Upload ảnh mới nếu có
                     if (uploadImage != null && uploadImage.Length > 0)
                     {
                         string uploadsFolder = Path.Combine(_env.WebRootPath, "images", "products");
@@ -165,7 +151,6 @@ namespace FastFood.Areas.Admin.Controllers
                         product.ImageUrl = "/images/products/" + uniqueFileName;
                     }
 
-                    // Giữ nguyên ngày tạo gốc trong DB (không lấy từ form)
                     product.CreatedAt = await _context.Products.Where(p => p.ProductId == id)
                         .Select(p => p.CreatedAt).FirstOrDefaultAsync();
                     if (product.CreatedAt == default) product.CreatedAt = DateTime.Now;
@@ -187,7 +172,6 @@ namespace FastFood.Areas.Admin.Controllers
             return View(product);
         }
 
-        // GET: Admin/Product/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -202,8 +186,6 @@ namespace FastFood.Areas.Admin.Controllers
             return View(product);
         }
 
-        // POST: Admin/Product/Delete/5
-        // Delete: kiểm tra ràng buộc dữ liệu với các bảng liên quan (OrderDetails) (0.125)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -214,7 +196,6 @@ namespace FastFood.Areas.Admin.Controllers
 
             if (product == null) return NotFound();
 
-            // KIỂM TRA RÀNG BUỘC VỚI BẢNG ORDER DETAILS (HÓA ĐƠN ĐÃ ĐẶT)
             if (product.OrderDetails != null && product.OrderDetails.Any())
             {
                 TempData["ErrorMessage"] = $"Không thể xóa món '{product.ProductName}' vì món ăn này đã có trong {product.OrderDetails.Count} đơn hàng của khách!";

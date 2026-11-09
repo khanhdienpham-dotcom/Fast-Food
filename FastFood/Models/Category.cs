@@ -30,7 +30,6 @@ namespace FastFood.Models
         [Display(Name = "Trạng thái hiển thị")]
         public bool Status { get; set; } = true;
 
-        // Navigation property
         public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

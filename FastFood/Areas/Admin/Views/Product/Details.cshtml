@@ -18,5 +18,4 @@
     </div>
 </div>
 
-<!-- TÁI SỬ DỤNG PARTIAL VIEW DETAIL PRODUCT CHO TRANG ADMIN (KHÔNG CÓ NÚT MUA HÀNG) -->
 @await Html.PartialAsync("_ProductDetailPartial", Model, new ViewDataDictionary(ViewData) { { "IsCustomer", false } })

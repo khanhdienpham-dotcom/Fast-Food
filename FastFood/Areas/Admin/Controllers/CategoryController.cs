@@ -15,8 +15,6 @@ namespace FastFood.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/Category
-        // Index: có hiển thị tổng số HÀNG HÓA thuộc danh mục (0.25)
         public async Task<IActionResult> Index()
         {
             var categories = await _context.Categories
@@ -27,8 +25,6 @@ namespace FastFood.Areas.Admin.Controllers
             return View(categories);
         }
 
-        // GET: Admin/Category/Details/5
-        // Details: có chứa Danh sách sản phẩm liên quan (Product Category) (0.25)
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -42,19 +38,15 @@ namespace FastFood.Areas.Admin.Controllers
             return View(category);
         }
 
-        // GET: Admin/Category/Create
         public IActionResult Create()
         {
             return View(new Category { DisplayOrder = 1, Status = true });
         }
 
-        // POST: Admin/Category/Create
-        // Create: kiểm tra Data Annotation (0.125)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CategoryName,Description,ImageUrl,DisplayOrder,Status")] Category category)
         {
-            // Không cho tạo 2 danh mục trùng tên
             if (!string.IsNullOrWhiteSpace(category.CategoryName) &&
                 await _context.Categories.AnyAsync(c => c.CategoryName.ToLower() == category.CategoryName.Trim().ToLower()))
                 ModelState.AddModelError("CategoryName", "Tên danh mục này đã tồn tại!");
@@ -68,7 +60,6 @@ namespace FastFood.Areas.Admin.Controllers
             return View(category);
         }
 
-        // GET: Admin/Category/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -79,8 +70,6 @@ namespace FastFood.Areas.Admin.Controllers
             return View(category);
         }
 
-        // POST: Admin/Category/Edit/5
-        // Edit: kiểm tra Data Annotation (0.125)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CategoryId,CategoryName,Description,ImageUrl,DisplayOrder,Status")] Category category)
@@ -111,7 +100,6 @@ namespace FastFood.Areas.Admin.Controllers
             return View(category);
         }
 
-        // GET: Admin/Category/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -125,8 +113,6 @@ namespace FastFood.Areas.Admin.Controllers
             return View(category);
         }
 
-        // POST: Admin/Category/Delete/5
-        // Delete: đã kiểm tra ràng buộc dữ liệu (constraints) với các bảng liên quan chưa? (0.125)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -137,10 +123,8 @@ namespace FastFood.Areas.Admin.Controllers
 
             if (category == null) return NotFound();
 
-            // KIỂM TRA RÀNG BUỘC VỚI BẢNG PRODUCTS THEO YÊU CẦU BAREM
             if (category.Products != null && category.Products.Any())
             {
-                // Thông báo lỗi nếu danh mục đang có sản phẩm
                 TempData["ErrorMessage"] = $"Không thể xóa danh mục '{category.CategoryName}' vì đang có {category.Products.Count} sản phẩm liên kết!";
                 return RedirectToAction(nameof(Index));
             }

@@ -17,7 +17,6 @@
     <div class="col-lg-9">
         <div class="card card-custom">
             <div class="card-body p-4 p-md-5">
-                <!-- FORM UPLOAD MULTIPART -->
                 <form asp-action="Create" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
@@ -58,7 +57,6 @@
                         <span asp-validation-for="Description" class="text-danger small"></span>
                     </div>
 
-                    <!-- YÊU CẦU BAREM: UPLOAD ĐƯỢC ẢNH SẢN PHẨM -->
                     <div class="row g-3 mb-4 p-3 bg-light rounded-3 border">
                         <div class="col-md-6">
                             <label class="form-label fw-bold text-dark"><i class="fa fa-upload text-danger me-1"></i> Tải Lên Ảnh Từ Máy Tính</label>

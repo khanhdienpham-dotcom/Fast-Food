@@ -8,13 +8,11 @@ namespace FastFood.Models
         {
             context.Database.EnsureCreated();
 
-            // Check if already seeded
             if (context.Categories.Any())
             {
-                return; // DB has been seeded
+                return;
             }
 
-            // 1. Seed Categories
             var categories = new List<Category>
             {
                 new Category { CategoryName = "Burger", Description = "Burger bò, gà, phô mai chuẩn vị Mỹ", ImageUrl = "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80", DisplayOrder = 1, Status = true },
@@ -27,7 +25,6 @@ namespace FastFood.Models
             context.Categories.AddRange(categories);
             context.SaveChanges();
 
-            // 2. Seed Products
             var products = new List<Product>
             {
                 new Product
@@ -138,14 +135,13 @@ namespace FastFood.Models
                     Status = true,
                     CreatedAt = DateTime.Now.AddDays(-7)
                 },
-                // Out of stock product for testing "Quản lý kho hàng: Danh sách hàng cần nhập (Quantity = 0)"
                 new Product
                 {
                     ProductName = "Pizza Pepperoni Xúc Xích Ý",
                     Description = "Pizza xúc xích bò cay truyền thống Ý kết hợp sốt cà chua tươi hảo hạng.",
                     Price = 79000,
                     ImageUrl = "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600&q=80",
-                    Quantity = 0, // Out of stock!
+                    Quantity = 0,
                     SoldQuantity = 95,
                     CategoryId = categories[2].CategoryId,
                     Status = true,
@@ -157,7 +153,7 @@ namespace FastFood.Models
                     Description = "Khoanh mực tươi tẩm bột chiên phồng chấm kèm sốt Tartar chua thanh dịu ngọt.",
                     Price = 49000,
                     ImageUrl = "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=600&q=80",
-                    Quantity = 0, // Out of stock!
+                    Quantity = 0,
                     SoldQuantity = 32,
                     CategoryId = categories[3].CategoryId,
                     Status = true,
@@ -167,13 +163,12 @@ namespace FastFood.Models
             context.Products.AddRange(products);
             context.SaveChanges();
 
-            // 3. Seed Users
             var users = new List<User>
             {
                 new User
                 {
                     Username = "admin",
-                    Password = FastFood.Helpers.PasswordHelper.Hash("123"), // mật khẩu được mã hóa PBKDF2
+                    Password = FastFood.Helpers.PasswordHelper.Hash("123"),
                     FullName = "Quản Trị Hệ Thống",
                     Email = "admin@fastfood.vn",
                     Phone = "0988888888",
@@ -210,7 +205,6 @@ namespace FastFood.Models
             context.Users.AddRange(users);
             context.SaveChanges();
 
-            // 4. Seed Sample Orders & OrderDetails
             var order1 = new Order
             {
                 OrderCode = "FF-" + DateTime.Now.ToString("yyyyMMdd") + "-001",
@@ -271,7 +265,7 @@ namespace FastFood.Models
                 new OrderDetail
                 {
                     OrderId = order2.OrderId,
-                    ProductId = products[7].ProductId, // Combo Solo
+                    ProductId = products[7].ProductId,
                     ProductName = products[7].ProductName,
                     Price = products[7].Price,
                     Quantity = 1,
@@ -280,7 +274,7 @@ namespace FastFood.Models
                 new OrderDetail
                 {
                     OrderId = order2.OrderId,
-                    ProductId = products[6].ProductId, // Coca Cola
+                    ProductId = products[6].ProductId,
                     ProductName = products[6].ProductName,
                     Price = products[6].Price,
                     Quantity = 1,
@@ -310,7 +304,7 @@ namespace FastFood.Models
                 new OrderDetail
                 {
                     OrderId = order3.OrderId,
-                    ProductId = products[8].ProductId, // Combo Gia đình
+                    ProductId = products[8].ProductId,
                     ProductName = products[8].ProductName,
                     Price = products[8].Price,
                     Quantity = 1,

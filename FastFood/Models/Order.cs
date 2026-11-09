@@ -44,11 +44,11 @@ namespace FastFood.Models
 
         [StringLength(50)]
         [Display(Name = "Hình thức thanh toán")]
-        public string PaymentMethod { get; set; } = "COD"; // "COD", "VNPAY", "MOMO"
+        public string PaymentMethod { get; set; } = "COD";
 
         [StringLength(50)]
         [Display(Name = "Trạng thái đơn hàng")]
-        public string Status { get; set; } = "Đang chuẩn bị"; // "Đang chuẩn bị", "Đang giao", "Đã giao", "Đã hủy"
+        public string Status { get; set; } = "Đang chuẩn bị";
 
         [Display(Name = "Thời gian đặt")]
         public DateTime OrderDate { get; set; } = DateTime.Now;

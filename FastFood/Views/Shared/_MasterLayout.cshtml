@@ -13,11 +13,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FastFood Store</title>
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <!-- Bootstrap 5 CSS -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
     <style>
@@ -41,7 +38,6 @@
             flex-direction: column;
         }
 
-        /* NAVBAR & HEADER */
         .fastfood-navbar {
             background-color: var(--dark);
             padding: 12px 0;
@@ -148,7 +144,6 @@
             color: #fff;
         }
 
-        /* USER & CART */
         .cart-icon-btn {
             position: relative;
             color: #fff;
@@ -177,7 +172,6 @@
             background: rgba(255,255,255,0.18);
         }
 
-        /* FOOTER */
         footer {
             margin-top: auto;
             background-color: var(--dark);
@@ -224,7 +218,6 @@
             background: var(--primary) !important;
         }
 
-        /* FLASH MESSAGES */
         .alert-floating {
             margin-top: 15px;
             border-radius: 10px;
@@ -234,11 +227,9 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <!-- HEADER & NAVBAR -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark fastfood-navbar">
             <div class="container">
-                <!-- Logo -->
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">
                     <img src="https://img.icons8.com/color/48/000000/hamburger.png" width="36" height="36" alt="FastFood" />
                     <span>FastFood</span>
@@ -249,7 +240,6 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="fastfoodNav">
-                    <!-- Left Menu -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center">
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Index"><i class="fa fa-home me-1"></i> Trang Chủ</a>
@@ -257,21 +247,17 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Product" asp-action="Index"><i class="fa fa-book-open me-1"></i> Thực Đơn</a>
                         </li>
-                        <!-- Dynamic Categories from Database -->
                         <li class="nav-item">
                             @await Component.InvokeAsync("CategoryMenu", new { view = "Default" })
                         </li>
                     </ul>
 
-                    <!-- Search Box -->
                     <form class="search-form-nav d-none d-md-flex me-3" asp-controller="Product" asp-action="Index" method="get">
                         <input class="form-control" type="search" name="keyword" placeholder="Tìm kiếm món ăn..." aria-label="Search" value="@Context.Request.Query["keyword"]" />
                         <button type="submit"><i class="fa fa-search"></i></button>
                     </form>
 
-                    <!-- Cart & User -->
                     <div class="d-flex align-items-center gap-3">
-                        <!-- Giỏ hàng có icon và hiển thị số lượng -->
                         <a asp-controller="Cart" asp-action="Index" class="cart-icon-btn" title="Xem giỏ hàng">
                             <i class="fa fa-shopping-cart fa-lg text-warning"></i>
                             @await Component.InvokeAsync("CartCount")
@@ -279,7 +265,6 @@
 
                         @if (isLoggedIn)
                         {
-                            <!-- Đã đăng nhập: hiển thị icon Hồ sơ người dùng và tên người dùng cạnh icon, ẩn Đăng ký / Đăng nhập -->
                             <div class="dropdown">
                                 <a href="#" class="user-dropdown-btn dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-user-circle fa-lg text-secondary"></i>
@@ -290,7 +275,6 @@
                                         <small class="text-muted d-block">Tài khoản: <strong>@username</strong></small>
                                         <span class="badge bg-success">@role</span>
                                     </li>
-                                    <!-- 2 link bắt buộc: Lịch sử giao dịch và Hồ sơ khách hàng -->
                                     <li>
                                         <a class="dropdown-item py-2" asp-controller="Order" asp-action="History">
                                             <i class="fa fa-receipt me-2 text-primary"></i> Lịch sử giao dịch
@@ -321,7 +305,6 @@
                         }
                         else
                         {
-                            <!-- Chưa đăng nhập: hiện nút Đăng nhập và Đăng ký -->
                             <div class="d-flex gap-2">
                                 <a asp-controller="Account" asp-action="Login" class="btn btn-sm btn-fastfood-outline">
                                     <i class="fa fa-sign-in-alt me-1"></i> Đăng nhập
@@ -337,7 +320,6 @@
         </nav>
     </header>
 
-    <!-- MAIN BODY -->
     <main role="main" class="flex-grow-1">
         <div class="container">
             @if (TempData["SuccessMessage"] != null)
@@ -359,7 +341,6 @@
         @RenderBody()
     </main>
 
-    <!-- FOOTER -->
     <footer>
         <div class="container">
             <div class="row g-4">
@@ -381,7 +362,6 @@
                 <div class="col-lg-2 col-md-6">
                     <h5>Danh Mục</h5>
                     <a asp-controller="Product" asp-action="Index">Tất cả món</a>
-                    @* Lấy danh mục từ DB thay vì gõ cứng mã danh mục *@
                     @await Component.InvokeAsync("CategoryMenu", new { view = "Footer" })
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -414,7 +394,6 @@
         </div>
     </footer>
 
-    <!-- Bootstrap 5 JS Bundle -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)

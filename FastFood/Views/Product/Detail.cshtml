@@ -14,10 +14,8 @@
         </ol>
     </nav>
 
-    <!-- TÁI SỬ DỤNG PARTIAL VIEW DETAIL PRODUCT (CÓ NÚT MUA VÀ TRUYỀN SỐ LƯỢNG) -->
     @await Html.PartialAsync("_ProductDetailPartial", Model, new ViewDataDictionary(ViewData) { { "IsCustomer", true } })
 
-    <!-- SẢN PHẨM LIÊN QUAN -->
     @if (relatedProducts.Any())
     {
         <div class="mt-5 pt-4 border-top">
