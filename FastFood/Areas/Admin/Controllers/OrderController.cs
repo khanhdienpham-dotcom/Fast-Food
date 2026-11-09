@@ -15,7 +15,7 @@ namespace FastFood.Areas.Admin.Controllers
             _context = context;
         }
 
-        // Quản lý đơn hàng: Trang Index: lưu giữ danh sách đơn hàng, không có nút Thêm/Sửa/Xóa (0.125)
+        // Quản lý đơn hàng: Trang Index: danh sách đơn hàng (không có Thêm/Sửa; có Xóa theo yêu cầu của nhóm)
         public async Task<IActionResult> Index()
         {
             var orders = await _context.Orders
@@ -89,6 +89,66 @@ namespace FastFood.Areas.Admin.Controllers
                 TempData["SuccessMessage"] = $"Cập nhật trạng thái đơn hàng #{order.OrderCode} thành: {status}";
             }
             return RedirectToAction(nameof(Details), new { id = orderId });
+        }
+
+        // XÓA ĐƠN HÀNG - Trang xác nhận
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var order = await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+                .FirstOrDefaultAsync(m => m.OrderId == id);
+
+            if (order == null) return NotFound();
+
+            return View(order);
+        }
+
+        // XÓA ĐƠN HÀNG - Thực hiện xóa
+        // - Đơn "Đang chuẩn bị" / "Đang giao": món chưa tới tay khách -> hoàn lại tồn kho, trừ số đã bán
+        // - Đơn "Đã hủy": tồn kho đã được hoàn lúc hủy -> không hoàn lần nữa
+        // - Đơn "Đã giao": hàng đã giao xong -> giữ nguyên tồn kho và số đã bán
+        // Chi tiết đơn hàng (OrderDetails) tự xóa theo nhờ khóa ngoại Cascade.
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var order = await _context.Orders
+                .Include(o => o.OrderDetails)
+                .FirstOrDefaultAsync(o => o.OrderId == id);
+
+            if (order == null)
+            {
+                TempData["ErrorMessage"] = "Đơn hàng không tồn tại hoặc đã bị xóa!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            bool restoreStock = order.Status == "Đang chuẩn bị" || order.Status == "Đang giao";
+            if (restoreStock)
+            {
+                foreach (var d in order.OrderDetails)
+                {
+                    var product = await _context.Products.FindAsync(d.ProductId);
+                    if (product != null)
+                    {
+                        product.Quantity += d.Quantity;
+                        product.SoldQuantity = Math.Max(0, product.SoldQuantity - d.Quantity);
+                    }
+                }
+            }
+
+            string code = order.OrderCode;
+            _context.OrderDetails.RemoveRange(order.OrderDetails);
+            _context.Orders.Remove(order);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = restoreStock
+                ? $"Đã xóa đơn hàng #{code} và hoàn lại số lượng tồn kho!"
+                : $"Đã xóa đơn hàng #{code}!";
+            return RedirectToAction(nameof(Index));
         }
     }
 }
