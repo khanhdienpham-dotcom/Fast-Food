@@ -2,12 +2,6 @@ using System.Security.Cryptography;
 
 namespace FastFood.Helpers
 {
-    /// <summary>
-    /// Mã hóa mật khẩu một chiều bằng PBKDF2 (SHA256, có salt ngẫu nhiên).
-    /// Chuỗi lưu trong DB có dạng: PBKDF2$số_vòng_lặp$salt_base64$hash_base64 (~83 ký tự, vừa cột Password 100 ký tự).
-    /// Mật khẩu cũ lưu dạng chữ thường (vd. tài khoản mẫu "123") vẫn đăng nhập được
-    /// và sẽ tự động được mã hóa lại ở lần đăng nhập thành công đầu tiên.
-    /// </summary>
     public static class PasswordHelper
     {
         private const string Prefix = "PBKDF2$";
@@ -30,7 +24,6 @@ namespace FastFood.Helpers
 
             if (!IsHashed(stored))
             {
-                // Dữ liệu cũ chưa mã hóa
                 return CryptographicOperations.FixedTimeEquals(
                     System.Text.Encoding.UTF8.GetBytes(password), System.Text.Encoding.UTF8.GetBytes(stored));
             }

@@ -46,7 +46,7 @@ namespace FastFood.Models
         [Required]
         [StringLength(20)]
         [Display(Name = "Vai trò")]
-        public string Role { get; set; } = "Customer"; // "Admin" or "Customer"
+        public string Role { get; set; } = "Customer";
 
         [Display(Name = "Ngày tạo")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;

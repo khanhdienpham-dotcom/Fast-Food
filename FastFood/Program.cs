@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Thông báo lỗi model binding bằng tiếng Việt (thay cho "The value '' is invalid." mặc định)
 builder.Services.AddControllersWithViews(options =>
 {
     var m = options.ModelBindingMessageProvider;
@@ -20,7 +18,6 @@ builder.Services.AddControllersWithViews(options =>
 });
 builder.Services.AddHttpContextAccessor();
 
-// Configure Database (Sqlite as default, or SqlServer if configured)
 var dbProvider = builder.Configuration.GetValue<string>("DatabaseProvider") ?? "Sqlite";
 if (dbProvider.Equals("SqlServer", StringComparison.OrdinalIgnoreCase))
 {
@@ -35,7 +32,6 @@ else
         options.UseSqlite(connStr));
 }
 
-// Session configuration
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -46,7 +42,6 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
-// Seed Database automatically on startup
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -62,20 +57,16 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
-// Trang lỗi thân thiện cho 404 (gõ sai đường dẫn, /Product/Detail/99999 ...) thay vì trang trắng của trình duyệt
 app.UseStatusCodePagesWithReExecute("/Home/HttpError", "?code={0}");
 
 app.UseHttpsRedirection();
 
-// Cố định văn hóa vi-VN cho mọi máy (định dạng tiền 59.000 đ, ngày dd/MM/yyyy),
-// tránh việc website hiển thị/nhận dữ liệu khác nhau tùy cài đặt Region của Windows.
 var viCulture = new System.Globalization.CultureInfo("vi-VN");
 app.UseRequestLocalization(new Microsoft.AspNetCore.Builder.RequestLocalizationOptions
 {
@@ -92,12 +83,10 @@ app.UseSession();
 
 app.UseAuthorization();
 
-// Route for Areas (Admin)
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-// Default Route (Customer)
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

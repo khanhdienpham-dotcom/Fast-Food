@@ -6,7 +6,6 @@
     var newProducts = ViewBag.NewProducts as List<FastFood.Models.Product> ?? new List<FastFood.Models.Product>();
 }
 
-<!-- HERO BANNER -->
 <section class="py-5" style="background: linear-gradient(135deg, #1D1D1D 0%, #2b2024 100%); color: #fff;">
     <div class="container py-4">
         <div class="row align-items-center g-5">
@@ -38,7 +37,6 @@
     </div>
 </section>
 
-<!-- MÓN ĂN BÁN CHẠY NHẤT (QUERY CÓ SỐ LƯỢNG TỒN > 0, CÓ NÚT XEM CHI TIẾT & MUA) -->
 <section class="py-5">
     <div class="container">
         <div class="d-flex justify-content-between align-items-end mb-4">
@@ -83,7 +81,6 @@
                                     <span class="badge bg-success-subtle text-success border border-success">Còn: @item.Quantity</span>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <!-- NÚT MUA SẢN PHẨM (YÊU CẦU BAREM) -->
                                     <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline">
                                         <input type="hidden" name="productId" value="@item.ProductId" />
                                         <input type="hidden" name="quantity" value="1" />
@@ -91,7 +88,6 @@
                                             <i class="fa fa-cart-plus me-1"></i> Mua Ngay
                                         </button>
                                     </form>
-                                    <!-- NÚT XEM CHI TIẾT SẢN PHẨM (YÊU CẦU BAREM) -->
                                     <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId" class="btn btn-outline-secondary btn-sm rounded-3">
                                         <i class="fa fa-eye me-1"></i> Xem chi tiết
                                     </a>
@@ -105,7 +101,6 @@
     </div>
 </section>
 
-<!-- MÓN MỚI RA MẮT (Query 3 trong HomeController: sắp xếp theo CreatedAt, chỉ lấy tồn kho > 0) -->
 @if (newProducts.Any())
 {
 <section class="py-5 bg-white border-top">
@@ -166,7 +161,6 @@
 </section>
 }
 
-<!-- COMBOS TIẾT KIỆM -->
 <section id="combos" class="py-5 bg-white border-top border-bottom">
     <div class="container">
         <div class="text-center mb-5">
@@ -213,7 +207,6 @@
     </div>
 </section>
 
-<!-- VÌ SAO CHỌN CHÚNG TÔI -->
 <section class="py-5" style="background-color: #FFF8F0;">
     <div class="container py-3">
         <div class="row g-4 text-center">

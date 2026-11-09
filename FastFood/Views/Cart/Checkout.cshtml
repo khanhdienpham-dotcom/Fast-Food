@@ -19,7 +19,6 @@
 
     <form asp-action="ProcessCheckout" method="post" id="checkoutForm">
         <div class="row g-4">
-            <!-- THÔNG TIN NGƯỜI NHẬN HÀNG (TỰ ĐỘNG ĐIỀN NẾU ĐÃ ĐĂNG NHẬP) -->
             <div class="col-lg-7">
                 <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
                     <h5 class="fw-bold text-dark mb-3"><i class="fa fa-user text-danger me-2"></i>Địa Chỉ Nhận Hàng</h5>
@@ -56,7 +55,6 @@
                     </div>
                 </div>
 
-                <!-- PHƯƠNG THỨC THANH TOÁN -->
                 <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
                     <h5 class="fw-bold text-dark mb-3"><i class="fa fa-wallet text-danger me-2"></i>Chọn Phương Thức Thanh Toán</h5>
                     <div class="form-check p-3 border rounded-3 mb-2">
@@ -83,7 +81,6 @@
                 </div>
             </div>
 
-            <!-- TÓM TẮT ĐƠN HÀNG VÀ XÁC NHẬN -->
             <div class="col-lg-5">
                 <div class="card border-0 shadow-sm rounded-4 p-4 bg-white sticky-top" style="top: 90px;">
                     <h5 class="fw-bold text-dark mb-3">Món Ăn Đã Chọn (@Model.Items.Count món)</h5>
@@ -118,7 +115,6 @@
                         <span class="fs-3 fw-extrabold text-danger">@Model.TotalAmount.ToString("N0") đ</span>
                     </div>
 
-                    <!-- NÚT XÁC NHẬN ĐẶT HÀNG (SẼ TẠO ORDER, ORDERDETAIL, TÍNH TỒN KHO) -->
                     <button type="submit" id="btnCheckout" class="btn btn-danger btn-lg w-100 fw-bold rounded-pill shadow">
                         <i class="fa fa-check-circle me-2"></i> XÁC NHẬN ĐẶT MÓN
                     </button>
@@ -131,7 +127,6 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        // Chống bấm "Xác nhận đặt món" 2 lần liên tiếp (tạo ra 2 đơn hàng trùng)
         document.getElementById('checkoutForm').addEventListener('submit', function (e) {
             var form = this;
             if (window.jQuery && $(form).valid && !$(form).valid()) return; // form còn lỗi thì cho sửa tiếp

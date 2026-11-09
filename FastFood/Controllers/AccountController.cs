@@ -15,10 +15,6 @@ namespace FastFood.Controllers
             _context = context;
         }
 
-        // BAREM ĐĂNG KÝ:
-        // - Đã kiểm tra dữ liệu nhập (Data Annotation: độ dài, trường bắt buộc, kiểu dữ liệu, giá trị dữ liệu), trùng thông tin với tài khoản đã có chưa ? (0.125)
-        // - Đăng ký thất bại, có hiển thị thông báo? (0.125)
-        // - Đăng ký thành công, có redirect về trang Đăng nhập? (0.125)
         public IActionResult Register()
         {
             return View();
@@ -28,7 +24,6 @@ namespace FastFood.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            // Ô bỏ trống sẽ được bind thành null -> phải kiểm tra trước khi gọi ToLower() (tránh lỗi 500)
             string usernameLower = (model.Username ?? string.Empty).Trim().ToLower();
             string emailLower = (model.Email ?? string.Empty).Trim().ToLower();
 
@@ -68,12 +63,6 @@ namespace FastFood.Controllers
             return View(model);
         }
 
-        // BAREM ĐĂNG NHẬP:
-        // - Đăng nhập thất bại, có hiển thị thông báo? (0.125)
-        // - Đăng nhập thành công, có đổi Icon thành icon Hồ sơ người dùng (ẩn 2 link Đăng ký và Đăng nhập) (0.125)
-        // - Đăng nhập thành công, có hiển thị tên người dùng cạnh Hồ sơ người dùng (0.125)
-        // - Đăng nhập thành công, có truyền thông tin người dùng vào phần Thông tin thanh toán (0.125)
-        // - Đăng nhập thành công, dưới icon Hồ sơ người dùng, có hiển thị 2 link: Lịch sử giao dịch và Hồ sơ khách hàng (0.25)
         public IActionResult Login(string? returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -90,7 +79,6 @@ namespace FastFood.Controllers
                 var user = await _context.Users.FirstOrDefaultAsync(u =>
                     u.Username.ToLower() == loginName || u.Email.ToLower() == loginName);
 
-                // Mật khẩu được so sánh bằng hash (không so chuỗi trực tiếp trong SQL)
                 if (user != null && !PasswordHelper.Verify(model.Password, user.Password))
                 {
                     user = null;
@@ -98,7 +86,6 @@ namespace FastFood.Controllers
 
                 if (user != null)
                 {
-                    // Tài khoản cũ còn lưu mật khẩu dạng chữ thường -> mã hóa lại ngay
                     if (!PasswordHelper.IsHashed(user.Password))
                     {
                         user.Password = PasswordHelper.Hash(model.Password);

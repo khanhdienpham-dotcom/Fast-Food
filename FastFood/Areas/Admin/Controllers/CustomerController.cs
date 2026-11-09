@@ -15,7 +15,6 @@ namespace FastFood.Areas.Admin.Controllers
             _context = context;
         }
 
-        // Quản lý khách hàng: Trang Index: lưu giữ danh sách khách hàng, không có nút Thêm/Sửa/Xóa (0.125)
         public async Task<IActionResult> Index()
         {
             var customers = await _context.Users
@@ -27,8 +26,6 @@ namespace FastFood.Areas.Admin.Controllers
             return View(customers);
         }
 
-        // Trang Detail: hiển thị thông tin khách hàng + danh sách đơn hàng của khách hàng (0.25)
-        // Tạo Partial View cho trang Index của Order để nhúng Danh sách đơn hàng vào trang Detail của Customer
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();

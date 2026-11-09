@@ -1,0 +1,40 @@
+@model FastFood.Models.Order
+@{
+    ViewData["Title"] = "Xóa Đơn Hàng #" + Model.OrderCode;
+    bool restoreStock = Model.Status == "Đang chuẩn bị" || Model.Status == "Đang giao";
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold text-danger mb-1"><i class="fa fa-exclamation-triangle me-2"></i>Xác Nhận Xóa Đơn Hàng: #@Model.OrderCode</h4>
+        <p class="text-muted small mb-0">Đơn hàng và toàn bộ chi tiết đơn hàng sẽ bị xóa vĩnh viễn, không thể khôi phục.</p>
+    </div>
+    <a asp-action="Details" asp-route-id="@Model.OrderId" class="btn btn-outline-secondary btn-sm"><i class="fa fa-arrow-left me-1"></i> Quay Lại</a>
+</div>
+
+<div class="alert @(restoreStock ? "alert-warning" : "alert-secondary") d-flex align-items-start gap-2">
+    <i class="fa fa-info-circle mt-1"></i>
+    <div>
+        Trạng thái hiện tại: <strong>@Model.Status</strong>.
+        @if (restoreStock)
+        {
+            <span>Đơn chưa giao xong nên khi xóa, <strong>số lượng tồn kho sẽ được hoàn lại</strong> và số lượng đã bán được trừ tương ứng.</span>
+        }
+        else if (Model.Status == "Đã hủy")
+        {
+            <span>Tồn kho đã được hoàn lại lúc hủy đơn, khi xóa sẽ không hoàn thêm.</span>
+        }
+        else
+        {
+            <span>Đơn đã giao xong nên khi xóa, tồn kho và số lượng đã bán được giữ nguyên.</span>
+        }
+    </div>
+</div>
+
+@await Html.PartialAsync("_InvoicePartial", Model)
+
+<form asp-action="Delete" method="post" class="d-flex justify-content-end gap-2 mt-4"
+      onsubmit="return confirm('Bạn chắc chắn muốn xóa vĩnh viễn đơn hàng #@Model.OrderCode?');">
+    <input type="hidden" name="id" value="@Model.OrderId" />
+    <a asp-action="Index" class="btn btn-light px-4">Hủy Bỏ</a>
+    <button type="submit" class="btn btn-danger px-4 fw-bold"><i class="fa fa-trash me-1"></i> Xóa Đơn Hàng</button>
+</form>

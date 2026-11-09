@@ -5,7 +5,6 @@
 }
 
 <div class="container py-4">
-    <!-- TIÊU ĐỀ & BREADCRUMB -->
     <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-danger text-decoration-none">Trang Chủ</a></li>
@@ -21,13 +20,11 @@
     </div>
 
     <div class="row g-4">
-        <!-- CỘT BỘ LỌC (FILTER SIDEBAR) -->
         <div class="col-lg-3">
             <div class="card border-0 shadow-sm rounded-4 p-4 bg-white sticky-top" style="top: 90px;">
                 <h5 class="fw-bold text-dark mb-3"><i class="fa fa-filter text-danger me-2"></i>Bộ Lọc Món Ăn</h5>
 
                 <form asp-action="Index" method="get">
-                    <!-- TÌM KIẾM THEO TỪ KHÓA (BAREM) -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-muted">Từ khóa tìm kiếm:</label>
                         <div class="input-group">
@@ -36,7 +33,6 @@
                         </div>
                     </div>
 
-                    <!-- LỌC THEO CATEGORY (BAREM) -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-muted">Danh mục món:</label>
                         <select name="categoryId" class="form-select">
@@ -50,7 +46,6 @@
                         </select>
                     </div>
 
-                    <!-- LỌC THEO KHOẢNG GIÁ (BAREM) -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold small text-muted">Khoảng giá (VNĐ):</label>
                         <div class="row g-2">
@@ -63,7 +58,6 @@
                         </div>
                     </div>
 
-                    <!-- SẮP XẾP (BAREM) -->
                     <div class="mb-4">
                         <label class="form-label fw-semibold small text-muted">Sắp xếp theo:</label>
                         <select name="sortOrder" class="form-select">
@@ -86,7 +80,6 @@
             </div>
         </div>
 
-        <!-- CỘT DANH SÁCH MÓN ĂN -->
         <div class="col-lg-9">
             @if (Model.Products.Any())
             {
@@ -121,7 +114,6 @@
                                             <span class="badge bg-success-subtle text-success">Còn: @item.Quantity</span>
                                         </div>
                                         <div class="d-grid gap-2">
-                                            <!-- MUA HÀNG (BAREM) -->
                                             <form asp-controller="Cart" asp-action="AddToCart" method="post">
                                                 <input type="hidden" name="productId" value="@item.ProductId" />
                                                 <input type="hidden" name="quantity" value="1" />
@@ -129,7 +121,6 @@
                                                     <i class="fa fa-cart-plus me-1"></i> Mua Ngay
                                                 </button>
                                             </form>
-                                            <!-- XEM CHI TIẾT (BAREM) -->
                                             <a asp-action="Detail" asp-route-id="@item.ProductId" class="btn btn-outline-secondary btn-sm">
                                                 <i class="fa fa-eye me-1"></i> Chi tiết món
                                             </a>
@@ -141,7 +132,6 @@
                     }
                 </div>
 
-                <!-- PHÂN TRANG KẾT QUẢ TÌM KIẾM (YÊU CẦU BAREM 0.25) -->
                 @if (Model.TotalPages > 1)
                 {
                     <nav class="mt-5" aria-label="Page navigation">

@@ -16,9 +16,6 @@ namespace FastFood.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/Inventory
-        // Thống kê hàng theo 2 phần: Danh sách hàng tồn (Quantity > 0), Danh sách hàng cần nhập (Quantity == 0)
-        // Dựa trên Partial View theo số lượng tồn (0.25)
         public async Task<IActionResult> Index()
         {
             var inStock = await _context.Products

@@ -11,8 +11,6 @@
         </ol>
     </nav>
 
-    <!-- BAREM: Kích vào link Lịch sử giao dịch, có chuyển tới trang Lịch sử giao dịch không? (0.125)
-         Danh sách giao dịch: có phải CHỈ lấy các đơn hàng của khách hàng không (0.25) -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="fw-extrabold text-dark mb-1"><i class="fa fa-history text-danger me-2"></i>Lịch Sử Giao Dịch Đơn Hàng</h2>
@@ -23,7 +21,6 @@
 
     <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
         <div class="card-body p-0">
-            <!-- TÁI SỬ DỤNG PARTIAL VIEW _OrderListPartial THEO YÊU CẦU BAREM -->
             @await Html.PartialAsync("_OrderListPartial", Model, new ViewDataDictionary(ViewData) { { "IsAdmin", false } })
         </div>
     </div>

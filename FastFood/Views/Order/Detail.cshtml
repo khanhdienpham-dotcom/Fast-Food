@@ -17,7 +17,5 @@
         <button class="btn btn-sm btn-outline-dark" onclick="window.print()"><i class="fa fa-print me-1"></i> In Hóa Đơn</button>
     </div>
 
-    <!-- BAREM: Xem chi tiết: có hiển thị Hóa đơn mua hàng (giống trang Detail của quản lý đơn hàng)? (0.25)
-         Tạo chung 1 Partial View dùng cho cả trang Admin và Customer -->
     @await Html.PartialAsync("_InvoicePartial", Model)
 </div>

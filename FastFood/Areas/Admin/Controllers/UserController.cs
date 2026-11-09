@@ -15,7 +15,6 @@ namespace FastFood.Areas.Admin.Controllers
             _context = context;
         }
 
-        // Trang Index: Chỉ lưu giữ danh sách người quản trị (Role == "Admin"). Có thể Thêm/Sửa/Xóa tài khoản người quản trị (0.125)
         public async Task<IActionResult> Index()
         {
             var adminUsers = await _context.Users
@@ -78,13 +77,11 @@ namespace FastFood.Areas.Admin.Controllers
             var existing = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id && u.Role == "Admin");
             if (existing == null) return NotFound();
 
-            // Ô mật khẩu để trống = giữ nguyên mật khẩu cũ (ô password không hiển thị lại mật khẩu)
             bool keepOldPassword = string.IsNullOrEmpty(user.Password);
             if (keepOldPassword)
             {
                 ModelState.Remove("Password");
             }
-            // Tên đăng nhập không cho đổi
             ModelState.Remove("Username");
             user.Username = existing.Username;
 
@@ -92,7 +89,6 @@ namespace FastFood.Areas.Admin.Controllers
             if (editEmailLower.Length > 0 && await _context.Users.AnyAsync(u => u.UserId != user.UserId && u.Email.ToLower() == editEmailLower))
                 ModelState.AddModelError("Email", "Địa chỉ email này đã được sử dụng!");
 
-            // Không cho tự khóa tài khoản đang đăng nhập
             var currentUserId = HttpContext.Session.GetInt32("UserId");
             if (currentUserId == user.UserId && !user.Status)
                 ModelState.AddModelError("Status", "Không thể tự khóa tài khoản đang đăng nhập!");
@@ -118,7 +114,6 @@ namespace FastFood.Areas.Admin.Controllers
             return View(user);
         }
 
-        // Bảng Users có > 5 cột nên giữ lại chức năng Detail (barem: chỉ bỏ Detail khi bảng < 5 cột)
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();

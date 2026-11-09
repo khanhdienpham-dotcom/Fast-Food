@@ -1,21 +1,13 @@
-/* ===========================
-   GIOHANG.CSS - TRANG GIỎ HÀNG
-   =========================== */
 
-/* Breadcrumb */
 .breadcrumb {
   padding: 12px 0;
   font-size: 0.88rem;
   border-bottom: 1px solid #eee;
-  /* TODO: background: ; */
-  /* TODO: color: ; */
 }
-.breadcrumb a { /* TODO: color: ; */ }
+.breadcrumb a {  }
 
-/* ── CHECKOUT STEPS ── */
 .checkout-steps {
   padding: 24px 0;
-  /* TODO: background: ; */
   border-bottom: 1px solid #eee;
   margin-bottom: 36px;
 }
@@ -43,30 +35,20 @@
   justify-content: center;
   font-size: 1rem;
   border: 2px solid;
-  /* TODO: border-color: ; */
-  /* TODO: color: ; */
-  /* TODO: background: ; */
 }
 
 .step.active .step-icon {
-  /* TODO: background: ; */
-  /* TODO: color: ; */
-  /* TODO: border-color: ; */
 }
 
 .step.done .step-icon {
-  /* TODO: background: ; */
-  /* TODO: color: ; */
-  /* TODO: border-color: ; */
 }
 
 .step span {
   font-size: 0.78rem;
   font-weight: 600;
-  /* TODO: color: ; */
 }
 
-.step.active span { /* TODO: color: ; */ font-weight: 700; }
+.step.active span {  font-weight: 700; }
 
 .step-line {
   flex: 1;
@@ -74,12 +56,10 @@
   min-width: 60px;
   max-width: 120px;
   margin-bottom: 22px;
-  /* TODO: background: ; */
 }
 
-.step-line.done { /* TODO: background: ; */ }
+.step-line.done {  }
 
-/* ── CART LAYOUT ── */
 .cart-section { padding-bottom: 60px; }
 
 .cart-layout {
@@ -89,7 +69,6 @@
   align-items: start;
 }
 
-/* ── CART MAIN ── */
 .cart-header {
   display: flex;
   justify-content: space-between;
@@ -97,7 +76,7 @@
   margin-bottom: 20px;
 }
 
-.cart-header h2 { font-size: 1.3rem; font-weight: 700; /* TODO: color: ; */ }
+.cart-header h2 { font-size: 1.3rem; font-weight: 700;  }
 
 .btn-text-danger {
   background: none;
@@ -105,10 +84,8 @@
   cursor: pointer;
   font-size: 0.88rem;
   font-weight: 600;
-  /* TODO: color: ; */
 }
 
-/* Cart Item */
 .cart-item {
   display: flex;
   align-items: flex-start;
@@ -118,9 +95,6 @@
   margin-bottom: 16px;
   position: relative;
   transition: opacity 0.3s;
-  /* TODO: background: ; */
-  /* TODO: border: 1px solid ; */
-  /* TODO: box-shadow: ; */
 }
 
 .cart-item-img {
@@ -137,19 +111,16 @@
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 4px;
-  /* TODO: color: ; */
 }
 
 .item-options {
   font-size: 0.82rem;
-  /* TODO: color: ; */
   margin-bottom: 2px;
 }
 
 .item-note {
   font-size: 0.8rem;
   font-style: italic;
-  /* TODO: color: ; */
   margin-bottom: 10px;
 }
 
@@ -163,7 +134,6 @@
 .item-price {
   font-size: 0.95rem;
   font-weight: 600;
-  /* TODO: color: ; */
 }
 
 .qty-control {
@@ -172,7 +142,6 @@
   border-radius: 20px;
   overflow: hidden;
   border: 2px solid;
-  /* TODO: border-color: ; */
 }
 
 .qty-control button {
@@ -182,8 +151,6 @@
   font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
-  /* TODO: background: ; */
-  /* TODO: color: ; */
 }
 
 .qty-val {
@@ -196,7 +163,6 @@
 .item-subtotal {
   font-size: 1rem;
   font-weight: 800;
-  /* TODO: color: ; */
   margin-left: auto;
 }
 
@@ -208,25 +174,20 @@
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  /* TODO: color: ; */
 }
 
-.item-remove:hover { /* TODO: color: ; */ }
+.item-remove:hover {  }
 
-/* ── COUPON ── */
 .coupon-section {
   padding: 20px;
   border-radius: 12px;
   margin: 20px 0;
-  /* TODO: background: ; */
-  /* TODO: border: 2px dashed ; */
 }
 
 .coupon-section h4 {
   font-size: 0.95rem;
   font-weight: 700;
   margin-bottom: 12px;
-  /* TODO: color: ; */
 }
 
 .coupon-form {
@@ -241,8 +202,6 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   font-family: inherit;
-  /* TODO: background: ; */
-  /* TODO: color: ; */
 }
 
 .coupon-tags {
@@ -257,17 +216,12 @@
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
-  /* TODO: background: ; */
-  /* TODO: color: ; */
-  /* TODO: border: 1px solid ; */
 }
 
-/* ── UPSELL ── */
 .upsell-section {
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 20px;
-  /* TODO: background: ; */
 }
 
 .upsell-section h4 {
@@ -288,8 +242,6 @@
   gap: 10px;
   padding: 10px;
   border-radius: 10px;
-  /* TODO: background: ; */
-  /* TODO: border: 1px solid ; */
 }
 
 .upsell-item img {
@@ -306,10 +258,7 @@
 
 .cart-back { margin-top: 16px; }
 
-/* ── CART SUMMARY ── */
 .cart-summary {
-  /* TODO: background: ; */
-  /* TODO: border: 1px solid ; */
   border-radius: 14px;
   padding: 24px;
   position: sticky;
@@ -320,7 +269,6 @@
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 20px;
-  /* TODO: color: ; */
 }
 
 .summary-rows { margin-bottom: 20px; }
@@ -331,7 +279,6 @@
   font-size: 0.9rem;
   padding: 8px 0;
   border-bottom: 1px solid #f0f0f0;
-  /* TODO: color: ; */
 }
 
 .summary-row.total {
@@ -339,11 +286,10 @@
   font-weight: 800;
   border-bottom: none;
   margin-top: 8px;
-  /* TODO: color: ; */
 }
 
-.free { /* TODO: color: ; */ font-weight: 600; }
-.discount { /* TODO: color: ; */ font-weight: 600; }
+.free {  font-weight: 600; }
+.discount {  font-weight: 600; }
 
 .delivery-estimate {
   display: flex;
@@ -353,8 +299,6 @@
   border-radius: 10px;
   font-size: 0.88rem;
   margin-bottom: 16px;
-  /* TODO: background: ; */
-  /* TODO: color: ; */
 }
 
 .delivery-address {
@@ -362,8 +306,6 @@
   border-radius: 10px;
   font-size: 0.88rem;
   margin-bottom: 16px;
-  /* TODO: background: ; */
-  /* TODO: border: 1px solid ; */
 }
 
 .address-header {
@@ -376,10 +318,8 @@
 .address-header a {
   margin-left: auto;
   font-size: 0.8rem;
-  /* TODO: color: ; */
 }
 
-/* Payment methods */
 .payment-methods {
   margin-bottom: 16px;
 }
@@ -400,12 +340,9 @@
   cursor: pointer;
   border: 1px solid transparent;
   font-size: 0.88rem;
-  /* TODO: border-color: ; */
 }
 
 .payment-opt:has(input:checked) {
-  /* TODO: border-color: ; */
-  /* TODO: background: ; */
 }
 
 .payment-opt img {
@@ -420,10 +357,8 @@
   gap: 6px;
   margin-top: 14px;
   font-size: 0.8rem;
-  /* TODO: color: ; */
 }
 
-/* Responsive */
 @media (max-width: 1000px) {
   .cart-layout { grid-template-columns: 1fr; }
   .cart-summary { position: static; }

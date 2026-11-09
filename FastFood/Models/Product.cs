@@ -50,7 +50,6 @@ namespace FastFood.Models
         [Display(Name = "Ngày tạo")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        // Foreign key navigation
         [ForeignKey("CategoryId")]
         public virtual Category? Category { get; set; }
 

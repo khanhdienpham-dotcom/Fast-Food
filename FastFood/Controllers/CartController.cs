@@ -25,21 +25,10 @@ namespace FastFood.Controllers
             HttpContext.Session.SetObjectAsJson("Cart", cart);
         }
 
-        // BAREM GIỎ HÀNG:
-        // - Có icon giỏ hàng trên trang Menu chưa? (0.125)
-        // - Có hiển thị số lượng hàng trong giỏ không? (0.125)
-        // - Đã kiểm tra số lượng hàng khi tăng giảm số lượng? (không cho nhập < 0, và > số lượng tồn) và cập nhật lại số lượng hàng trong giỏ (0.125)
-        // - Đã cập nhật được tổng tiền khi thay đổi số lượng hàng chưa? (0.125)
-        // - Đã remove được sản phẩm ra khỏi giỏ và cập nhật lại số lượng hàng trong giỏ (0.125)
-        // - Có link Tiếp tục mua hàng không (0.125)
-        // - Có link Thanh toán không (0.125)
-        // - Link Thanh toán có ẩn khi giỏ hàng rỗng không (0.125)
         public async Task<IActionResult> Index()
         {
             var cart = GetCart();
 
-            // Đồng bộ lại tồn kho & đơn giá mới nhất từ DB (Admin có thể đã sửa giá / số lượng tồn
-            // hoặc khách khác đã mua hết) để nút + / ô nhập số lượng kiểm tra đúng số lượng tồn hiện tại.
             if (cart.Any())
             {
                 var ids = cart.Select(c => c.ProductId).ToList();
@@ -74,7 +63,6 @@ namespace FastFood.Controllers
             return View(cart);
         }
 
-        // Thêm vào giỏ hàng
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToCart(int productId, int quantity = 1)
@@ -86,9 +74,7 @@ namespace FastFood.Controllers
                 return RedirectToAction("Index", "Product");
             }
 
-            // Không cho phép số lượng mua < 1 (chặn dữ liệu âm / bằng 0 gửi từ client)
             if (quantity < 1) quantity = 1;
-            // Chặn tấn công tràn số: gửi quantity = 2147483647 làm item.Quantity + quantity bị tràn thành số ÂM
             if (quantity > product.Quantity) quantity = product.Quantity;
 
             var cart = GetCart();
@@ -128,7 +114,6 @@ namespace FastFood.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Kiểm tra số lượng khi tăng giảm: không < 0, không > số lượng tồn
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateQuantity(int productId, int? quantity)
@@ -148,7 +133,6 @@ namespace FastFood.Controllers
 
                 if (quantity < 0)
                 {
-                    // Không cho nhập số âm: giữ nguyên số lượng cũ
                     TempData["ErrorMessage"] = "Số lượng không được nhỏ hơn 0!";
                 }
                 else if (quantity == 0 || maxStock <= 0)
@@ -186,8 +170,6 @@ namespace FastFood.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Chỉ nhận POST + token: trước đây là link GET nên trang web khác chỉ cần nhúng
-        // <img src="/Cart/ClearCart"> là xóa sạch giỏ hàng của khách (tấn công CSRF)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ClearCart()
@@ -197,9 +179,6 @@ namespace FastFood.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // BAREM THANH TOÁN:
-        // - Đã ẩn nút thanh toán khi giỏ hàng rỗng (0.125)
-        // - Đăng nhập thành công, có truyền thông tin người dùng vào phần Thông tin thanh toán (0.125)
         public async Task<IActionResult> Checkout()
         {
             var cart = GetCart();
@@ -227,10 +206,6 @@ namespace FastFood.Controllers
             return View(model);
         }
 
-        // XỬ LÝ THANH TOÁN:
-        // - Thanh toán thành công, đơn hàng được tạo và lưu vào 2 bảng Order và Order Detail (0.125)
-        // - Đơn hàng có tổng tiền và Thành tiền chi tiết cho từng mục (0.125)
-        // - Đã tính lại số lượng tồn và số lượng đã bán (0.25)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ProcessCheckout(CheckoutViewModel model)
@@ -248,7 +223,6 @@ namespace FastFood.Controllers
                 return View("Checkout", model);
             }
 
-            // Chặn dữ liệu giỏ hàng bất thường (số lượng <= 0)
             if (cart.Any(i => i.Quantity <= 0))
             {
                 cart.RemoveAll(i => i.Quantity <= 0);
@@ -257,10 +231,8 @@ namespace FastFood.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Dùng transaction: nếu 1 bước lỗi thì không tạo đơn dở dang và không trừ kho sai
             await using var transaction = await _context.Database.BeginTransactionAsync();
 
-            // Kiểm tra lại số lượng tồn kho trước khi tạo đơn hàng
             foreach (var cartItem in cart)
             {
                 var stockProduct = await _context.Products.FindAsync(cartItem.ProductId);
@@ -270,11 +242,9 @@ namespace FastFood.Controllers
                     TempData["ErrorMessage"] = $"Món '{cartItem.ProductName}' chỉ còn {available} phần trong kho. Vui lòng cập nhật lại giỏ hàng!";
                     return RedirectToAction(nameof(Index));
                 }
-                // Luôn lấy đơn giá mới nhất từ DB (tránh giá cũ trong Session khi Admin đã đổi giá)
                 cartItem.Price = stockProduct.Price;
             }
 
-            // Chỉ chấp nhận phương thức thanh toán hợp lệ
             if (model.PaymentMethod != "COD" && model.PaymentMethod != "VNPAY" && model.PaymentMethod != "MOMO")
                 model.PaymentMethod = "COD";
 
@@ -323,13 +293,11 @@ namespace FastFood.Controllers
                 }
             }
 
-            // Mã đơn dễ đọc, không bao giờ trùng: FF-yyyyMMdd-<mã đơn>
             order.OrderCode = $"FF-{order.OrderDate:yyyyMMdd}-{order.OrderId:D4}";
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
 
             HttpContext.Session.Remove("Cart");
-            // Ghi nhớ đơn vừa đặt để trang Success chỉ cho xem đơn của chính mình
             HttpContext.Session.SetInt32("LastOrderId", order.OrderId);
 
             TempData["SuccessMessage"] = "Đặt hàng thành công!";
@@ -344,8 +312,6 @@ namespace FastFood.Controllers
 
             if (order == null) return RedirectToAction("Index", "Home");
 
-            // CHẶN XEM TRỘM ĐƠN NGƯỜI KHÁC: trước đây gõ /Cart/Success?orderId=1, 2, 3...
-            // là xem được tên, SĐT, địa chỉ của mọi khách hàng.
             bool isJustPlaced = HttpContext.Session.GetInt32("LastOrderId") == order.OrderId;
             bool isOwner = order.UserId != null && HttpContext.Session.GetInt32("UserId") == order.UserId;
             bool isAdmin = HttpContext.Session.GetString("Role") == "Admin";

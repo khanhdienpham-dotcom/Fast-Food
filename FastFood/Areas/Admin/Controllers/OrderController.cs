@@ -15,7 +15,6 @@ namespace FastFood.Areas.Admin.Controllers
             _context = context;
         }
 
-        // Quản lý đơn hàng: Trang Index: lưu giữ danh sách đơn hàng, không có nút Thêm/Sửa/Xóa (0.125)
         public async Task<IActionResult> Index()
         {
             var orders = await _context.Orders
@@ -27,8 +26,6 @@ namespace FastFood.Areas.Admin.Controllers
             return View(orders);
         }
 
-        // Trang Detail: hiển thị thông tin khách hàng + danh sách đơn hàng của khách hàng. CSS để hiển thị giống như Hóa đơn mua hàng (0.25)
-        // Tạo Partial View cho trang Index của Order Detail để nhúng Danh sách chi tiết đơn hàng vào trang Detail của Order
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -44,7 +41,6 @@ namespace FastFood.Areas.Admin.Controllers
             return View(order);
         }
 
-        // Cập nhật trạng thái đơn hàng (Đang giao, Đã giao, Đã hủy)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateStatus(int orderId, string status)
@@ -65,13 +61,11 @@ namespace FastFood.Areas.Admin.Controllers
                     TempData["SuccessMessage"] = "Trạng thái đơn hàng không thay đổi.";
                     return RedirectToAction(nameof(Details), new { id = orderId });
                 }
-                // Đơn đã hủy thì không cho chuyển lại trạng thái khác (tồn kho đã được hoàn lại)
                 if (order.Status == "Đã hủy")
                 {
                     TempData["ErrorMessage"] = "Đơn hàng đã hủy, không thể thay đổi trạng thái!";
                     return RedirectToAction(nameof(Details), new { id = orderId });
                 }
-                // Hủy đơn -> hoàn lại số lượng tồn và trừ số lượng đã bán
                 if (status == "Đã hủy")
                 {
                     foreach (var d in order.OrderDetails)
@@ -89,6 +83,60 @@ namespace FastFood.Areas.Admin.Controllers
                 TempData["SuccessMessage"] = $"Cập nhật trạng thái đơn hàng #{order.OrderCode} thành: {status}";
             }
             return RedirectToAction(nameof(Details), new { id = orderId });
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var order = await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+                .FirstOrDefaultAsync(m => m.OrderId == id);
+
+            if (order == null) return NotFound();
+
+            return View(order);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var order = await _context.Orders
+                .Include(o => o.OrderDetails)
+                .FirstOrDefaultAsync(o => o.OrderId == id);
+
+            if (order == null)
+            {
+                TempData["ErrorMessage"] = "Đơn hàng không tồn tại hoặc đã bị xóa!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            bool restoreStock = order.Status == "Đang chuẩn bị" || order.Status == "Đang giao";
+            if (restoreStock)
+            {
+                foreach (var d in order.OrderDetails)
+                {
+                    var product = await _context.Products.FindAsync(d.ProductId);
+                    if (product != null)
+                    {
+                        product.Quantity += d.Quantity;
+                        product.SoldQuantity = Math.Max(0, product.SoldQuantity - d.Quantity);
+                    }
+                }
+            }
+
+            string code = order.OrderCode;
+            _context.OrderDetails.RemoveRange(order.OrderDetails);
+            _context.Orders.Remove(order);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = restoreStock
+                ? $"Đã xóa đơn hàng #{code} và hoàn lại số lượng tồn kho!"
+                : $"Đã xóa đơn hàng #{code}!";
+            return RedirectToAction(nameof(Index));
         }
     }
 }

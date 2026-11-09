@@ -20,7 +20,6 @@
 
     body { background-color: var(--light); color: var(--dark); font-family: 'Poppins', sans-serif; }
 
-    /* HEADER */
     header { background: var(--dark); }
     .logo-text { color: var(--secondary); }
     nav ul li a { color: #ccc; }
@@ -32,18 +31,15 @@
     .search-bar button { background: var(--primary); color: #fff; }
     .hamburger span { background: #ccc; }
 
-    /* BUTTONS */
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-primary:hover { background: #c62836; }
     .btn-outline { border-color: var(--primary); color: var(--primary); }
     .btn-outline:hover { background: var(--primary); color: #fff; }
 
-    /* SECTION TITLE */
     .section-title h2 { color: var(--dark); }
     .section-title p { color: var(--gray); }
     .divider { background: var(--primary); }
 
-    /* HERO */
     .hero {
       background: linear-gradient(135deg, #1D1D1D 0%, #2d2d2d 50%, #1a0a00 100%);
       padding: 80px 0;
@@ -75,7 +71,6 @@
       box-shadow: 0 20px 60px rgba(230,57,70,0.3);
     }
 
-    /* CATEGORY */
     .category-section { padding: 60px 0; background: #fff; }
     .category-grid {
       display: grid;
@@ -95,11 +90,9 @@
     .cat-icon { font-size: 2.2rem; margin-bottom: 8px; }
     .category-card p { font-size: 0.85rem; font-weight: 700; color: var(--dark); }
 
-    /* FEATURED */
     .featured-section { padding: 60px 0; background: var(--light); }
     .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; }
 
-    /* CARD */
     .card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,0.07); transition: transform 0.25s, box-shadow 0.25s; }
     .card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(0,0,0,0.13); }
     .card-img { width: 100%; height: 200px; object-fit: cover; }
@@ -110,7 +103,6 @@
     .card-footer { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-top: 1px solid #f0f0f0; }
     .rating { font-size: 0.83rem; color: var(--gray); }
 
-    /* PROMO */
     .promo-section { padding: 60px 0; background: #fff; }
     .combo-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
     .combo-card { border-radius: 14px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,0.08); background: var(--light); position: relative; transition: transform 0.25s; }
@@ -124,7 +116,6 @@
     .old-price { font-size: 0.88rem; color: var(--gray); text-decoration: line-through; }
     .new-price { font-size: 1.15rem; font-weight: 800; color: var(--primary); }
 
-    /* WHY */
     .why-section { padding: 60px 0; background: var(--dark); }
     .why-section .section-title h2 { color: #fff; }
     .why-section .section-title p { color: #aaa; }
@@ -134,7 +125,6 @@
     .why-card h3 { font-size: 1rem; font-weight: 700; color: var(--secondary); margin-bottom: 8px; }
     .why-card p { font-size: 0.85rem; color: #aaa; line-height: 1.7; }
 
-    /* TESTIMONIALS */
     .testimonial-section { padding: 60px 0; background: var(--light); }
     .testimonial-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
     .testimonial-card { background: #fff; border-radius: 14px; padding: 24px; box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
@@ -144,7 +134,6 @@
     .testimonial-author strong { display: block; font-size: 0.9rem; color: var(--dark); }
     .testimonial-author span { font-size: 0.8rem; }
 
-    /* APP */
     .app-section { padding: 60px 0; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
     .app-banner { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
     .app-text h2 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 12px; }
@@ -154,7 +143,6 @@
     .app-section .btn-outline { border-color: #fff; color: #fff; }
     .app-image img { width: 100%; height: 320px; object-fit: cover; border-radius: 16px; box-shadow: 0 16px 48px rgba(0,0,0,0.2); }
 
-    /* FOOTER */
     footer { background: var(--dark); color: #aaa; }
     .footer-col h4 { color: var(--secondary); }
     .footer-col ul li a { color: #aaa; }
@@ -173,7 +161,6 @@
 </head>
 <body>
 
-  <!-- ====== HEADER ====== -->
   <header>
     <div class="header-inner">
       <div class="logo">
@@ -204,10 +191,8 @@
     </div>
   </header>
 
-  <!-- ====== MAIN ====== -->
   <main>
 
-    <!-- SECTION 1: HERO BANNER -->
     <section class="hero">
       <div class="hero-inner container">
         <div class="hero-text">
@@ -224,7 +209,6 @@
       </div>
     </section>
 
-    <!-- SECTION 2: DANH MỤC -->
     <section class="category-section">
       <div class="container">
         <div class="section-title">
@@ -255,7 +239,6 @@
       </div>
     </section>
 
-    <!-- SECTION 3: SẢN PHẨM NỔI BẬT -->
     <section class="featured-section">
       <div class="container">
         <div class="section-title">
@@ -324,7 +307,6 @@
       </div>
     </section>
 
-    <!-- SECTION 4: COMBO KHUYẾN MÃI -->
     <section class="promo-section">
       <div class="container">
         <div class="section-title">
@@ -380,7 +362,6 @@
       </div>
     </section>
 
-    <!-- SECTION 5: TẠI SAO CHỌN -->
     <section class="why-section">
       <div class="container">
         <div class="section-title">
@@ -396,7 +377,6 @@
       </div>
     </section>
 
-    <!-- SECTION 6: TESTIMONIALS -->
     <section class="testimonial-section">
       <div class="container">
         <div class="section-title">
@@ -429,7 +409,6 @@
       </div>
     </section>
 
-    <!-- SECTION 7: APP BANNER -->
     <section class="app-section">
       <div class="container">
         <div class="app-banner">
@@ -450,7 +429,6 @@
 
   </main>
 
-  <!-- ====== FOOTER ====== -->
   <footer>
     <div class="footer-grid">
       <div class="footer-col footer-brand">

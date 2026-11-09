@@ -18,7 +18,6 @@
     </div>
 </div>
 
-<!-- TABS / PHẦN CHIA THEO YÊU CẦU BAREM: HÀNG TỒN VÀ HÀNG CẦN NHẬP -->
 <ul class="nav nav-pills mb-4" id="inventoryTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active fw-bold px-4 py-2 me-2" id="in-stock-tab" data-bs-toggle="pill" data-bs-target="#in-stock-panel" type="button" role="tab">
@@ -35,27 +34,23 @@
 </ul>
 
 <div class="tab-content" id="inventoryTabsContent">
-    <!-- PHẦN 1: HÀNG TỒN (QUANTITY > 0) -->
     <div class="tab-pane fade show active" id="in-stock-panel" role="tabpanel">
         <div class="card card-custom">
             <div class="card-header-custom bg-white">
                 <h5 class="fw-bold text-success"><i class="fa fa-check-circle me-2"></i>Các Món Ăn Còn Tồn Kho (Đang Bán Được)</h5>
             </div>
             <div class="card-body p-0">
-                <!-- TÁI SỬ DỤNG PARTIAL VIEW THEO YÊU CẦU BAREM -->
                 @await Html.PartialAsync("_InventoryListPartial", Model.InStockProducts)
             </div>
         </div>
     </div>
 
-    <!-- PHẦN 2: HÀNG CẦN NHẬP (QUANTITY == 0) -->
     <div class="tab-pane fade" id="out-of-stock-panel" role="tabpanel">
         <div class="card card-custom border-danger">
             <div class="card-header-custom bg-danger-subtle">
                 <h5 class="fw-bold text-danger"><i class="fa fa-bell me-2"></i>Các Món Ăn Hết Hàng (Cần Bổ Sung Tồn Kho Ngay)</h5>
             </div>
             <div class="card-body p-0">
-                <!-- TÁI SỬ DỤNG PARTIAL VIEW THEO YÊU CẦU BAREM -->
                 @await Html.PartialAsync("_InventoryListPartial", Model.OutOfStockProducts)
             </div>
         </div>
