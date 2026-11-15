@@ -27,10 +27,7 @@
                     <i class="fa fa-coins"></i>
                 </div>
             </div>
-            <div class="mt-2 text-muted small"><i class="fa fa-shopping-bag me-1"></i>Tổng số <strong>@ViewBag.TotalOrders</strong> đơn hàng (đã hủy: @ViewBag.CancelledCount)</div>
-            <div class="mt-1 text-muted small" title="Đơn tiền mặt chưa giao xong, chưa thu tiền nên chưa cộng vào doanh thu">
-                <i class="fa fa-hourglass-half me-1 text-warning"></i>Chờ thu COD: <strong>@(((decimal)ViewBag.PendingCod).ToString("N0")) đ</strong> (@ViewBag.PendingCodCount đơn)
-            </div>
+            <div class="mt-2 text-muted small"><i class="fa fa-shopping-bag me-1"></i>Tổng số <strong>@ViewBag.TotalOrders</strong> đơn hàng</div>
         </div>
     </div>
     <div class="col-xl-3 col-md-6">

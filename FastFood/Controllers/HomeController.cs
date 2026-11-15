@@ -15,25 +15,22 @@ namespace FastFood.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // Món hết hàng vẫn hiển thị (gắn nhãn SOLD OUT) chứ không bị ẩn đi
             var bestSellers = await _context.Products
                 .Include(p => p.Category)
-                .Where(p => p.Status && p.Category != null && p.Category.Status)
+                .Where(p => p.Status && p.Quantity > 0 && p.Category != null && p.Category.Status)
                 .OrderByDescending(p => p.SoldQuantity)
                 .Take(4)
                 .ToListAsync();
 
             var combos = await _context.Products
                 .Include(p => p.Category)
-                .Where(p => p.Status && p.Category != null && p.Category.Status && p.Category.CategoryName.Contains("Combo"))
-                .OrderBy(p => p.Quantity <= 0)
-                .ThenByDescending(p => p.SoldQuantity)
+                .Where(p => p.Status && p.Quantity > 0 && p.Category != null && p.Category.Status && p.Category.CategoryName.Contains("Combo"))
                 .Take(3)
                 .ToListAsync();
 
             var newProducts = await _context.Products
                 .Include(p => p.Category)
-                .Where(p => p.Status && p.Category != null && p.Category.Status)
+                .Where(p => p.Status && p.Quantity > 0 && p.Category != null && p.Category.Status)
                 .OrderByDescending(p => p.CreatedAt)
                 .Take(4)
                 .ToListAsync();

@@ -32,9 +32,9 @@ namespace FastFood.Controllers
                 ModelState.AddModelError("Username", "Tên đăng nhập này đã tồn tại trong hệ thống!");
             }
 
-            if (emailLower.Length > 0 && await EmailHelper.IsTakenAsync(_context, emailLower))
+            if (emailLower.Length > 0 && await _context.Users.AnyAsync(u => u.Email.ToLower() == emailLower))
             {
-                ModelState.AddModelError("Email", "Gmail/email này đã được dùng cho một tài khoản khác. Mỗi email chỉ đăng ký được 1 tài khoản!");
+                ModelState.AddModelError("Email", "Địa chỉ email này đã được đăng ký tài khoản!");
             }
 
             if (ModelState.IsValid)
@@ -44,7 +44,7 @@ namespace FastFood.Controllers
                     Username = model.Username.Trim(),
                     Password = PasswordHelper.Hash(model.Password),
                     FullName = model.FullName.Trim(),
-                    Email = model.Email.Trim().ToLowerInvariant(),
+                    Email = model.Email.Trim(),
                     Phone = model.Phone.Trim(),
                     Address = model.Address?.Trim(),
                     Role = "Customer",
@@ -160,9 +160,9 @@ namespace FastFood.Controllers
                 TempData["ErrorMessage"] = "Họ tên tối đa 100 ký tự, địa chỉ tối đa 250 ký tự!";
                 return RedirectToAction(nameof(Profile));
             }
-            if (!string.IsNullOrEmpty(model.Password) && !PasswordRules.IsValidLength(model.Password))
+            if (!string.IsNullOrEmpty(model.Password) && (model.Password.Length < 4 || model.Password.Length > 100))
             {
-                TempData["ErrorMessage"] = PasswordRules.LengthMessage + "!";
+                TempData["ErrorMessage"] = "Mật khẩu mới phải từ 4 đến 100 ký tự!";
                 return RedirectToAction(nameof(Profile));
             }
 

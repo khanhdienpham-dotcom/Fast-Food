@@ -17,9 +17,5 @@
         <button class="btn btn-sm btn-outline-dark" onclick="window.print()"><i class="fa fa-print me-1"></i> In Hóa Đơn</button>
     </div>
 
-    @if (Model.Status != "Đã giao")
-    {
-        @await Component.InvokeAsync("PaymentQr", new { order = Model })
-    }
     @await Html.PartialAsync("_InvoicePartial", Model)
 </div>

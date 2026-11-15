@@ -1,4 +1,3 @@
-using FastFood.Helpers;
 using FastFood.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -46,53 +45,43 @@ namespace FastFood.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateStatus(int orderId, string status)
         {
+            var validStatuses = new[] { "Đang chuẩn bị", "Đang giao", "Đã giao", "Đã hủy" };
+            if (!validStatuses.Contains(status))
+            {
+                TempData["ErrorMessage"] = "Trạng thái đơn hàng không hợp lệ!";
+                return RedirectToAction(nameof(Details), new { id = orderId });
+            }
             var order = await _context.Orders
                 .Include(o => o.OrderDetails)
                 .FirstOrDefaultAsync(o => o.OrderId == orderId);
-            if (order == null)
+            if (order != null)
             {
-                TempData["ErrorMessage"] = "Đơn hàng không tồn tại hoặc đã bị xóa!";
-                return RedirectToAction(nameof(Index));
-            }
-
-            if (order.Status == status)
-            {
-                TempData["SuccessMessage"] = "Trạng thái đơn hàng không thay đổi.";
-                return RedirectToAction(nameof(Details), new { id = orderId });
-            }
-
-            // Đã giao / Đã hủy là trạng thái cuối; không cho quay lui (vd: Đang giao -> Đang chuẩn bị)
-            var error = OrderStatus.ValidateTransition(order.Status, status);
-            if (error != null)
-            {
-                TempData["ErrorMessage"] = error;
-                return RedirectToAction(nameof(Details), new { id = orderId });
-            }
-
-            if (status == OrderStatus.Cancelled)
-            {
-                // Hủy đơn: hoàn lại tồn kho; đơn hủy không còn được tính vào doanh thu
-                foreach (var d in order.OrderDetails)
+                if (order.Status == status)
                 {
-                    var product = await _context.Products.FindAsync(d.ProductId);
-                    if (product != null)
+                    TempData["SuccessMessage"] = "Trạng thái đơn hàng không thay đổi.";
+                    return RedirectToAction(nameof(Details), new { id = orderId });
+                }
+                if (order.Status == "Đã hủy")
+                {
+                    TempData["ErrorMessage"] = "Đơn hàng đã hủy, không thể thay đổi trạng thái!";
+                    return RedirectToAction(nameof(Details), new { id = orderId });
+                }
+                if (status == "Đã hủy")
+                {
+                    foreach (var d in order.OrderDetails)
                     {
-                        product.Quantity += d.Quantity;
-                        product.SoldQuantity = Math.Max(0, product.SoldQuantity - d.Quantity);
+                        var product = await _context.Products.FindAsync(d.ProductId);
+                        if (product != null)
+                        {
+                            product.Quantity += d.Quantity;
+                            product.SoldQuantity = Math.Max(0, product.SoldQuantity - d.Quantity);
+                        }
                     }
                 }
+                order.Status = status;
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = $"Cập nhật trạng thái đơn hàng #{order.OrderCode} thành: {status}";
             }
-
-            order.Status = status;
-            await _context.SaveChangesAsync();
-
-            string note = status switch
-            {
-                OrderStatus.Cancelled => $" Đã trừ {order.TotalAmount:N0} đ khỏi doanh thu và hoàn lại tồn kho.",
-                OrderStatus.Delivered when order.PaymentMethod == "COD" => $" Đã thu tiền mặt {order.TotalAmount:N0} đ, cộng vào doanh thu.",
-                _ => string.Empty
-            };
-            TempData["SuccessMessage"] = $"Cập nhật trạng thái đơn hàng #{order.OrderCode} thành: {status}.{note}";
             return RedirectToAction(nameof(Details), new { id = orderId });
         }
 
@@ -125,13 +114,7 @@ namespace FastFood.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            if (order.Status == OrderStatus.Delivered)
-            {
-                TempData["ErrorMessage"] = $"Đơn hàng #{order.OrderCode} đã giao thành công và đã tính vào doanh thu, không thể xóa!";
-                return RedirectToAction(nameof(Details), new { id });
-            }
-
-            bool restoreStock = order.Status == OrderStatus.Preparing || order.Status == OrderStatus.Shipping;
+            bool restoreStock = order.Status == "Đang chuẩn bị" || order.Status == "Đang giao";
             if (restoreStock)
             {
                 foreach (var d in order.OrderDetails)
