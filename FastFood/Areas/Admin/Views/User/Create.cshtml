@@ -41,7 +41,7 @@
                     </div>
                     <div class="mb-3">
                         <label asp-for="Password" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
-                        <input asp-for="Password" class="form-control" type="password" placeholder="Nhập mật khẩu (tối thiểu @FastFood.Helpers.PasswordRules.MinLength ký tự)" maxlength="100" />
+                        <input asp-for="Password" class="form-control" type="password" placeholder="Nhập mật khẩu (@FastFood.Helpers.PasswordRules.MinLength - @FastFood.Helpers.PasswordRules.MaxLength ký tự)" minlength="@FastFood.Helpers.PasswordRules.MinLength" maxlength="@FastFood.Helpers.PasswordRules.MaxLength" data-val-length="@FastFood.Helpers.PasswordRules.LengthMessage" data-val-length-min="@FastFood.Helpers.PasswordRules.MinLength" data-val-length-max="@FastFood.Helpers.PasswordRules.MaxLength" />
                         <span asp-validation-for="Password" class="text-danger small"></span>
                     </div>
                     <div class="mb-4">

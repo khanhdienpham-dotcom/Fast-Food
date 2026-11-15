@@ -51,12 +51,12 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label asp-for="Password" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
-                                <input asp-for="Password" class="form-control" type="password" placeholder="Tối thiểu @FastFood.Helpers.PasswordRules.MinLength ký tự" maxlength="100" />
+                                <input asp-for="Password" class="form-control" type="password" placeholder="Từ @FastFood.Helpers.PasswordRules.MinLength đến @FastFood.Helpers.PasswordRules.MaxLength ký tự" minlength="@FastFood.Helpers.PasswordRules.MinLength" maxlength="@FastFood.Helpers.PasswordRules.MaxLength" />
                                 <span asp-validation-for="Password" class="text-danger small"></span>
                             </div>
                             <div class="col-md-6">
                                 <label asp-for="ConfirmPassword" class="form-label fw-semibold"></label> <span class="text-danger">*</span>
-                                <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Nhập lại mật khẩu" maxlength="100" />
+                                <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Nhập lại mật khẩu" maxlength="@FastFood.Helpers.PasswordRules.MaxLength" />
                                 <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                             </div>
                         </div>
