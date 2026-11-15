@@ -40,6 +40,10 @@ namespace FastFood.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("Username", "Tên đăng nhập này đã được sử dụng!");
             }
+            if (!string.IsNullOrEmpty(user.Password) && !FastFood.Helpers.PasswordRules.IsValidLength(user.Password))
+            {
+                ModelState.AddModelError("Password", FastFood.Helpers.PasswordRules.LengthMessage);
+            }
             if (emailLower.Length > 0 && await FastFood.Helpers.EmailHelper.IsTakenAsync(_context, emailLower))
             {
                 ModelState.AddModelError("Email", "Địa chỉ email này đã được sử dụng cho tài khoản khác!");
@@ -82,6 +86,10 @@ namespace FastFood.Areas.Admin.Controllers
             if (keepOldPassword)
             {
                 ModelState.Remove("Password");
+            }
+            else if (!FastFood.Helpers.PasswordRules.IsValidLength(user.Password))
+            {
+                ModelState.AddModelError("Password", FastFood.Helpers.PasswordRules.LengthMessage);
             }
             ModelState.Remove("Username");
             user.Username = existing.Username;
