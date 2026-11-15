@@ -40,15 +40,16 @@ namespace FastFood.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("Username", "Tên đăng nhập này đã được sử dụng!");
             }
-            if (emailLower.Length > 0 && await _context.Users.AnyAsync(u => u.Email.ToLower() == emailLower))
+            if (emailLower.Length > 0 && await FastFood.Helpers.EmailHelper.IsTakenAsync(_context, emailLower))
             {
-                ModelState.AddModelError("Email", "Địa chỉ email này đã được sử dụng!");
+                ModelState.AddModelError("Email", "Địa chỉ email này đã được sử dụng cho tài khoản khác!");
             }
 
             if (ModelState.IsValid)
             {
                 user.Role = "Admin";
                 user.CreatedAt = DateTime.Now;
+                user.Email = user.Email.Trim().ToLowerInvariant();
                 user.Password = FastFood.Helpers.PasswordHelper.Hash(user.Password);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
@@ -86,8 +87,8 @@ namespace FastFood.Areas.Admin.Controllers
             user.Username = existing.Username;
 
             string editEmailLower = (user.Email ?? string.Empty).Trim().ToLower();
-            if (editEmailLower.Length > 0 && await _context.Users.AnyAsync(u => u.UserId != user.UserId && u.Email.ToLower() == editEmailLower))
-                ModelState.AddModelError("Email", "Địa chỉ email này đã được sử dụng!");
+            if (editEmailLower.Length > 0 && await FastFood.Helpers.EmailHelper.IsTakenAsync(_context, editEmailLower, user.UserId))
+                ModelState.AddModelError("Email", "Địa chỉ email này đã được sử dụng cho tài khoản khác!");
 
             var currentUserId = HttpContext.Session.GetInt32("UserId");
             if (currentUserId == user.UserId && !user.Status)
@@ -96,7 +97,7 @@ namespace FastFood.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 existing.FullName = user.FullName!.Trim();
-                existing.Email = user.Email!.Trim();
+                existing.Email = user.Email!.Trim().ToLowerInvariant();
                 existing.Phone = user.Phone!.Trim();
                 existing.Address = user.Address;
                 if (!keepOldPassword)

@@ -67,11 +67,16 @@ namespace FastFood.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToCart(int productId, int quantity = 1)
         {
-            var product = await _context.Products.FindAsync(productId);
-            if (product == null || !product.Status || product.Quantity <= 0)
+            var product = await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.ProductId == productId);
+            if (product == null || !product.Status || product.Category == null || !product.Category.Status)
             {
-                TempData["ErrorMessage"] = "Sản phẩm không tồn tại hoặc đã hết hàng!";
+                TempData["ErrorMessage"] = "Sản phẩm không tồn tại hoặc đã ngừng kinh doanh!";
                 return RedirectToAction("Index", "Product");
+            }
+            if (product.Quantity <= 0)
+            {
+                TempData["ErrorMessage"] = $"Món '{product.ProductName}' đã SOLD OUT, vui lòng chọn món khác!";
+                return RedirectToAction("Detail", "Product", new { id = productId });
             }
 
             if (quantity < 1) quantity = 1;

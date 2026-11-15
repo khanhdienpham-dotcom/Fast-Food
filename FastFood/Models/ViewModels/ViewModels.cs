@@ -48,7 +48,7 @@ namespace FastFood.Models.ViewModels
         public string? Address { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
-        [StringLength(100, MinimumLength = 4, ErrorMessage = "Mật khẩu phải từ 4 đến 100 ký tự")]
+        [StringLength(FastFood.Helpers.PasswordRules.MaxLength, MinimumLength = FastFood.Helpers.PasswordRules.MinLength, ErrorMessage = FastFood.Helpers.PasswordRules.LengthMessage)]
         [DataType(DataType.Password)]
         [Display(Name = "Mật khẩu")]
         public string Password { get; set; } = string.Empty;
