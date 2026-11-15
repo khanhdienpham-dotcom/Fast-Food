@@ -12,7 +12,9 @@
     string MenuOpen(string c) => controller == c ? "menu-open" : "";
 }
 <!DOCTYPE html>
-<html lang="vi">
+@* Khóa giao diện SÁNG: AdminLTE 4 mặc định tự chuyển sang nền tối khi Windows bật Dark mode,
+   làm chữ đen của các trang Admin bị chìm vào nền. data-lte-color-mode="off" tắt hẳn tính năng đó. *@
+<html lang="vi" data-bs-theme="light" data-lte-color-mode="off">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
