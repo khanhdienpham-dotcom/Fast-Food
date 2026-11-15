@@ -1,3 +1,4 @@
+using FastFood.Helpers;
 using FastFood.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,11 +18,6 @@ namespace FastFood.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var role = HttpContext.Session.GetString("Role");
-            if (string.IsNullOrEmpty(role) || role != "Admin")
-            {
-            }
-
             ViewBag.TotalCategories = await _context.Categories.CountAsync();
             ViewBag.TotalProducts = await _context.Products.CountAsync();
             ViewBag.InStockCount = await _context.Products.CountAsync(p => p.Quantity > 0);
@@ -29,8 +25,12 @@ namespace FastFood.Areas.Admin.Controllers
             ViewBag.TotalCustomers = await _context.Users.CountAsync(u => u.Role == "Customer");
             ViewBag.TotalAdmins = await _context.Users.CountAsync(u => u.Role == "Admin");
             ViewBag.TotalOrders = await _context.Orders.CountAsync();
-            var revenueList = await _context.Orders.Where(o => o.Status != "Đã hủy").Select(o => o.TotalAmount).ToListAsync();
-            ViewBag.TotalRevenue = revenueList.Sum();
+            // Doanh thu: bỏ đơn đã hủy; đơn tiền mặt (COD) chỉ tính khi đã giao thành công (đã thu tiền)
+            var allOrders = await _context.Orders.ToListAsync();
+            ViewBag.TotalRevenue = allOrders.Where(OrderStatus.IsCountedInRevenue).Sum(o => o.TotalAmount);
+            ViewBag.PendingCod = allOrders.Where(OrderStatus.IsPendingCod).Sum(o => o.TotalAmount);
+            ViewBag.PendingCodCount = allOrders.Count(OrderStatus.IsPendingCod);
+            ViewBag.CancelledCount = allOrders.Count(o => o.Status == OrderStatus.Cancelled);
 
             var recentOrders = await _context.Orders
                 .OrderByDescending(o => o.OrderDate)

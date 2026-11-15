@@ -18,7 +18,7 @@ namespace FastFood.Controllers
         {
             var query = _context.Products
                 .Include(p => p.Category)
-                .Where(p => p.Status && p.Quantity > 0 && p.Category != null && p.Category.Status)
+                .Where(p => p.Status && p.Category != null && p.Category.Status) // không ẩn món hết hàng, view sẽ hiện SOLD OUT
                 .AsQueryable();
 
             if (categoryId.HasValue && categoryId.Value > 0)
@@ -55,12 +55,14 @@ namespace FastFood.Controllers
                 list = list.Where(p => p.Price <= maxPrice.Value);
             }
 
+            // Món còn hàng lên trước, món SOLD OUT xuống cuối
+            var ordered = list.OrderBy(p => p.Quantity <= 0);
             list = sortOrder switch
             {
-                "price_asc" => list.OrderBy(p => p.Price),
-                "price_desc" => list.OrderByDescending(p => p.Price),
-                "popular" => list.OrderByDescending(p => p.SoldQuantity),
-                _ => list.OrderByDescending(p => p.ProductId)
+                "price_asc" => ordered.ThenBy(p => p.Price),
+                "price_desc" => ordered.ThenByDescending(p => p.Price),
+                "popular" => ordered.ThenByDescending(p => p.SoldQuantity),
+                _ => ordered.ThenByDescending(p => p.ProductId)
             };
 
             var filtered = list.ToList();
@@ -106,10 +108,11 @@ namespace FastFood.Controllers
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
 
-            if (product == null || !product.Status) return NotFound();
+            if (product == null || !product.Status || product.Category == null || !product.Category.Status) return NotFound();
 
             ViewBag.RelatedProducts = await _context.Products
-                .Where(p => p.CategoryId == product.CategoryId && p.ProductId != product.ProductId && p.Status && p.Quantity > 0)
+                .Where(p => p.CategoryId == product.CategoryId && p.ProductId != product.ProductId && p.Status)
+                .OrderBy(p => p.Quantity <= 0)
                 .Take(3)
                 .ToListAsync();
 

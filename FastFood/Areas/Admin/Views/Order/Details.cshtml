@@ -8,17 +8,29 @@
         <p class="text-muted small mb-0">Hiển thị định dạng hóa đơn mua hàng và cập nhật tiến độ giao</p>
     </div>
     <div class="d-flex gap-2">
+@if (FastFood.Helpers.OrderStatus.IsFinal(Model.Status))
+        {
+            <span class="btn btn-sm btn-light border text-muted text-nowrap disabled" title="Đơn đã giao hoặc đã hủy thì không thể cập nhật lại trạng thái">
+                <i class="fa fa-lock me-1"></i> Đã khóa trạng thái: @Model.Status
+            </span>
+        }
+        else
+        {
         <form asp-action="UpdateStatus" method="post" class="d-inline-flex gap-2 align-items-center">
             <input type="hidden" name="orderId" value="@Model.OrderId" />
             <select name="status" class="form-select form-select-sm" style="width: 170px;">
-                <option value="Đang chuẩn bị" selected="@(Model.Status == "Đang chuẩn bị")">Đang chuẩn bị</option>
-                <option value="Đang giao" selected="@(Model.Status == "Đang giao")">Đang giao</option>
-                <option value="Đã giao" selected="@(Model.Status == "Đã giao")">Đã giao</option>
-                <option value="Đã hủy" selected="@(Model.Status == "Đã hủy")">Đã hủy</option>
+                @foreach (var st in FastFood.Helpers.OrderStatus.AllowedNext(Model.Status))
+                {
+                    <option value="@st" selected="@(Model.Status == st)">@st</option>
+                }
             </select>
             <button type="submit" class="btn btn-sm btn-primary fw-bold text-nowrap"><i class="fa fa-sync-alt me-1"></i> Cập nhật</button>
         </form>
-        <a asp-action="Delete" asp-route-id="@Model.OrderId" class="btn btn-outline-danger btn-sm text-nowrap"><i class="fa fa-trash me-1"></i> Xóa đơn</a>
+        }
+        @if (Model.Status != "Đã giao")
+        {
+            <a asp-action="Delete" asp-route-id="@Model.OrderId" class="btn btn-outline-danger btn-sm text-nowrap"><i class="fa fa-trash me-1"></i> Xóa đơn</a>
+        }
         <a asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="fa fa-arrow-left me-1"></i> Danh Sách</a>
     </div>
 </div>

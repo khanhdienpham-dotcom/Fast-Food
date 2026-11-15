@@ -1,0 +1,19 @@
+@model FastFood.ViewComponents.PaymentQrViewModel
+
+<div class="card border-0 shadow-sm rounded-4 p-4 bg-white mx-auto mb-4 text-center payment-qr" style="max-width: 650px;">
+    <h5 class="fw-bold text-dark mb-1"><i class="fa fa-qrcode text-primary me-2"></i>Quét Mã QR Để Thanh Toán</h5>
+    <p class="text-muted small mb-3">
+        Mở ứng dụng ngân hàng, @(Model.PaymentMethod == "MOMO" ? "MoMo" : "VNPAY") hoặc ví điện tử bất kỳ và quét mã bên dưới.
+        Số tiền và nội dung chuyển khoản đã được điền sẵn.
+    </p>
+    <div class="d-flex flex-column flex-md-row align-items-center justify-content-center gap-4">
+        <img src="data:image/png;base64,@Model.QrBase64" alt="Mã QR thanh toán" width="230" height="230" class="border rounded-3 p-2 bg-white" />
+        <div class="text-start small">
+            <p class="mb-1"><span class="text-muted">Ngân hàng:</span> <strong>@Model.BankName</strong></p>
+            <p class="mb-1"><span class="text-muted">Số tài khoản:</span> <strong class="font-monospace">@Model.AccountNo</strong></p>
+            <p class="mb-1"><span class="text-muted">Chủ tài khoản:</span> <strong>@Model.AccountName</strong></p>
+            <p class="mb-1"><span class="text-muted">Số tiền:</span> <strong class="text-danger fs-5">@Model.Amount.ToString("N0") đ</strong></p>
+            <p class="mb-0"><span class="text-muted">Nội dung:</span> <strong class="font-monospace">@Model.Content</strong></p>
+        </div>
+    </div>
+</div>

@@ -25,16 +25,19 @@
         }
         else
         {
-            <span>Đơn đã giao xong nên khi xóa, tồn kho và số lượng đã bán được giữ nguyên.</span>
+            <span>Đơn đã giao thành công và đã tính vào doanh thu nên <strong>không được phép xóa</strong>.</span>
         }
     </div>
 </div>
 
 @await Html.PartialAsync("_InvoicePartial", Model)
 
+@if (Model.Status != "Đã giao")
+{
 <form asp-action="Delete" method="post" class="d-flex justify-content-end gap-2 mt-4"
       onsubmit="return confirm('Bạn chắc chắn muốn xóa vĩnh viễn đơn hàng #@Model.OrderCode?');">
     <input type="hidden" name="id" value="@Model.OrderId" />
     <a asp-action="Index" class="btn btn-light px-4">Hủy Bỏ</a>
     <button type="submit" class="btn btn-danger px-4 fw-bold"><i class="fa fa-trash me-1"></i> Xóa Đơn Hàng</button>
 </form>
+}
