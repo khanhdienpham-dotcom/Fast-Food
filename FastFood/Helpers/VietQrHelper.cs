@@ -3,11 +3,6 @@ using QRCoder;
 
 namespace FastFood.Helpers
 {
-    /// <summary>
-    /// Tạo mã QR chuyển khoản theo chuẩn VietQR (NAPAS 247) ngay trên server,
-    /// không cần gọi web bên ngoài nên luôn hiện được kể cả khi chạy offline.
-    /// Mọi app ngân hàng, MoMo, VNPAY... đều quét được mã này.
-    /// </summary>
     public static class VietQrHelper
     {
         private static string Field(string id, string value) => id + value.Length.ToString("D2") + value;
@@ -19,10 +14,10 @@ namespace FastFood.Helpers
                             + Field("02", "QRIBFTTA");
 
             var sb = new StringBuilder();
-            sb.Append(Field("00", "01"));                 // Payload format
-            sb.Append(Field("01", "12"));                 // QR động (có số tiền)
-            sb.Append(Field("38", merchant));             // Thông tin người nhận (VietQR)
-            sb.Append(Field("53", "704"));                // VND
+            sb.Append(Field("00", "01"));
+            sb.Append(Field("01", "12"));
+            sb.Append(Field("38", merchant));
+            sb.Append(Field("53", "704"));
             sb.Append(Field("54", ((long)Math.Round(amount)).ToString()));
             sb.Append(Field("58", "VN"));
             sb.Append(Field("62", Field("08", Ascii(content, 25))));
@@ -39,7 +34,6 @@ namespace FastFood.Helpers
             return Convert.ToBase64String(png);
         }
 
-        // Nội dung chuyển khoản chỉ nên dùng chữ không dấu, số và khoảng trắng.
         private static string Ascii(string text, int maxLen)
         {
             var normalized = (text ?? string.Empty).Replace('đ', 'd').Replace('Đ', 'D').Normalize(NormalizationForm.FormD);
@@ -52,7 +46,6 @@ namespace FastFood.Helpers
             return result.Length > maxLen ? result[..maxLen] : result;
         }
 
-        // CRC-16/CCITT-FALSE (poly 0x1021, init 0xFFFF) theo chuẩn EMVCo.
         private static ushort Crc16(string data)
         {
             ushort crc = 0xFFFF;

@@ -18,7 +18,7 @@ namespace FastFood.Controllers
         {
             var query = _context.Products
                 .Include(p => p.Category)
-                .Where(p => p.Status && p.Category != null && p.Category.Status) // không ẩn món hết hàng, view sẽ hiện SOLD OUT
+                .Where(p => p.Status && p.Category != null && p.Category.Status)
                 .AsQueryable();
 
             if (categoryId.HasValue && categoryId.Value > 0)
@@ -55,7 +55,6 @@ namespace FastFood.Controllers
                 list = list.Where(p => p.Price <= maxPrice.Value);
             }
 
-            // Món còn hàng lên trước, món SOLD OUT xuống cuối
             var ordered = list.OrderBy(p => p.Quantity <= 0);
             list = sortOrder switch
             {

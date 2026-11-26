@@ -15,7 +15,6 @@ namespace FastFood.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // Món hết hàng vẫn hiển thị (gắn nhãn SOLD OUT) chứ không bị ẩn đi
             var bestSellers = await _context.Products
                 .Include(p => p.Category)
                 .Where(p => p.Status && p.Category != null && p.Category.Status)

@@ -1,12 +1,3 @@
-/* =====================================================================
-   FASTFOOD STORE - SCRIPT CƠ SỞ DỮ LIỆU (SQL Server)
-   - Tạo database FastFoodDb, 5 bảng: Categories, Products, Users, Orders, OrderDetails
-   - Khóa chính, khóa ngoại (FK) và ràng buộc giống hệt model Entity Framework
-   - Dữ liệu mẫu giống DbInitializer.cs (6 danh mục, 11 món, 3 tài khoản, 3 đơn hàng)
-   Cách dùng: mở bằng SQL Server Management Studio (SSMS) -> Execute (F5)
-   Muốn web dùng SQL Server: appsettings.json đổi "DatabaseProvider": "SqlServer"
-   ===================================================================== */
-
 USE master;
 GO
 IF DB_ID(N'FastFoodDb') IS NOT NULL
@@ -20,7 +11,6 @@ GO
 USE FastFoodDb;
 GO
 
-/* ---------------------------- 1. DANH MỤC ---------------------------- */
 CREATE TABLE Categories (
     CategoryId    INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Categories PRIMARY KEY,
     CategoryName  NVARCHAR(100) NOT NULL,
@@ -32,20 +22,19 @@ CREATE TABLE Categories (
 );
 GO
 
-/* ---------------------------- 2. SẢN PHẨM (có Quantity) ---------------------------- */
 CREATE TABLE Products (
     ProductId     INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Products PRIMARY KEY,
     ProductName   NVARCHAR(150) NOT NULL,
     Description   NVARCHAR(2000) NULL,
     Price         DECIMAL(18,2) NOT NULL,
     ImageUrl      NVARCHAR(300) NULL,
-    Quantity      INT NOT NULL CONSTRAINT DF_Products_Quantity DEFAULT 0,       -- số lượng tồn
-    SoldQuantity  INT NOT NULL CONSTRAINT DF_Products_SoldQuantity DEFAULT 0,   -- số lượng đã bán
+    Quantity      INT NOT NULL CONSTRAINT DF_Products_Quantity DEFAULT 0,
+    SoldQuantity  INT NOT NULL CONSTRAINT DF_Products_SoldQuantity DEFAULT 0,
     CategoryId    INT NOT NULL,
     Status        BIT NOT NULL CONSTRAINT DF_Products_Status DEFAULT 1,
     CreatedAt     DATETIME2 NOT NULL CONSTRAINT DF_Products_CreatedAt DEFAULT GETDATE(),
     CONSTRAINT FK_Products_Categories_CategoryId FOREIGN KEY (CategoryId)
-        REFERENCES Categories (CategoryId) ON DELETE NO ACTION,              -- Restrict: không xóa danh mục còn sản phẩm
+        REFERENCES Categories (CategoryId) ON DELETE NO ACTION,
     CONSTRAINT CK_Products_Price CHECK (Price >= 1000),
     CONSTRAINT CK_Products_Quantity CHECK (Quantity >= 0),
     CONSTRAINT CK_Products_SoldQuantity CHECK (SoldQuantity >= 0)
@@ -53,7 +42,6 @@ CREATE TABLE Products (
 CREATE INDEX IX_Products_CategoryId ON Products (CategoryId);
 GO
 
-/* ---------------------------- 3. NGƯỜI DÙNG (Admin + Customer) ---------------------------- */
 CREATE TABLE Users (
     UserId     INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Users PRIMARY KEY,
     Username   NVARCHAR(50)  NOT NULL,
@@ -71,11 +59,10 @@ CREATE TABLE Users (
 );
 GO
 
-/* ---------------------------- 4. ĐƠN HÀNG ---------------------------- */
 CREATE TABLE Orders (
     OrderId        INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_Orders PRIMARY KEY,
     OrderCode      NVARCHAR(50)  NOT NULL,
-    UserId         INT NULL,                         -- NULL = khách vãng lai
+    UserId         INT NULL,
     CustomerName   NVARCHAR(100) NOT NULL,
     Phone          NVARCHAR(20)  NOT NULL,
     Address        NVARCHAR(250) NOT NULL,
@@ -92,7 +79,6 @@ CREATE TABLE Orders (
 CREATE INDEX IX_Orders_UserId ON Orders (UserId);
 GO
 
-/* ---------------------------- 5. CHI TIẾT ĐƠN HÀNG ---------------------------- */
 CREATE TABLE OrderDetails (
     OrderDetailId  INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_OrderDetails PRIMARY KEY,
     OrderId        INT NOT NULL,
@@ -100,20 +86,17 @@ CREATE TABLE OrderDetails (
     ProductName    NVARCHAR(150) NOT NULL,
     Price          DECIMAL(18,2) NOT NULL,
     Quantity       INT NOT NULL,
-    SubTotal       DECIMAL(18,2) NOT NULL,             -- Thành tiền = Price * Quantity
+    SubTotal       DECIMAL(18,2) NOT NULL,
     CONSTRAINT FK_OrderDetails_Orders_OrderId FOREIGN KEY (OrderId)
         REFERENCES Orders (OrderId) ON DELETE CASCADE,
     CONSTRAINT FK_OrderDetails_Products_ProductId FOREIGN KEY (ProductId)
-        REFERENCES Products (ProductId) ON DELETE NO ACTION,   -- Restrict: không xóa món đã có trong đơn
+        REFERENCES Products (ProductId) ON DELETE NO ACTION,
     CONSTRAINT CK_OrderDetails_Quantity CHECK (Quantity BETWEEN 1 AND 1000)
 );
 CREATE INDEX IX_OrderDetails_OrderId ON OrderDetails (OrderId);
 CREATE INDEX IX_OrderDetails_ProductId ON OrderDetails (ProductId);
 GO
 
-/* =====================================================================
-   DỮ LIỆU MẪU
-   ===================================================================== */
 SET IDENTITY_INSERT Categories ON;
 INSERT INTO Categories (CategoryId, CategoryName, Description, ImageUrl, DisplayOrder, Status) VALUES
 (1, N'Burger',               N'Burger bò, gà, phô mai chuẩn vị Mỹ',                 N'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80', 1, 1),
@@ -136,13 +119,11 @@ INSERT INTO Products (ProductId, ProductName, Description, Price, ImageUrl, Quan
 (7,  N'Coca Cola Tươi Size L',       N'Coca Cola tươi mát lạnh sảng khoái cực đã khi dùng kèm đồ chiên rán.',                                    20000,  N'https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=600&q=80', 100, 540, 5, 1, DATEADD(DAY, -30, GETDATE())),
 (8,  N'Combo Solo No Nê',            N'Gồm 1 Double Beef Burger + 1 Khoai tây chiên + 1 Coca Cola mát lạnh. Tiết kiệm 20.000đ.',                89000,  N'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=600&q=80', 35,  180, 6, 1, DATEADD(DAY, -14, GETDATE())),
 (9,  N'Combo Gia Đình Thịnh Soạn',   N'Gồm 2 Burger bò phô mai, 4 miếng gà rán cay, 2 phần khoai lắc và 4 ly nước ngọt.',                       199000, N'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80', 15,  45,  6, 1, DATEADD(DAY, -7,  GETDATE())),
-(10, N'Pizza Pepperoni Xúc Xích Ý',  N'Pizza xúc xích bò cay truyền thống Ý kết hợp sốt cà chua tươi hảo hạng.',                                 79000,  N'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600&q=80', 0,   95,  3, 1, DATEADD(DAY, -5,  GETDATE())), -- hết hàng
-(11, N'Mực Chiên Giòn Calamari',     N'Khoanh mực tươi tẩm bột chiên phồng chấm kèm sốt Tartar chua thanh dịu ngọt.',                            49000,  N'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=600&q=80', 0,   32,  4, 1, DATEADD(DAY, -4,  GETDATE())); -- hết hàng
+(10, N'Pizza Pepperoni Xúc Xích Ý',  N'Pizza xúc xích bò cay truyền thống Ý kết hợp sốt cà chua tươi hảo hạng.',                                 79000,  N'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600&q=80', 0,   95,  3, 1, DATEADD(DAY, -5,  GETDATE())),
+(11, N'Mực Chiên Giòn Calamari',     N'Khoanh mực tươi tẩm bột chiên phồng chấm kèm sốt Tartar chua thanh dịu ngọt.',                            49000,  N'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=600&q=80', 0,   32,  4, 1, DATEADD(DAY, -4,  GETDATE()));
 SET IDENTITY_INSERT Products OFF;
 GO
 
-/* Mật khẩu mẫu để dạng '123' cho dễ nhập. Website sẽ TỰ ĐỘNG mã hóa (PBKDF2) mật khẩu này
-   ngay lần đăng nhập đầu tiên; tài khoản tạo mới qua web luôn được lưu dạng mã hóa. */
 SET IDENTITY_INSERT Users ON;
 INSERT INTO Users (UserId, Username, Password, FullName, Email, Phone, Address, Role, CreatedAt, Status) VALUES
 (1, N'admin',     N'123', N'Quản Trị Hệ Thống', N'admin@fastfood.vn',    N'0988888888', N'123 Nguyễn Trãi, Quận 1, TP.HCM',        N'Admin',    DATEADD(DAY, -30, GETDATE()), 1),
@@ -169,7 +150,6 @@ INSERT INTO OrderDetails (OrderDetailId, OrderId, ProductId, ProductName, Price,
 SET IDENTITY_INSERT OrderDetails OFF;
 GO
 
-/* Kiểm tra nhanh */
 SELECT N'Categories' AS Bang, COUNT(*) AS SoDong FROM Categories UNION ALL
 SELECT N'Products',   COUNT(*) FROM Products   UNION ALL
 SELECT N'Users',      COUNT(*) FROM Users      UNION ALL

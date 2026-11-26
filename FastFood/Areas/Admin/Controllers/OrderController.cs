@@ -61,7 +61,6 @@ namespace FastFood.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Details), new { id = orderId });
             }
 
-            // Đã giao / Đã hủy là trạng thái cuối; không cho quay lui (vd: Đang giao -> Đang chuẩn bị)
             var error = OrderStatus.ValidateTransition(order.Status, status);
             if (error != null)
             {
@@ -71,7 +70,6 @@ namespace FastFood.Areas.Admin.Controllers
 
             if (status == OrderStatus.Cancelled)
             {
-                // Hủy đơn: hoàn lại tồn kho; đơn hủy không còn được tính vào doanh thu
                 foreach (var d in order.OrderDetails)
                 {
                     var product = await _context.Products.FindAsync(d.ProductId);

@@ -3,12 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FastFood.Helpers
 {
-    /// <summary>
-    /// Đảm bảo mỗi Gmail chỉ gắn với 1 tài khoản.
-    /// Gmail bỏ qua dấu chấm và phần sau dấu "+" trong tên hộp thư, nên
-    /// "nguyen.van.a@gmail.com", "nguyenvana+abc@gmail.com" và "NguyenVanA@googlemail.com"
-    /// đều là CÙNG MỘT hộp thư -> phải coi là trùng.
-    /// </summary>
     public static class EmailHelper
     {
         public static string Normalize(string? email)
@@ -30,7 +24,6 @@ namespace FastFood.Helpers
             return local + "@" + domain;
         }
 
-        /// <summary>Email (sau khi chuẩn hóa) đã thuộc về tài khoản khác chưa?</summary>
         public static async Task<bool> IsTakenAsync(FastFoodDbContext db, string? email, int? excludeUserId = null)
         {
             string target = Normalize(email);

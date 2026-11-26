@@ -15,10 +15,6 @@ namespace FastFood.ViewComponents
         public string PaymentMethod { get; set; } = string.Empty;
     }
 
-    /// <summary>
-    /// Hiện mã QR chuyển khoản cho đơn VNPAY / MOMO (chưa hủy).
-    /// Thông tin tài khoản nhận tiền lấy từ mục "BankTransfer" trong appsettings.json.
-    /// </summary>
     public class PaymentQrViewComponent : ViewComponent
     {
         private readonly IConfiguration _config;
@@ -36,7 +32,6 @@ namespace FastFood.ViewComponents
             var section = _config.GetSection("BankTransfer");
             string bankBin = section["BankBin"] ?? "970436";
             string accountNo = section["AccountNo"] ?? "0123456789";
-            // Nội dung ngắn gọn (<= 25 ký tự) để app ngân hàng không cắt mất mã đơn, vd: "TT FF202611150012"
             string content = "TT " + order.OrderCode.Replace("-", "");
 
             var payload = VietQrHelper.BuildPayload(bankBin, accountNo, order.TotalAmount, content);
