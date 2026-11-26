@@ -25,7 +25,6 @@ namespace FastFood.Areas.Admin.Controllers
             ViewBag.TotalCustomers = await _context.Users.CountAsync(u => u.Role == "Customer");
             ViewBag.TotalAdmins = await _context.Users.CountAsync(u => u.Role == "Admin");
             ViewBag.TotalOrders = await _context.Orders.CountAsync();
-            // Doanh thu: bỏ đơn đã hủy; đơn tiền mặt (COD) chỉ tính khi đã giao thành công (đã thu tiền)
             var allOrders = await _context.Orders.ToListAsync();
             ViewBag.TotalRevenue = allOrders.Where(OrderStatus.IsCountedInRevenue).Sum(o => o.TotalAmount);
             ViewBag.PendingCod = allOrders.Where(OrderStatus.IsPendingCod).Sum(o => o.TotalAmount);

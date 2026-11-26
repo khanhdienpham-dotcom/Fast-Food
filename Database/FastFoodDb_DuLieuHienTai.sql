@@ -1,14 +1,6 @@
-﻿/* =====================================================================
-   FASTFOOD STORE - DỮ LIỆU HIỆN TẠI (xuất lúc 15/11/2026 21:06)
-   Cách dùng (SSMS hoặc SQL Server Object Explorer trong Visual Studio):
-     1. Chạy FastFoodDb.sql trước (tạo database + bảng)
-     2. Chạy file này: xóa dữ liệu mẫu, nạp toàn bộ dữ liệu hiện tại
-   Mật khẩu trong bảng Users đã được mã hóa (PBKDF2), không phải mật khẩu gốc.
-   ===================================================================== */
-USE FastFoodDb;
+﻿USE FastFoodDb;
 GO
 
-/* Xóa dữ liệu cũ: bảng con trước, bảng cha sau */
 DELETE FROM OrderDetails;
 DELETE FROM Orders;
 DELETE FROM Users;
@@ -16,7 +8,6 @@ DELETE FROM Products;
 DELETE FROM Categories;
 GO
 
-/* ---------- Categories ---------- */
 SET IDENTITY_INSERT [Categories] ON;
 INSERT INTO [Categories] ([CategoryId], [CategoryName], [Description], [ImageUrl], [DisplayOrder], [Status]) VALUES (1, N'Burger', N'Burger bò, gà, phô mai chuẩn vị Mỹ', N'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80', 1, 1);
 INSERT INTO [Categories] ([CategoryId], [CategoryName], [Description], [ImageUrl], [DisplayOrder], [Status]) VALUES (2, N'Gà Rán', N'Gà rán giòn rụm, vàng ươm, cay và không cay', N'https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400&q=80', 2, 1);
@@ -29,7 +20,6 @@ DECLARE @max_Categories INT = ISNULL((SELECT MAX(CategoryId) FROM [Categories]),
 DBCC CHECKIDENT ('Categories', RESEED, @max_Categories);
 GO
 
-/* ---------- Products ---------- */
 SET IDENTITY_INSERT [Products] ON;
 INSERT INTO [Products] ([ProductId], [ProductName], [Description], [Price], [ImageUrl], [Quantity], [SoldQuantity], [CategoryId], [Status], [CreatedAt]) VALUES (1, N'Double Beef Burger', N'2 miếng bò Úc nướng lửa hồng, phô mai Cheddar béo ngậy, sốt tiêu đen đặc biệt và rau xà lách tươi xanh.', 59000.00, N'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80', 45, 120, 1, 1, '2026-10-25T07:29:51.4900000');
 INSERT INTO [Products] ([ProductId], [ProductName], [Description], [Price], [ImageUrl], [Quantity], [SoldQuantity], [CategoryId], [Status], [CreatedAt]) VALUES (2, N'Burger Bò Phô Mai Nấm', N'Burger bò thượng hạng kèm nấm xào bơ tỏi thơm lừng và sốt nấm Truffle.', 65000.00, N'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=600&q=80', 30, 85, 1, 1, '2026-10-28T07:29:51.4900000');
@@ -47,7 +37,6 @@ DECLARE @max_Products INT = ISNULL((SELECT MAX(ProductId) FROM [Products]), 0);
 DBCC CHECKIDENT ('Products', RESEED, @max_Products);
 GO
 
-/* ---------- Users ---------- */
 SET IDENTITY_INSERT [Users] ON;
 INSERT INTO [Users] ([UserId], [Username], [Password], [FullName], [Email], [Phone], [Address], [Role], [CreatedAt], [Status]) VALUES (1, N'admin', N'PBKDF2$100000$mebZQSVDZh138L+2MTs6hQ==$cR0GkL5saSindfe3ES43Iw/W6efOiwzVOgEM82H9O2c=', N'Quản Trị Hệ Thống', N'admin@fastfood.vn', N'0988888888', N'123 Nguyễn Trãi, Quận 1, TP.HCM', N'Admin', '2026-10-10T07:29:51.4933333', 1);
 INSERT INTO [Users] ([UserId], [Username], [Password], [FullName], [Email], [Phone], [Address], [Role], [CreatedAt], [Status]) VALUES (2, N'khachhang', N'PBKDF2$100000$rPQ3ZwTx9wBUz8LVwgHWyg==$OyZwYyPujQI2m48iJuEVYk3cBsHX3e59DBWVsTj2lr4=', N'Nguyễn Văn A', N'nguyenvana@gmail.com', N'0901234567', N'456 Lê Văn Sỹ, Quận 3, TP.HCM', N'Customer', '2026-10-20T07:29:51.4933333', 1);
@@ -58,7 +47,6 @@ DECLARE @max_Users INT = ISNULL((SELECT MAX(UserId) FROM [Users]), 0);
 DBCC CHECKIDENT ('Users', RESEED, @max_Users);
 GO
 
-/* ---------- Orders ---------- */
 SET IDENTITY_INSERT [Orders] ON;
 INSERT INTO [Orders] ([OrderId], [OrderCode], [UserId], [CustomerName], [Phone], [Address], [Note], [TotalAmount], [PaymentMethod], [Status], [OrderDate]) VALUES (1, N'FF-20261108-0001', 2, N'Nguyễn Văn A', N'0901234567', N'456 Lê Văn Sỹ, Quận 3, TP.HCM', N'Giao giờ hành chính, không bấm chuông', 149000.00, N'COD', N'Đã giao', '2026-11-07T07:29:51.5000000');
 INSERT INTO [Orders] ([OrderId], [OrderCode], [UserId], [CustomerName], [Phone], [Address], [Note], [TotalAmount], [PaymentMethod], [Status], [OrderDate]) VALUES (2, N'FF-20261108-0002', 2, N'Nguyễn Văn A', N'0901234567', N'456 Lê Văn Sỹ, Quận 3, TP.HCM', N'Cho thêm nhiều tương cà và tương ớt', 109000.00, N'COD', N'Đang chuẩn bị', '2026-11-09T06:29:51.5000000');
@@ -71,7 +59,6 @@ DECLARE @max_Orders INT = ISNULL((SELECT MAX(OrderId) FROM [Orders]), 0);
 DBCC CHECKIDENT ('Orders', RESEED, @max_Orders);
 GO
 
-/* ---------- OrderDetails ---------- */
 SET IDENTITY_INSERT [OrderDetails] ON;
 INSERT INTO [OrderDetails] ([OrderDetailId], [OrderId], [ProductId], [ProductName], [Price], [Quantity], [SubTotal]) VALUES (1, 1, 1, N'Double Beef Burger', 59000.00, 1, 59000.00);
 INSERT INTO [OrderDetails] ([OrderDetailId], [OrderId], [ProductId], [ProductName], [Price], [Quantity], [SubTotal]) VALUES (2, 1, 3, N'Gà Rán Giòn Cay (2 miếng)', 45000.00, 2, 90000.00);

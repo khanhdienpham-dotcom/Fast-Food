@@ -17,8 +17,6 @@ namespace FastFood.Models
         public string Username { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
-        // Cột lưu mật khẩu ĐÃ MÃ HÓA (~83 ký tự) nên giữ 100. Độ dài mật khẩu gõ vào (6-15)
-        // được kiểm tra bằng PasswordRules ở Đăng ký / Hồ sơ / Admin thêm-sửa tài khoản.
         [StringLength(100)]
         [DataType(DataType.Password)]
         [Display(Name = "Mật khẩu")]

@@ -129,7 +129,7 @@
     <script>
         document.getElementById('checkoutForm').addEventListener('submit', function (e) {
             var form = this;
-            if (window.jQuery && $(form).valid && !$(form).valid()) return; // form còn lỗi thì cho sửa tiếp
+            if (window.jQuery && $(form).valid && !$(form).valid()) return;
             if (form.dataset.submitted === '1') { e.preventDefault(); return; }
             form.dataset.submitted = '1';
             var btn = document.getElementById('btnCheckout');
